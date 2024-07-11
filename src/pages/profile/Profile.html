@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet"  href="static/globalStyles.css" />
+  <script type="module" src="Profile.ts"></script>
+</head>
+<body>
+<main class="layout">
+  <button></button>
+
+  <div class="profilePicture">
+    <img alt="noPicture" src="../../../static/noPicture.svg">
+  </div>
+  <div class="title profileTitle" id="title"></div>
+  <form class="form" id="signInForm" name="profileForm">
+
+  </form>
+  {{> textButton label="Изменить данные" href="../signUp/SignUpPage.html"}}
+  {{> textButton label="Изменить пароль" href="../signUp/SignUpPage.html"}}
+</main>
+</body>
+</html>

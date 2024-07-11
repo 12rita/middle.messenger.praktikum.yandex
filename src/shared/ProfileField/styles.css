@@ -1,0 +1,15 @@
+@import '../../../static/globalStyles.css';
+
+.field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profileLine {
+   margin: 10px 0;
+}
+
+.fieldValue {
+    border: none;
+}
