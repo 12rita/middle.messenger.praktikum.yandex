@@ -5,7 +5,28 @@ import eslint from 'vite-plugin-eslint';
 
 export default defineConfig({
     build: {
-        outDir: resolve(__dirname, 'dist')
+        outDir: resolve(__dirname, 'dist'),
+        rollupOptions: {
+            input: {
+                index: resolve(__dirname, './index.html'),
+                signIn: resolve(
+                    __dirname,
+                    './src/pages/signIn/SignInPage.html'
+                ),
+                signUp: resolve(
+                    __dirname,
+                    './src/pages/signUp/SignUpPage.html'
+                ),
+                404: resolve(__dirname, './src/pages/404/404.html'),
+                500: resolve(__dirname, './src/pages/500/500.html'),
+                profile: resolve(__dirname, './src/pages/profile/Profile.html'),
+                changePassword: resolve(
+                    __dirname,
+                    './src/pages/profile/ChangePassword.html'
+                ),
+                chats: resolve(__dirname, './src/pages/chats/Chats.html')
+            }
+        }
     },
     plugins: [
         eslint(),
