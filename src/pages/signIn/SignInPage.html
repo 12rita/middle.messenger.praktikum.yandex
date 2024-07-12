@@ -5,23 +5,22 @@
   <title>SignIn</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="../../partials/styles.css">
-  <link rel="stylesheet"  href="static/globalStyles.css" />
+  <link rel="stylesheet"  href="../../globalStyles.css" />
+
+  <script src="SignIn.ts" type="module"></script>
 </head>
 <body>
 <main class="layout">
-  <form class="form" id="signInForm" name="signInForm">
+  <div class="formWrapper">
     <h1 class="title">Вход</h1>
-    <div class="login" id="formLogin">
-      {{> input type="text" name="login" placeholder="Логин"}}
-    </div>
-    <div id="formPassword">
-      {{> input type="password" name="password" placeholder="Пароль"}}
-    </div>
-    <div class="footer">
+    <form  class="form" id="signInForm" name="signInForm">
+    </form>
+
+    <div class="signInFooter">
       {{> button label="Войти" href="../chats/Chats.html" formId="signInForm"}}
       {{> textButton label="Нет аккаунта?" href="../signUp/SignUpPage.html"}}
     </div>
-  </form>
+  </div>
 </main>
 </body>
 </html>

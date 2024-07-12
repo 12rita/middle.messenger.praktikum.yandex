@@ -1,6 +1,6 @@
-import { profileField } from '../../shared';
-import { user } from '../../../static/const.ts';
-import { submitButton } from '../../shared';
+import { profileField } from '../../components';
+import { user } from '../../const.ts';
+import { submitButton } from '../../components';
 
 document.addEventListener('DOMContentLoaded', () => {
     const form: HTMLFormElement = document.forms[
@@ -35,7 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 ...field,
                 key: field.value,
                 type: 'password',
-                value: user.password
+                value: user.password,
+                disabled: false
             });
         });
         Array.from(form.elements).forEach(el => {

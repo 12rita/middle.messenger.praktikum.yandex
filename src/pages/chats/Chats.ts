@@ -1,8 +1,8 @@
-import { chatPreview } from '../../shared';
+import { chatPreview } from '../../components';
 
 import { data } from './data.ts';
-import { plug } from '../../shared';
-import { chat } from '../../shared';
+import { plug } from '../../components';
+import { chat } from '../../components';
 
 document.addEventListener('DOMContentLoaded', () => {
     const chatField = document.querySelector('#chatField');
@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const handleChatClick = (id: string) => {
         const activeChat = data.find(item => item.id === id);
-        if (chatField) chatField.innerHTML = chat({ ...activeChat });
+        if (chatField && activeChat)
+            chatField.innerHTML = chat({ ...activeChat });
     };
 
     chats.forEach(item => {

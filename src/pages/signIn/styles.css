@@ -6,7 +6,7 @@
     justify-content: center;
 }
 
-.form {
+.formWrapper {
     width: 340px;
     height: 450px;
     background: #FFFFFF;
@@ -28,11 +28,13 @@
     color: #1E1E1E;
 }
 
-.login {
-    margin-bottom: 32px;
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-.footer {
+.signInFooter {
     width: calc(100% - 60px);
     display: flex;
     flex-direction: column;

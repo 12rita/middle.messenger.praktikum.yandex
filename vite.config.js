@@ -4,6 +4,8 @@ import handlebars from 'vite-plugin-handlebars';
 import eslint from 'vite-plugin-eslint';
 
 export default defineConfig({
+    root: resolve(__dirname, 'src'),
+    publicDir: resolve(__dirname, 'static'),
     build: {
         outDir: resolve(__dirname, 'dist'),
         rollupOptions: {

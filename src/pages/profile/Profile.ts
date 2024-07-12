@@ -1,6 +1,6 @@
-import { profileField } from '../../shared';
-import { user } from '../../../static/const.ts';
-import { submitButton } from '../../shared';
+import { fileUploader, profileField } from '../../components';
+import { user } from '../../const.ts';
+import { submitButton } from '../../components';
 
 interface IFormField {
     title: string;
@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const title = document.getElementById('title');
 
+    const avatar = document.getElementById('profilePicture');
+
     const changeDataButton = document.getElementById('changeDataButton');
 
     if (changeDataButton) {
@@ -21,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
             Array.from(form.elements).forEach(el => {
                 (el as HTMLInputElement).disabled = false;
             });
+
+            if (avatar) avatar.innerHTML = fileUploader({});
 
             changeDataButton.outerHTML = submitButton({
                 label: 'Сохранить',

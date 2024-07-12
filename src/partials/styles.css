@@ -1,4 +1,4 @@
-@import '../../static/globalStyles.css';
+@import '../globalStyles.css';
 
 .label {
     display: block;
