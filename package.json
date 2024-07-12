@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "eslint --fix && tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "npm run build && npm run preview"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.16.0",
