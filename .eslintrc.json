@@ -30,5 +30,5 @@
       "error", "windows"
     ]
   },
-  "ignorePatterns": ["vite.config.js"]
+  "ignorePatterns": ["vite.config.js", "node_modules/"]
 }
