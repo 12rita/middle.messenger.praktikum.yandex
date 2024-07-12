@@ -5,6 +5,9 @@
     --gray: #999999;
     --lightGray: #EAEAEA;
     --white: #FFFFFF;
+    --darkWhite: #FBFBFB;
+    --red: #FF0000;
+
 }
 
 ::-webkit-scrollbar {
@@ -49,6 +52,10 @@ body {
     color: var(--gray);
 }
 
+.redText {
+    color: var(--red);
+}
+
 .body1 {
     font-size: 13px;
     font-weight: 500;
@@ -82,4 +89,24 @@ body {
 .basicLine {
     height: 1px;
     background: var(--lightGray);
+}
+
+.textButton {
+    width: fit-content;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--blue);
+}
+
+.textButton a{
+    color: var(--blue);
+}
+
+.dangerousButton {
+    color: var(--red);
+}
+
+.dangerousButton a {
+    color: var(--red);
 }

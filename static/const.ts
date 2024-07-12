@@ -3,5 +3,6 @@ export const user = {
     second_name: 'Ivanov',
     display_name: 'Nagibator999',
     phone: '79999999999',
-    email: '123@gmail.com'
+    email: '123@gmail.com',
+    password: 123456
 };

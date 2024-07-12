@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatField = document.querySelector('#chatField');
     const chatList = document.querySelector('#chatList');
 
+    if (chatField) chatField.innerHTML = plug({});
+
     if (chatList) {
         data.map(item => {
             chatList.innerHTML += chatPreview({

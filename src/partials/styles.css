@@ -1,8 +1,5 @@
 @import '../../static/globalStyles.css';
 
-
-
-
 .label {
     display: block;
     margin-bottom: 0.25rem;
@@ -75,6 +72,11 @@
 
 }
 
+.submitButton a{
+    color: var(--white);
+}
+
+
 .textButton {
     display: block;
     text-decoration: none;
@@ -94,10 +96,7 @@
     display: flex;
     align-items: flex-start;
     padding: 12px 0;
-
 }
-
-
 
 .leftBlock {
     display: flex;

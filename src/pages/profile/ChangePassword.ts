@@ -2,17 +2,10 @@ import { profileField } from '../../shared';
 import { user } from '../../../static/const.ts';
 import { submitButton } from '../../shared';
 
-interface IFormField {
-    title: string;
-    value: keyof typeof user;
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     const form: HTMLFormElement = document.forms[
-        'profileForm' as TFormKey
+        'changePasswordForm' as TFormKey
     ] as HTMLFormElement;
-
-    const title = document.getElementById('title');
 
     const changeDataButton = document.getElementById('changeDataButton');
 
@@ -30,24 +23,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (title) title.innerHTML = user.display_name;
-
-    const formFields: IFormField[] = [
-        { title: 'Почта', value: 'email' },
-        { title: 'Имя в чате', value: 'first_name' },
-        { title: 'Фамилия', value: 'second_name' },
-        { title: 'Логин', value: 'display_name' },
-        { title: 'Телефон', value: 'phone' }
+    const formFields = [
+        { title: 'Старый пароль', value: 'oldPassword' },
+        { title: 'Новый пароль', value: 'newPassword' },
+        { title: 'Повторите новый пароль', value: 'newPassword' }
     ];
 
-    if (form)
+    if (form) {
         formFields.forEach(field => {
             form.innerHTML += profileField({
                 ...field,
-                disabled: true,
                 key: field.value,
-                type: 'text',
-                value: user[field.value]
+                type: 'password',
+                value: user.password
             });
         });
+        Array.from(form.elements).forEach(el => {
+            (el as HTMLInputElement).disabled = false;
+        });
+    }
 });
