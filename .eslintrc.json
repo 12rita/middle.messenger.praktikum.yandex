@@ -29,5 +29,6 @@
     "linebreak-style": [
       "error", "windows"
     ]
-  }
+  },
+  "ignorePatterns": ["vite.config.js"]
 }
