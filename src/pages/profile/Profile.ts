@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formFields.forEach(field => {
             form.innerHTML += profileField({
                 ...field,
+                name: field.value,
                 disabled: true,
                 key: field.value,
                 type: 'text',

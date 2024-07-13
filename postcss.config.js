@@ -1,6 +1,6 @@
-import stylelint from "stylelint";
-import autoprefixer from "autoprefixer";
+import stylelint from 'stylelint';
+import autoprefixer from 'autoprefixer';
 
 export default {
-  plugins: [stylelint(), autoprefixer()],
+    plugins: [stylelint(), autoprefixer()]
 };
