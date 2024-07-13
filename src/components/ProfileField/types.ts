@@ -4,4 +4,5 @@ export interface IProfileFieldProps {
     type: TInputType;
     value: string | number;
     disabled: boolean;
+    name: string;
 }
