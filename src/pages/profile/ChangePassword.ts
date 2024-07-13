@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formFields.forEach(field => {
             form.innerHTML += profileField({
                 ...field,
+                name: field.value,
                 key: field.value,
                 type: 'password',
                 value: user.password,
