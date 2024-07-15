@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../../globalStyles.css" />
+    <script type="module" src="Profile.ts"></script>
+</head>
+<body>
+<main class="layout">
+
+    <button class="back">
+        <a href="../chats/Chats.html">
+            <img alt="back" src="../../static/sendButton.svg">
+        </a>
+    </button>
+
+
+    <div id="profilePicture" class="profilePicture">
+        <img alt="noPicture" src="../../static/noPicture.svg">
+    </div>
+    <div class="title profileTitle" id="title"></div>
+    <form class="form" id="signInForm" name="profileForm">
+
+    </form>
+    <div class="buttonBlock">
+        <button class="textButton body1" id="changeDataButton">Изменить данные</button>
+        <div class="basicLine"></div>
+        {{> textButton label="Изменить пароль" href="./ChangePassword.html"}}
+        <div class="basicLine"></div>
+        {{> textButton class="dangerousButton" label="Выйти" href="../signIn/SignInPage.html"}}
+
+    </div>
+
+</main>
+</body>
+</html>
