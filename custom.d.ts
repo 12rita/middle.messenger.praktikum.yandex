@@ -6,3 +6,5 @@ declare module '*.svg' {
 declare type TFormKey = keyof typeof document.forms;
 
 declare type TInputType = 'password' | 'text';
+
+declare type TVoid = () => void;
