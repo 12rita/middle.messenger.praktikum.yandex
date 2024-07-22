@@ -1,3 +1,1 @@
-import input from './Input.ts';
-
-export { input };
+export { Input } from './Input.ts';

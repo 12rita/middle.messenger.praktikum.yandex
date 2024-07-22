@@ -7,7 +7,6 @@ export class EventBus<TProps> {
     }
 
     on: TOn<TProps> = (event, callback) => {
-        console.log('on', this.listeners, event);
         if (!this.listeners[event]) {
             this.listeners[event] = [];
         }
@@ -25,8 +24,13 @@ export class EventBus<TProps> {
         );
     };
 
+    offAll: TVoid = () => {
+        Object.keys(this.listeners).forEach(listener => {
+            delete this.listeners[listener];
+        });
+    };
+
     emit: TEmit<TProps> = (event, ...args) => {
-        console.log('emit', this.listeners, event);
         if (!this.listeners[event]) {
             throw new Error(`Нет события: ${event}`);
         }

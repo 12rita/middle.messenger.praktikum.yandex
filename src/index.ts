@@ -1,8 +1,8 @@
-import { Chats } from './pages/chats';
+import { signInPage } from './pages/signIn/SignIn.ts';
 
-const ChatsPage = new Chats({});
+// const ChatsPage = new Chats({});
 
 document.addEventListener('DOMContentLoaded', () => {
     const root = document.getElementById('app');
-    root.innerHTML = ChatsPage.getContent();
+    root.appendChild(signInPage.getContent());
 });

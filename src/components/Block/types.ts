@@ -5,19 +5,34 @@ export enum EVENTS {
     FLOW_RENDER = 'flow:render'
 }
 
-export type TRegisterEventsPrivate = TVoid;
-
 export interface IMeta {
     tagName: string;
-    props: TProps;
+    props: IProps;
 }
 
-export type TProps = Record<string, unknown>;
-export type TComponentDidUpdate = (oldProps: TProps, newProps: TProps) => void;
+export interface IEvent {
+    [key: string]: (event: Event) => void;
+}
+
+export interface IProps {
+    events?: IEvent;
+    [key: string]: IBlock | IBlock[] | unknown;
+}
+
+export interface ICompileProps {
+    [key: string]: IBlock | IBlock[] | unknown;
+}
+
+export type TGetContent = () => HTMLElement;
 
 export interface IBlock {
-    _element: HTMLElement | null;
+    _element: HTMLElement;
     _meta: IMeta;
-    props: TProps;
+    props: IProps;
     _registerEvents: TVoid;
+    _id: string;
+    getContent: TGetContent;
+}
+export interface IChildren {
+    [key: string]: IBlock | IBlock[];
 }

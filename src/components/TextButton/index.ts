@@ -1,3 +1,1 @@
-import textButton from './TextButton.ts';
-
-export { textButton };
+export { TextButton } from './TextButton.ts';
