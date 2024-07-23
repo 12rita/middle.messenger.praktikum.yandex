@@ -10,3 +10,4 @@ export { FileUploader } from './FileUploader';
 export * from './Block';
 export { Form } from './Form';
 export { ProfileForm } from './ProfileForm';
+export { BackButton } from './BackButton';

@@ -1,1 +1,1 @@
-export { Chats } from './ChatsClass.ts';
+export { Chats } from './Chats.ts';

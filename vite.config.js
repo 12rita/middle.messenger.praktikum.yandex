@@ -11,17 +11,17 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 index: resolve(__dirname, './src/index.html'),
-                signIn: resolve(
-                    __dirname,
-                    './src/pages/signIn/SignInPage.html'
-                ),
-                signUp: resolve(
-                    __dirname,
-                    './src/pages/signUp/SignUpPage.html'
-                ),
-                404: resolve(__dirname, './src/pages/404/404.html'),
-                500: resolve(__dirname, './src/pages/500/500.html'),
-                profile: resolve(__dirname, './src/pages/profile/Profile.html'),
+                // signIn: resolve(
+                //     __dirname,
+                //     './src/pages/signIn/SignInPage.html'
+                // ),
+                // signUp: resolve(
+                //     __dirname,
+                //     './src/pages/signUp/SignUpPage.html'
+                // ),
+                // 404: resolve(__dirname, './src/pages/404/404.html'),
+                // 500: resolve(__dirname, './src/pages/500/500.html'),
+                // profile: resolve(__dirname, './src/pages/profile/Profile.html'),
                 changePassword: resolve(
                     __dirname,
                     './src/pages/profile/ChangePassword.html'

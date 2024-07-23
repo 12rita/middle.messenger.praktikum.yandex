@@ -1,27 +1,19 @@
 import styles from './styles.module.css';
 
-export const template = `<main class="${styles.layout}">
-
-    <button class="back">
-        <a href="../chats/Chats.html">
-            <img alt="back" src="../../static/sendButton.svg">
-        </a>
-    </button>
-
-
-    <div id="profilePicture" class="profilePicture">
-        <img alt="noPicture" src="../../static/noPicture.svg">
+export const template = `
+    {{{backButton}}}
+    <div id="profilePicture" class="${styles.profilePicture}">
+        {{{avatar}}}
     </div>
-    <div class="title profileTitle" id="title"></div>
-    <form class="form" id="signInForm" name="profileForm">
-{{{form}}}
-    </form>
-    <div class="buttonBlock">
+    <div class="title ${styles.profileTitle}" id="title">{{title}}</div> 
+    <div>
+     {{{form}}} 
+         <div class="${styles.buttonBlock}">
         {{{textButtonChangeData}}}
         <div class="basicLine"></div>
         {{{textButtonChangePassword}}}
         <div class="basicLine"></div>
          {{{textButtonExit}}}
+         </div>
     </div>
-
-</main>`;
+`;

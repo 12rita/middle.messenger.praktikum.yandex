@@ -7,13 +7,6 @@
     flex-direction: column;
 }
 
-.form { 
-    width: 510px;
-    position: relative;
-    box-sizing: border-box;
-    margin-bottom: 60px;
-}
-
 .profilePicture {
     width: 130px;
     height: 130px;
@@ -36,27 +29,4 @@
     gap: 10px;
     justify-content: flex-start;
     text-align: left;
-}
-
-.back {
-    position: absolute;
-    cursor: pointer;
-    left: 0;
-    background: var(--darkWhite);
-    border: none;
-    border-right: 1px solid var(--lightGray);
-    height: 100%;
-    width: 64px;
-}
-
-.back a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-}
-
-.back img {
-    transform: scale(-1,-1);
 }

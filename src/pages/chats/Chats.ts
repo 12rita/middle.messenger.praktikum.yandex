@@ -1,40 +1,75 @@
-import { chatPreview } from '../../components';
-
+import { Block, Chat, ChatPreview, EVENTS, TextButton } from '../../components';
+import arrowRight from '../../static/arrowRight.svg';
 import { data } from './data.ts';
 import { Plug } from '../../components';
-import { chat } from '../../components';
+import styles from './styles.module.css';
+import { template } from './template.ts';
+import { PAGES, IPage } from '../types.ts';
 
-document.addEventListener('DOMContentLoaded', () => {
-    const chatField = document.querySelector('#chatField');
-    const chatList = document.querySelector('#chatList');
-    const plug = new Plug({});
-    if (chatField) chatField.innerHTML = plug.render()({});
+export class Chats extends Block {
+    activeChatId: string = '';
 
-    if (chatList) {
-        data.map(item => {
-            chatList.innerHTML += chatPreview({
-                ...item
+    constructor({ history }: IPage) {
+        const plug = new Plug({
+            label: 'Выберите чат, чтобы отправить сообщение'
+        });
+
+        const profileButton = new TextButton({
+            children: `<span> Профиль
+                <img class="${styles.profileButton}" src="${arrowRight}" alt="arrow">
+            </span>`,
+            type: 'gray',
+            onClick: () => {
+                history.emit('push', PAGES.profile);
+            }
+        });
+
+        const chats = data.map(item => {
+            return new ChatPreview({
+                ...item,
+                events: {
+                    click: () => {
+                        onChatClick(item.id);
+                    }
+                }
             });
+        });
+
+        super('div', { activeChat: plug, chats, profileButton });
+        this.escapeEvent();
+        const onChatClick = (id: string) => {
+            this._onChatClick(id);
+        };
+    }
+
+    escapeEvent() {
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') {
+                this.children.activeChat = new Plug({
+                    label: 'Выберите чат, чтобы отправить сообщение'
+                });
+                this.emit(EVENTS.FLOW_CDU);
+            }
         });
     }
 
-    document.addEventListener('keydown', event => {
-        if (event.key === 'Escape' && chatField)
-            chatField.innerHTML = plug.render()({});
-    });
-
-    const chats = document.querySelectorAll(`[id^="chat-"]`);
-
-    const handleChatClick = (id: string) => {
+    _onChatClick(id: string) {
+        if (this.activeChatId === id) return false;
         const activeChat = data.find(item => item.id === id);
-        if (chatField && activeChat)
-            chatField.innerHTML = chat({ ...activeChat });
-    };
 
-    chats.forEach(item => {
-        item.addEventListener('click', () => {
-            const [, id] = item.id.split('-');
-            handleChatClick(id);
-        });
-    });
-});
+        if (activeChat) {
+            this.children.activeChat = new Chat({ ...activeChat });
+            this.activeChatId = id;
+            this.emit(EVENTS.FLOW_CDU);
+        }
+        return false;
+    }
+
+    componentDidUpdate(): boolean {
+        return true;
+    }
+
+    render() {
+        return this.compile(template, { form: this.children.form });
+    }
+}

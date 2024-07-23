@@ -1,6 +1,6 @@
 import { Block, Form } from '../../components';
 import { template } from './template.ts';
-import { IPage } from '../types.ts';
+import { PAGES, IPage } from '../types.ts';
 
 export class SignInPage extends Block {
     constructor(props: IPage) {
@@ -15,8 +15,13 @@ export class SignInPage extends Block {
         const formId = 'signInForm';
         const { history } = props;
 
-        const onClick = () => {
-            history.emit('push', 'signUp');
+        const onTextClick = () => {
+            history.emit('push', PAGES.signUp);
+        };
+
+        const onSubmitClick = e => {
+            e.preventDefault();
+            history.emit('push', PAGES.chats);
         };
 
         const form = new Form({
@@ -25,10 +30,11 @@ export class SignInPage extends Block {
             name: formId,
             title: 'Вход',
             label: 'Войти',
+            onSubmitClick: onSubmitClick,
+            onTextClick: onTextClick,
             textButtonLabel: 'Нет аккаунта?',
             href: '../signUp/SignUpPage.html',
-            submitButtonLabel: 'Войти',
-            onClick
+            submitButtonLabel: 'Войти'
         });
         super('div', { form });
     }

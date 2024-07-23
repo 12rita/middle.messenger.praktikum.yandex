@@ -20,8 +20,23 @@ export class ProfileForm extends Block<IProfileFormProps> {
             });
         });
 
-        super('div', { ...props, inputs });
+        super('div', {
+            ...props,
+            inputs
+        });
+
         this.on('inputChange', this._setValues.bind(this));
+        this.on('edit', this._setEditable.bind(this));
+    }
+
+    _setEditable() {
+        (this.children.inputs as IBlock[]).forEach(input => {
+            input.setProps({ disabled: false });
+        });
+    }
+
+    componentDidUpdate() {
+        return true;
     }
 
     render() {

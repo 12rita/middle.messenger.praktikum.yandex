@@ -6,3 +6,12 @@
     box-sizing: border-box;
     margin-bottom: 60px;
 }
+
+.buttonBlock {
+    width: 510px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: flex-start;
+    text-align: left;
+}

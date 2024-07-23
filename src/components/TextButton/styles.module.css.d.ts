@@ -1,1 +1,4 @@
-export const textButtonClass: string;
+export const textButton: string;
+export const classic: string;
+export const gray: string;
+export const danger: string;

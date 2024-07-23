@@ -1,3 +1,5 @@
+import { IEventBus } from '../EventBus/types.ts';
+
 export enum EVENTS {
     INIT = 'init',
     FLOW_CDM = 'flow:component-did-mount',
@@ -5,27 +7,11 @@ export enum EVENTS {
     FLOW_RENDER = 'flow:render'
 }
 
-export interface IMeta {
-    tagName: string;
-    props: IProps;
-}
-
 export interface IEvent {
     [key: string]: (event: Event) => void;
 }
 
-export interface IProps {
-    events?: IEvent;
-    [key: string]: IBlock | IBlock[] | unknown;
-}
-
-export interface ICompileProps {
-    [key: string]: IBlock | IBlock[] | unknown;
-}
-
-export type TGetContent = () => HTMLElement;
-
-export interface IBlock {
+export interface IBlock extends IEventBus {
     _element: HTMLElement;
     _meta: IMeta;
     props: IProps;
@@ -33,7 +19,28 @@ export interface IBlock {
     _id: string;
     getContent: TGetContent;
     dispatchComponentDidMount: TVoid;
+    setProps: TSetProps;
 }
+
+export interface ICompileProps {
+    [key: string]: IBlock | IBlock[] | unknown;
+}
+
+export interface IProps {
+    events?: IEvent;
+    className?: string | string[];
+    [key: string]: IBlock | IBlock[] | unknown;
+}
+
+export interface IMeta {
+    tagName: string;
+    props: IProps;
+}
+
+export type TGetContent = () => HTMLElement;
+
+export type TSetProps<T = IProps> = (props: T) => void;
+
 export interface IChildren {
     [key: string]: IBlock | IBlock[];
 }

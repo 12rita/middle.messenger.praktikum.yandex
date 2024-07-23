@@ -14,6 +14,8 @@ export interface IFormProps
         Partial<ISubmitButtonProps> {
     textButtonLabel: string;
     submitButtonLabel: string;
+    onSubmitClick: TVoid;
+    onTextClick: TVoid;
     formFields: IFormFields[];
     id: string;
     name: string;

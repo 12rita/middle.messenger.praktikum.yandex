@@ -3,12 +3,15 @@ import {
     IBlock,
     IProps,
     ProfileForm,
-    TextButton
+    BackButton,
+    TextButton,
+    FileUploader
 } from '../../components';
 import { user } from '../../const.ts';
-
-import { template } from '../signUp/template.ts';
+import { template } from './template.ts';
 import { IProfileProps } from './types.ts';
+import { IPage, PAGES } from '../types.ts';
+import styles from './styles.module.css';
 
 interface IFormField {
     title: string;
@@ -17,7 +20,7 @@ interface IFormField {
 }
 
 export class Profile extends Block<IProps, IProfileProps> {
-    constructor() {
+    constructor({ history }: IPage) {
         const formFields: IFormField[] = [
             { title: 'Почта', name: 'email', value: user['email'] },
             {
@@ -44,33 +47,62 @@ export class Profile extends Block<IProps, IProfileProps> {
             name: formId
         });
 
+        const avatar = new FileUploader({ label: 'Поменять аватар' });
+
+        const backButton = new BackButton({
+            onClick: () => {
+                history.emit('push', PAGES.chats);
+            }
+        });
+
         const textButtonChangePassword = new TextButton({
             label: 'Изменить пароль'
         });
-        const textButtonExit = new TextButton({ label: 'Выйти' });
-        const textButtonChangeData = new TextButton({
-            label: 'Изменить данные'
+        const textButtonExit = new TextButton({
+            label: 'Выйти',
+            type: 'danger',
+            onClick: () => {
+                history.emit('push', PAGES.signIn);
+            }
         });
-        super('div', {
+
+        const textButtonChangeData = new TextButton({
+            label: 'Изменить данные',
+            onClick: () => {
+                handleChange();
+            }
+        });
+
+        super('main', {
             form,
+            backButton,
+            className: styles.layout,
             textButtonChangePassword,
             textButtonExit,
             textButtonChangeData
         });
+
+        const handleChange = () => {
+            this._changeData();
+        };
     }
+
+    _changeData = () => {
+        console.log(this.children.form);
+        this.emit('edit');
+    };
 
     render() {
         return this.compile(template, {
             form: this.children.form as IBlock,
-            textButtonChangeData: this.children.textButtonChangeData as IBlock,
-            textButtonChangePassword: this.children
-                .textButtonChangePassword as IBlock,
-            textButtonExit: this.children.textButtonExit as IBlock
+            backButton: this.children.backButton as IBlock,
+            title: user.display_name,
+            avatar: '<img alt="noPicture" src="../../static/noPicture.svg">'
         });
     }
 }
 
-export const profile = new Profile();
+// export const profile = new Profile();
 //
 // document.addEventListener('DOMContentLoaded', () => {
 //     const form: HTMLFormElement = document.forms[

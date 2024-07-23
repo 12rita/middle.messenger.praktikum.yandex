@@ -6,17 +6,21 @@ import { TextButton } from '../TextButton';
 import { SubmitButton } from '../SubmitButton';
 
 export class Form extends Block<IFormProps, IFormCompileProps> {
-    values = {};
+    _values: { [key: string]: string | number } = {};
 
     _setValues(args) {
         const { name, value } = args;
-        this.values[name] = value;
+        this._values[name] = value;
     }
 
     _handleClick = e => {
         e.preventDefault();
         console.log(this.values);
     };
+
+    get values() {
+        return this.values;
+    }
 
     constructor(props: IFormProps) {
         const inputs = props.formFields.map(field => {
@@ -31,7 +35,7 @@ export class Form extends Block<IFormProps, IFormCompileProps> {
             label: props.textButtonLabel,
             id: props.id,
             events: {
-                ...(props.onClick && { click: props.onClick })
+                ...(props.onTextClick && { click: props.onTextClick })
             }
         });
 
@@ -40,7 +44,7 @@ export class Form extends Block<IFormProps, IFormCompileProps> {
             formId: props.id,
             href: props.href,
             events: {
-                click: e => this._handleClick(e)
+                ...(props.onSubmitClick && { click: props.onSubmitClick })
             }
         });
         super('div', { ...props, inputs, textButton, submitButton });

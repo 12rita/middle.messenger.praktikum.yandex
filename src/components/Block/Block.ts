@@ -159,7 +159,7 @@ export class Block<
         this.emit(EVENTS.FLOW_CDM);
     }
 
-    _componentDidUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
+    _componentDidUpdate<T = IBlockProps>(oldProps: T, newProps: T) {
         const response = this.componentDidUpdate(oldProps, newProps);
         if (!response) {
             return;
@@ -168,21 +168,27 @@ export class Block<
         this._render();
     }
 
-    componentDidUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
-        const isEqual =
-            typeof oldProps === 'object'
-                ? Object.keys(oldProps).every(key => {
-                      return oldProps[key] === newProps[key];
-                  }) &&
-                  Object.keys(oldProps).length === Object.keys(newProps).length
-                : oldProps === newProps;
-        return !isEqual;
+    componentDidUpdate<T = IBlockProps>(oldProps: T, newProps: T) {
+        if (
+            typeof oldProps === 'object' &&
+            typeof newProps === 'object' &&
+            newProps !== null &&
+            oldProps !== null
+        ) {
+            return (
+                Object.keys(oldProps).some(key => {
+                    return oldProps[key] !== newProps[key];
+                }) &&
+                Object.keys(oldProps).length !== Object.keys(newProps).length
+            );
+        } else return oldProps !== newProps;
     }
 
     setProps = (nextProps: IBlockProps) => {
         if (!nextProps) {
             return;
         }
+        console.log(nextProps);
 
         Object.assign(this.props, nextProps);
     };
@@ -231,7 +237,11 @@ export class Block<
         const element = document.createElement(tagName);
         element.setAttribute('data-id', this._id);
         const className = this.props.className || '';
-        if (className) element.classList.add(className);
+        if (className) {
+            if (Array.isArray(className))
+                className.forEach(el => element.classList.add(el));
+            else element.classList.add(className);
+        }
         return element;
     }
 }

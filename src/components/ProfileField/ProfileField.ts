@@ -9,7 +9,8 @@ export class ProfileField extends Block<IProfileFieldProps> {
 
     render() {
         return this.compile(template, {
-            ...this.props
+            ...this.props,
+            disabled: this.props.disabled ? 'disabled' : ''
         });
     }
 }
