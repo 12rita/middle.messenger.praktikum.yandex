@@ -11,7 +11,7 @@ export interface IEvent {
     [key: string]: (event: Event) => void;
 }
 
-export interface IBlock extends IEventBus {
+export interface IBlock<T = IProps> extends IEventBus<T> {
     _element: HTMLElement;
     _meta: IMeta;
     props: IProps;
@@ -26,7 +26,7 @@ export interface ICompileProps {
     [key: string]: IBlock | IBlock[] | unknown;
 }
 
-export interface IProps {
+export interface IProps extends IEventBus {
     events?: IEvent;
     className?: string | string[];
     [key: string]: IBlock | IBlock[] | unknown;

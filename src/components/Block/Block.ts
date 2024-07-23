@@ -17,13 +17,12 @@ export class Block<
         CompileProps extends ICompileProps = ICompileProps
     >
     extends EventBus<IBlockProps>
-    implements IBlock
+    implements IBlock<IBlockProps>
 {
     _element = {} as HTMLElement;
     _meta = {} as IMeta;
     props: IBlockProps;
     children: IChildren = {};
-    _parent: IBlock | null = null;
     _id;
 
     constructor(tagName = 'div', propsAndChildren = {} as IBlockProps) {
@@ -52,13 +51,9 @@ export class Block<
         Object.entries(propsAndChildren).forEach(([key, value]) => {
             if (Array.isArray(value) && value[0] instanceof Block) {
                 children[key] = value as unknown as IBlock;
-                value.forEach(entry => {
-                    entry._parent = this;
-                });
             }
             if (value instanceof Block) {
                 children[key] = value;
-                value._parent = this;
             } else {
                 props[key] = value;
             }
@@ -159,7 +154,10 @@ export class Block<
         this.emit(EVENTS.FLOW_CDM);
     }
 
-    _componentDidUpdate<T = IBlockProps>(oldProps: T, newProps: T) {
+    _componentDidUpdate<T extends { [key: string]: unknown } = IBlockProps>(
+        oldProps: T,
+        newProps: T
+    ) {
         const response = this.componentDidUpdate(oldProps, newProps);
 
         if (!response) {
@@ -169,12 +167,24 @@ export class Block<
         this._render();
     }
 
-    componentDidUpdate<T = IBlockProps>(oldProps: T, newProps: T) {
-        if (
+    componentDidUpdate<T = IBlockProps>(
+        oldProps: T | null,
+        newProps: T | null
+    ) {
+        if (oldProps === null && newProps === null) {
+            return false;
+        } else if (oldProps === null) {
+            return true;
+        } else if (newProps === null) {
+            return true;
+        } else if (
+            typeof oldProps === 'string' &&
+            typeof newProps === 'string'
+        ) {
+            return oldProps !== newProps;
+        } else if (
             typeof oldProps === 'object' &&
-            typeof newProps === 'object' &&
-            newProps !== null &&
-            oldProps !== null
+            typeof newProps === 'object'
         ) {
             return (
                 Object.keys(oldProps).some(key => {
@@ -185,7 +195,7 @@ export class Block<
         } else return oldProps !== newProps;
     }
 
-    setProps = (nextProps: IBlockProps) => {
+    setProps = (nextProps: unknown) => {
         if (!nextProps) {
             return;
         }

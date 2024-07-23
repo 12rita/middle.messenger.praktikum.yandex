@@ -31,7 +31,7 @@ export class Router extends Block {
         this.history.emit('push', '/signIn');
     }
 
-    componentDidUpdate(newPath) {
+    componentDidUpdate(newPath: string) {
         const oldPath = window.location.pathname;
         console.log(oldPath, newPath);
         if (oldPath !== newPath) {
