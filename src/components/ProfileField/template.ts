@@ -1,11 +1,10 @@
 import styles from './styles.module.css';
+import global from '../../globalStyles.module.css';
 
 export const template = `
-<div>
 <div class=${styles.field}>
-<div class="blackText body1">{{title}}</div>
-<input name="{{name}}" class="${styles.fieldValue} grayText body1" id="profileField-{{key}}" type="{{type}}" value=" {{value}}" "{{disabled}}">
+<div class="${global.blackText} ${global.body1}">{{title}}</div>
+<input name="{{name}}" class="${styles.fieldValue} ${global.grayText} ${global.body1}" type="{{type}}" value="{{value}}" {{disabled}}>
 </div>
-<div class="basicLine ${styles.profileLine}"></div>
-</div>
+<div class="${global.basicLine} ${styles.profileLine}"></div>
 `;

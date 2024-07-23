@@ -19,7 +19,7 @@ export class Form extends Block<IFormProps, IFormCompileProps> {
     };
 
     get values() {
-        return this.values;
+        return this._values;
     }
 
     constructor(props: IFormProps) {
@@ -27,28 +27,31 @@ export class Form extends Block<IFormProps, IFormCompileProps> {
             return new Input({
                 placeholder: field.title,
                 type: field.type || 'text',
-                name: field.value
+                name: field.value,
+                events: {
+                    change: e => {
+                        handleChange(e.target.value, field.value);
+                    }
+                }
             });
         });
 
         const textButton = new TextButton({
             label: props.textButtonLabel,
             id: props.id,
-            events: {
-                ...(props.onTextClick && { click: props.onTextClick })
-            }
+            onClick: props.onTextClick
         });
 
         const submitButton = new SubmitButton({
             label: props.submitButtonLabel,
-            formId: props.id,
-            href: props.href,
-            events: {
-                ...(props.onSubmitClick && { click: props.onSubmitClick })
-            }
+            onClick: props.onSubmitClick
         });
         super('div', { ...props, inputs, textButton, submitButton });
-        this.on('inputChange', this._setValues.bind(this));
+        const handleChange = (value, name) => {
+            this._setValues({ name, value });
+            console.log(this.values);
+        };
+        // this.on('inputChange', this._setValues.bind(this));
     }
 
     render() {

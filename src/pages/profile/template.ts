@@ -8,12 +8,8 @@ export const template = `
     <div class="title ${styles.profileTitle}" id="title">{{title}}</div> 
     <div>
      {{{form}}} 
-         <div class="${styles.buttonBlock}">
-        {{{textButtonChangeData}}}
-        <div class="basicLine"></div>
-        {{{textButtonChangePassword}}}
-        <div class="basicLine"></div>
-         {{{textButtonExit}}}
-         </div>
+        <div class="${styles.buttonBlock}">
+    {{{buttonBlock}}}
+  </div>
     </div>
 `;

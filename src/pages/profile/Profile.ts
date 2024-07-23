@@ -4,50 +4,52 @@ import {
     IProps,
     ProfileForm,
     BackButton,
-    TextButton,
-    FileUploader
+    FileUploader,
+    type IFormField,
+    EVENTS,
+    ProfileButtonBlock,
+    SubmitButton
 } from '../../components';
 import { user } from '../../const.ts';
 import { template } from './template.ts';
 import { IProfileProps } from './types.ts';
 import { IPage, PAGES } from '../types.ts';
 import styles from './styles.module.css';
+import { IEventBus } from '../../components/EventBus/types.ts';
 
-interface IFormField {
-    title: string;
-    name: keyof typeof user;
-    value: string | number;
-}
+const formFields: IFormField[] = [
+    { title: 'Почта', name: 'email', value: user['email'] },
+    {
+        title: 'Имя в чате',
+        name: 'first_name',
+        value: user['first_name']
+    },
+    {
+        title: 'Фамилия',
+        name: 'second_name',
+        value: user['second_name']
+    },
+    {
+        title: 'Логин',
+        name: 'display_name',
+        value: user['display_name']
+    },
+    { title: 'Телефон', name: 'phone', value: user['phone'] }
+];
 
 export class Profile extends Block<IProps, IProfileProps> {
+    buttonBlock: IBlock;
     constructor({ history }: IPage) {
-        const formFields: IFormField[] = [
-            { title: 'Почта', name: 'email', value: user['email'] },
-            {
-                title: 'Имя в чате',
-                name: 'first_name',
-                value: user['first_name']
-            },
-            {
-                title: 'Фамилия',
-                name: 'second_name',
-                value: user['second_name']
-            },
-            {
-                title: 'Логин',
-                name: 'display_name',
-                value: user['display_name']
-            },
-            { title: 'Телефон', name: 'phone', value: user['phone'] }
-        ];
-        const formId = 'signUpForm';
+        const formId = 'changeDataForm';
         const form = new ProfileForm({
             id: formId,
             formFields,
             name: formId
         });
 
-        const avatar = new FileUploader({ label: 'Поменять аватар' });
+        const avatar = new FileUploader({
+            label: 'Поменять аватар'
+        }) as IBlock;
 
         const backButton = new BackButton({
             onClick: () => {
@@ -55,101 +57,66 @@ export class Profile extends Block<IProps, IProfileProps> {
             }
         });
 
-        const textButtonChangePassword = new TextButton({
-            label: 'Изменить пароль'
-        });
-        const textButtonExit = new TextButton({
-            label: 'Выйти',
-            type: 'danger',
-            onClick: () => {
-                history.emit('push', PAGES.signIn);
-            }
-        });
-
-        const textButtonChangeData = new TextButton({
-            label: 'Изменить данные',
-            onClick: () => {
-                handleChange();
+        const buttonBlock = new ProfileButtonBlock({
+            onChangeDataClick: () => {
+                handleChangeData();
+            },
+            onChangePasswordClick: () => {
+                handleChangePassword();
+            },
+            onExitClick: () => {
+                handleExit();
             }
         });
 
         super('main', {
             form,
             backButton,
-            className: styles.layout,
-            textButtonChangePassword,
-            textButtonExit,
-            textButtonChangeData
+            buttonBlock,
+            avatar,
+            className: styles.layout
         });
+        this.buttonBlock = buttonBlock;
 
-        const handleChange = () => {
+        const handleChangeData = () => {
             this._changeData();
+        };
+
+        const handleChangePassword = () => {
+            history.emit('push', PAGES.changePassword);
+        };
+        const handleExit = () => {
+            history.emit('push', PAGES.signIn);
         };
     }
 
-    _changeData = () => {
-        console.log(this.children.form);
-        this.emit('edit');
+    _saveData = () => {
+        (this.children.form as IEventBus).emit('save');
+        (this.children.avatar as IEventBus).emit('save');
+        this.children.buttonBlock = this.buttonBlock;
+        this.emit(EVENTS.FLOW_CDU);
     };
+    _changeData = () => {
+        (this.children.form as IEventBus).emit('edit');
+        (this.children.avatar as IEventBus).emit('edit');
+        this.children.buttonBlock = new SubmitButton({
+            label: 'Сохранить',
+            onClick: () => {
+                this._saveData();
+            }
+        }) as IBlock;
+        this.emit(EVENTS.FLOW_CDU);
+    };
+
+    componentDidUpdate() {
+        return true;
+    }
 
     render() {
         return this.compile(template, {
-            form: this.children.form as IBlock,
-            backButton: this.children.backButton as IBlock,
-            title: user.display_name,
-            avatar: '<img alt="noPicture" src="../../static/noPicture.svg">'
+            ...this.children,
+            ...this.props,
+            title: user.display_name
         });
     }
 }
-
-// export const profile = new Profile();
-//
-// document.addEventListener('DOMContentLoaded', () => {
-//     const form: HTMLFormElement = document.forms[
-//         'profileForm' as TFormKey
-//     ] as HTMLFormElement;
-//
-//     const title = document.getElementById('title');
-//
-//     const avatar = document.getElementById('profilePicture');
-//
-//     const changeDataButton = document.getElementById('changeDataButton');
-//
-//     if (changeDataButton) {
-//         changeDataButton.addEventListener('click', () => {
-//             Array.from(form.elements).forEach(el => {
-//                 (el as HTMLInputElement).disabled = false;
-//             });
-//
-//             if (avatar) avatar.innerHTML = fileUploader({});
-//
-//             changeDataButton.outerHTML = submitButton({
-//                 label: 'Сохранить',
-//                 formId: form.id,
-//                 href: ''
-//             });
-//         });
-//     }
-//
-//     if (title) title.innerHTML = user.display_name;
-//
-//     const formFields: IFormField[] = [
-//         { title: 'Почта', name: 'email' },
-//         { title: 'Имя в чате', value: 'first_name' },
-//         { title: 'Фамилия', value: 'second_name' },
-//         { title: 'Логин', value: 'display_name' },
-//         { title: 'Телефон', value: 'phone' }
-//     ];
-//
-//     if (form)
-//         formFields.forEach(field => {
-//             form.innerHTML += profileField({
-//                 ...field,
-//                 name: field.value,
-//                 disabled: true,
-//                 key: field.value,
-//                 type: 'text',
-//                 value: user[field.value]
-//             });
-//         });
-// });

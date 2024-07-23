@@ -1,4 +1,5 @@
 import {
+    ChangePassword,
     Chats,
     Page_404,
     Page_500,
@@ -15,7 +16,8 @@ const Pages = {
     '/profile': Profile,
     '/404': Page_404,
     '/500': Page_500,
-    '/chats': Chats
+    '/chats': Chats,
+    '/changePassword': ChangePassword
 };
 
 export class Router extends Block {

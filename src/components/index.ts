@@ -9,5 +9,6 @@ export { Input } from './Input';
 export { FileUploader } from './FileUploader';
 export * from './Block';
 export { Form } from './Form';
-export { ProfileForm } from './ProfileForm';
+export * from './ProfileForm';
 export { BackButton } from './BackButton';
+export { ProfileButtonBlock } from './ProfileButtonBlock';

@@ -7,7 +7,8 @@ export enum PAGES {
     profile = '/profile',
     page404 = '/404',
     page500 = '/500',
-    chats = '/chats'
+    chats = '/chats',
+    changePassword = '/changePassword'
 }
 
 export interface IHistory extends IEventBus {}

@@ -161,6 +161,7 @@ export class Block<
 
     _componentDidUpdate<T = IBlockProps>(oldProps: T, newProps: T) {
         const response = this.componentDidUpdate(oldProps, newProps);
+
         if (!response) {
             return;
         }
@@ -188,7 +189,6 @@ export class Block<
         if (!nextProps) {
             return;
         }
-        console.log(nextProps);
 
         Object.assign(this.props, nextProps);
     };

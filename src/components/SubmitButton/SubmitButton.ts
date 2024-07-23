@@ -5,7 +5,11 @@ import { template } from './template.ts';
 
 export class SubmitButton extends Block<ISubmitButtonProps> {
     constructor(props: ISubmitButtonProps) {
-        super('div', { ...props, className: styles.wrapper });
+        super('button', {
+            ...props,
+            className: styles.submitButton,
+            events: { click: props.onClick }
+        });
     }
 
     render() {
