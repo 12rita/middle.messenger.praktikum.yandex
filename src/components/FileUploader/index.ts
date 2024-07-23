@@ -1,3 +1,1 @@
-import fileUploader from './FileUploader.ts';
-
-export { fileUploader };
+export { FileUploader } from './FileUploader.ts';

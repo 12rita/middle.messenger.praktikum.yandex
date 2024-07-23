@@ -32,6 +32,7 @@ export interface IBlock {
     _registerEvents: TVoid;
     _id: string;
     getContent: TGetContent;
+    dispatchComponentDidMount: TVoid;
 }
 export interface IChildren {
     [key: string]: IBlock | IBlock[];

@@ -143,19 +143,28 @@ export class Block<
 
     _componentDidMount() {
         this.componentDidMount();
+
+        Object.values(this.children).forEach(child => {
+            if (Array.isArray(child))
+                child.forEach(grandChild => {
+                    grandChild.dispatchComponentDidMount;
+                });
+            else child.dispatchComponentDidMount();
+        });
     }
 
     componentDidMount() {}
 
-    // dispatchComponentDidMount() {
-    //     this.emit(EVENTS.FLOW_CDM);
-    // }
+    dispatchComponentDidMount() {
+        this.emit(EVENTS.FLOW_CDM);
+    }
 
     _componentDidUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
         const response = this.componentDidUpdate(oldProps, newProps);
         if (!response) {
             return;
         }
+
         this._render();
     }
 
@@ -221,6 +230,8 @@ export class Block<
     _createDocumentElement(tagName: string) {
         const element = document.createElement(tagName);
         element.setAttribute('data-id', this._id);
+        const className = this.props.className || '';
+        if (className) element.classList.add(className);
         return element;
     }
 }

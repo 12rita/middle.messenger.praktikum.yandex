@@ -1,5 +1,3 @@
-import './styles.css';
-
 import { IErrorProps } from './types.ts';
 import { Block } from '../Block';
 import { template } from './template.ts';
@@ -27,11 +25,3 @@ export class Error extends Block<IErrorProps> {
         });
     }
 }
-// export default Handlebars.compile<IErrorProps>(
-//     `<div class="layoutError">
-//   <h1 class="bigText errorCode">{{errorCode}}</h1>
-//   <h2 class="bigSubtext errorText">{{errorText}}</h2>
-//
-//   ${textButton({ label: '{{label}}', id: '{{id}}' })}
-// </div>`
-// );

@@ -1,4 +1,3 @@
-import './styles.css';
 import { ITextButtonProps } from './types.ts';
 import { Block } from '../Block';
 
@@ -11,8 +10,7 @@ export class TextButton extends Block<ITextButtonProps> {
 
     render() {
         return this.compile(template, {
-            label: this.props.label,
-            id: this.props.id
+            label: this.props.label
         });
     }
 }

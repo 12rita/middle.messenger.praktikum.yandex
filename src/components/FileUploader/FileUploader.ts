@@ -1,14 +1,15 @@
-import Handlebars from 'handlebars';
-import './styles.css';
+import { IFileUploaderProps } from './types.ts';
+import { Block } from '../Block';
+import { template } from './template.ts';
 
-export default Handlebars.compile(
-    `<div class="uploadInputWrapper">
-   <input name="avatar" type="file" id="uploadInput" class="input inputFile" multiple>
-   <img class="backgroundImg" alt="noPicture" src="../../static/noPicture.svg">
-   
-   <label for="uploadInput" class="uploadInputButton">
-      
-      <span class="body1 whiteText">Поменять аватар</span>
-   </label>
-</div>`
-);
+export class FileUploader extends Block<IFileUploaderProps> {
+    constructor(props: IFileUploaderProps) {
+        super('div', props);
+    }
+
+    render() {
+        return this.compile(template, {
+            label: this.props.label ?? 'Поменять аватар'
+        });
+    }
+}

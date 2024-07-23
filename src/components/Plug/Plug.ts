@@ -1,32 +1,15 @@
-import Handlebars from 'handlebars';
-import './styles.css';
 import { Block } from '../Block';
-export class Plug extends Block {
-    constructor(props) {
-        // Создаём враппер дом-элемент button
+import { template } from './template.ts';
+import { IPlugProps } from './types.ts';
+
+export class Plug extends Block<IPlugProps> {
+    constructor(props: IPlugProps) {
         super('div', props);
     }
 
     render() {
-        return Handlebars.compile(
-            `<div type="submit" class="plug body2 grayText"> Выберите чат, чтобы отправить сообщение </div>`
-        );
+        return this.compile(template, {
+            label: this.props.label ?? 'Выберите чат, чтобы отправить сообщение'
+        });
     }
 }
-
-// function render(query, block) {
-//     const root = document.querySelector(query);
-//     root.appendChild(block.getContent());
-//     return root;
-// }
-//
-// const button = new Plug({
-//     text: 'Click me'
-// });
-
-// app — это class дива в корне DOM
-// render('.app', button);
-
-export default Handlebars.compile(
-    `<div type="submit" class="plug body2 grayText"> Выберите чат, чтобы отправить сообщение </div>`
-);

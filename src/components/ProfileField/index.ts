@@ -1,3 +1,1 @@
-import profileField from './ProfileField.ts';
-
-export { profileField };
+export { ProfileField } from './ProfileField.ts';

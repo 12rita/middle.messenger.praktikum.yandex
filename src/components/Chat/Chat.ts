@@ -1,31 +1,15 @@
-import Handlebars from 'handlebars';
-import './styles.css';
-import attache from '../../static/attach.svg';
-import sendButton from '../../static/sendButton.svg';
 import { IChatProps } from './types.ts';
+import { Block } from '../Block';
+import { template } from './template.ts';
 
-export default Handlebars.compile<IChatProps>(`<div class="chatFieldWrapper">
-  <div class="header">
-  <div class="chatAvatar"></div>
-  <div class="title">{{title}}</div>
-  </div>
-  <div class="basicLine chatLine"></div>
-      <div class="mainInfo">
-      
-    
-      <div class="messageText body2">
-      {{message}}
-      <div class="timeText grayText subtitle">{{time}}</div>
-    </div>
-    </div>
-    <div class="footer">
-    <div class="basicLine chatLine"></div>
-    <div class="footerWrapper">
-    <div class="icon"><img alt="attach" src="${attache}"></div>
-  
-    <input class="messageInput"  type="text" id="message" name="message" placeholder="Сообщение">
+export class Chat extends Block<IChatProps> {
+    constructor(props: IChatProps) {
+        super('div', props);
+    }
 
-<button class="sendMessage" ><img alt="attach" src="${sendButton}"></button>
-</div>
-  </div>
-</div>`);
+    render() {
+        return this.compile(template, {
+            ...this.props
+        });
+    }
+}

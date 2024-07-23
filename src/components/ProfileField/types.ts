@@ -1,4 +1,6 @@
-export interface IProfileFieldProps {
+import { IProps } from '../Block';
+
+export interface IProfileFieldProps extends IProps {
     title: string;
     key: string;
     type: TInputType;

@@ -1,14 +1,9 @@
 import { Block, Form } from '../../components';
 import { template } from './template.ts';
+import { IPage } from '../types.ts';
 
 export class SignInPage extends Block {
-    constructor() {
-        // const handleClick = () => {
-        //     console.log('Click');
-        //     const link = document.createElement('a');
-        //     link.href = '../chats/Chats.html';
-        //     link.click();
-        // };
+    constructor(props: IPage) {
         const formFields = [
             { title: 'Логин', value: 'login' },
             {
@@ -18,12 +13,22 @@ export class SignInPage extends Block {
             }
         ];
         const formId = 'signInForm';
+        const { history } = props;
+
+        const onClick = () => {
+            history.emit('push', 'signUp');
+        };
+
         const form = new Form({
-            id: 'signInForm',
+            id: formId,
             formFields,
             name: formId,
             title: 'Вход',
-            label: 'Войти'
+            label: 'Войти',
+            textButtonLabel: 'Нет аккаунта?',
+            href: '../signUp/SignUpPage.html',
+            submitButtonLabel: 'Войти',
+            onClick
         });
         super('div', { form });
     }
@@ -33,24 +38,4 @@ export class SignInPage extends Block {
     }
 }
 
-export const signInPage = new SignInPage();
-
-// document.addEventListener('DOMContentLoaded', () => {
-//     const formId = 'signInForm' as TFormKey;
-//
-//     const form: HTMLFormElement = document.forms[formId] as HTMLFormElement;
-//
-//     const formFields = [
-//         { title: 'Логин', value: 'login' },
-//         { title: 'Пароль', value: 'password', type: 'password' }
-//     ];
-//
-//     if (form)
-//         formFields.forEach(field => {
-//             form.innerHTML += input({
-//                 type: (field.type || 'text') as TInputType,
-//                 name: field.value,
-//                 placeholder: field.title
-//             });
-//         });
-// });
+// export const signInPage = new SignInPage({});

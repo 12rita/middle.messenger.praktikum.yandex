@@ -1,5 +1,6 @@
-import { IBlock, IProps } from '../../components';
+import { IProps } from '../../components';
+import { IHistory } from '../../components/EventBus/types.ts';
 
-export interface IPage500 extends IProps {
-    error: IBlock;
+export interface ISignInPage extends IProps {
+    history: IHistory;
 }

@@ -1,3 +1,3 @@
-import './styles.css';
+import styles from './styles.module.css';
 
-export const template = `<button class="textButton" id="{{id}}">{{label}}</button>`;
+export const template = `<button class="${styles.textButtonClass}">{{label}}</span></button>`;

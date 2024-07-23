@@ -1,3 +1,3 @@
-import './styles.css';
+import styles from './styles.module.css';
 
-export const template = `<main class="layout" id="error">{{{error}}}</main>`;
+export const template = `<main class="${styles.layout}" id="error">{{{error}}}</main>`;

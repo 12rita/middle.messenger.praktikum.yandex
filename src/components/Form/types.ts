@@ -1,5 +1,6 @@
 import { IBlock, ICompileProps, IProps } from '../Block';
 import { ITextButtonProps } from '../TextButton/types.ts';
+import { ISubmitButtonProps } from '../SubmitButton/types.ts';
 
 interface IFormFields {
     title: string;
@@ -7,7 +8,12 @@ interface IFormFields {
     type?: TInputType;
 }
 
-export interface IFormProps extends IProps, ITextButtonProps {
+export interface IFormProps
+    extends IProps,
+        Partial<ITextButtonProps>,
+        Partial<ISubmitButtonProps> {
+    textButtonLabel: string;
+    submitButtonLabel: string;
     formFields: IFormFields[];
     id: string;
     name: string;

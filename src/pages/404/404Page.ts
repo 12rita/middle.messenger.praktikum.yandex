@@ -1,14 +1,16 @@
 import { Block, Error } from '../../components';
 import { template } from './template.ts';
 import { IPage404 } from './types.ts';
+import { IHistory } from '../../components/EventBus/types.ts';
 
 export class Page_404 extends Block<IPage404> {
-    constructor() {
+    constructor(props: { history: IHistory }) {
         const handleClick = () => {
-            console.log('Click');
-            const link = document.createElement('a');
-            link.href = '../chats/Chats.html';
-            link.click();
+            // console.log('Click');
+            // const link = document.createElement('a');
+            // link.href = '../chats/Chats.html';
+            // link.click();
+            props.history.emit('push', '/signIn');
         };
         const error = new Error({
             errorCode: 404,

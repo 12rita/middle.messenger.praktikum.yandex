@@ -1,7 +1,16 @@
-import Handlebars from 'handlebars';
-import './styles.css';
+import styles from './styles.module.css';
 import { ISubmitButtonProps } from './types.ts';
+import { Block } from '../Block';
+import { template } from './template.ts';
 
-export default Handlebars.compile<ISubmitButtonProps>(
-    `<button type="submit" class="submitButton" form="{{formId}}"><a href="{{href}}">{{label}}</a></button>`
-);
+export class SubmitButton extends Block<ISubmitButtonProps> {
+    constructor(props: ISubmitButtonProps) {
+        super('div', { ...props, className: styles.wrapper });
+    }
+
+    render() {
+        return this.compile(template, {
+            ...this.props
+        });
+    }
+}

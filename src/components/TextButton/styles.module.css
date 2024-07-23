@@ -1,0 +1,13 @@
+@import '../../globalStyles.css';
+
+.textButtonClass {
+    width: fit-content;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--blue);
+}
+
+.textButtonClass a{
+    color: var(--blue);
+}

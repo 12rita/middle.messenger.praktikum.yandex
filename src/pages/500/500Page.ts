@@ -25,3 +25,5 @@ export class Page_500 extends Block<IPage500> {
         return this.compile(template, { error: this.children.error });
     }
 }
+
+export const page500 = new Page_500();

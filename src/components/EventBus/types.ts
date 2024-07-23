@@ -9,6 +9,8 @@ export interface IEventBus<T = unknown> {
     emit: TEmit<T>;
 }
 
+export interface IHistory extends IEventBus {}
+
 export interface IListeners<T = unknown> {
     [key: string]: Array<(...args: T[]) => unknown>;
 }
