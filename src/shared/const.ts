@@ -4,7 +4,7 @@ export const user = {
     display_name: 'Nagibator999',
     phone: '79999999999',
     email: '123@gmail.com',
-    password: 123456
+    password: '123456'
 };
 
 export const userPassword = {

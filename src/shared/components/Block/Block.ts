@@ -246,10 +246,16 @@ export class Block<
         const element = document.createElement(tagName);
         element.setAttribute('data-id', this._id);
         const className = this.props.className || '';
+        const attributes = this.props.attributes;
         if (className) {
             if (Array.isArray(className))
                 className.forEach(el => element.classList.add(el));
             else element.classList.add(className);
+        }
+        if (attributes) {
+            attributes.forEach(({ name, value }) => {
+                element.setAttribute(name, value);
+            });
         }
         return element;
     }

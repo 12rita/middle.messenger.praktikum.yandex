@@ -1,10 +1,12 @@
 import {
     IBlock,
     ICompileProps,
-    IFormFields,
+    IFormField,
     IFormValues,
     IProps,
-    IValues
+    IValues,
+    TSignInFields,
+    TSignUpFields
 } from '../../shared';
 import { ITextButtonProps } from '../TextButton/types.ts';
 import { ISubmitButtonProps } from '../SubmitButton/types.ts';
@@ -23,9 +25,9 @@ export interface IFormProps
         Omit<ISubmitButtonProps, 'onClick'> {
     textButtonLabel: string;
     submitButtonLabel: string;
-    onSubmitClick: TVoid;
+    onSubmitClick: (values: IFormValues) => void;
     onTextClick: TVoid;
-    formFields: IFormFields[];
+    formFields: IFormField<TSignUpFields | TSignInFields>[];
     size: TFormSize;
     id: string;
     name: string;

@@ -17,8 +17,8 @@ export class Form
 {
     _values: IFormValues = {};
 
-    _setValues(args: IValues) {
-        const { name, value } = args;
+    _setValues({ name, value }: IValues) {
+        console.log({ name, value });
         this._values[name] = value;
     }
 
@@ -31,12 +31,12 @@ export class Form
             return new Input({
                 placeholder: field.title,
                 type: field.type || 'text',
-                name: field.value,
+                name: field.name,
                 events: {
                     change: e => {
                         handleChange({
                             value: (e.target as HTMLInputElement)?.value,
-                            name: field.value
+                            name: field.name
                         });
                     }
                 }
@@ -51,7 +51,9 @@ export class Form
 
         const submitButton = new SubmitButton({
             label: props.submitButtonLabel,
-            onClick: props.onSubmitClick
+            onClick: () => {
+                handleSubmit();
+            }
         });
         super('div', {
             ...props,
@@ -60,9 +62,13 @@ export class Form
             submitButton,
             className: [styles.formWrapper, styles[props.size]]
         });
+
         const handleChange: THandleChange = ({ value, name }) => {
             this._setValues({ name, value });
-            console.log(this.values);
+        };
+
+        const handleSubmit = () => {
+            props.onSubmitClick(this.values);
         };
     }
 

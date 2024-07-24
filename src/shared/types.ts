@@ -1,6 +1,5 @@
 import { IProps } from './components';
 import { IEventBus } from './components/EventBus/types.ts';
-import { user, userPassword } from './const.ts';
 
 export enum PAGES {
     signIn = '/signIn',
@@ -22,18 +21,33 @@ export interface IPage extends Partial<IProps> {
     history: IHistory;
 }
 
-export interface IFormFields {
+export type TSignUpFields =
+    | 'email'
+    | 'password'
+    | 'first_name'
+    | 'second_name'
+    | 'login'
+    | 'phone';
+export type TSignInFields = 'login' | 'password';
+export type TSettingsFields =
+    | 'email'
+    | 'first_name'
+    | 'second_name'
+    | 'display_name'
+    | 'phone';
+export type TChangePasswordFields = 'oldPassword' | 'newPassword';
+
+export type TFieldName =
+    | TSignUpFields
+    | TSignInFields
+    | TSettingsFields
+    | TChangePasswordFields;
+
+export interface IFormField<T> {
     title: string;
-    name?: keyof typeof user | keyof typeof userPassword;
+    name: T;
     value: string;
     type?: TInputType;
-    disabled?: boolean;
-}
-
-export interface IFormField {
-    title: string;
-    name: keyof typeof user | keyof typeof userPassword;
-    value: string | number;
     disabled?: boolean;
 }
 

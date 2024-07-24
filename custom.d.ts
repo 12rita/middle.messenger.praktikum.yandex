@@ -3,9 +3,7 @@ declare module '*.svg' {
     export default content;
 }
 
-declare type TFormKey = keyof typeof document.forms;
-
-declare type TInputType = 'password' | 'text';
+declare type TInputType = 'password' | 'text' | 'email' | 'phone';
 
 declare type TVoid = () => void;
 

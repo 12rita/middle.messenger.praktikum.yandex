@@ -1,15 +1,16 @@
 import { Block, Form } from '../../components';
 import { template } from './template.ts';
-import { PAGES, IPage } from '../../shared';
+import { PAGES, IPage, IFormField, TSignInFields } from '../../shared';
 import global from '../../globalStyles.module.css';
 
 export class SignInPage extends Block {
     constructor(props: IPage) {
-        const formFields = [
-            { title: 'Логин', value: 'login' },
+        const formFields: IFormField<TSignInFields>[] = [
+            { title: 'Логин', name: 'login', value: '' },
             {
                 title: 'Пароль',
-                value: 'password',
+                name: 'password',
+                value: '',
                 type: 'password' as TInputType
             }
         ];

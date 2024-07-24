@@ -32,7 +32,7 @@ export class Router extends Block {
 
     componentDidUpdate(newPath: TPages) {
         const oldPath = window.location.pathname;
-        console.log(oldPath, newPath);
+
         if (oldPath !== newPath) {
             const newPage = Pages[newPath] ?? Pages['/404'];
 

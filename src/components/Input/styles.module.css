@@ -60,3 +60,13 @@
     top: 0;
     transform: translateY(-50%);
 }
+
+.error {
+    margin-top: 7px;
+    color: var(--red);
+    visibility: hidden;
+}
+
+.errorVisible{
+    visibility: visible;
+}

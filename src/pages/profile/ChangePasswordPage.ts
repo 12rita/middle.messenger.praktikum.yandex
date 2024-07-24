@@ -10,12 +10,12 @@ import {
 import { user } from '../../shared/const.ts';
 
 import { IProfileProps } from './types.ts';
-import { IFormField, IPage, PAGES } from '../../shared';
+import { IFormField, IPage, PAGES, TChangePasswordFields } from '../../shared';
 import styles from './styles.module.css';
 import { template } from './template.ts';
 import { IForm } from '../../components/Form/types.ts';
 
-const formFields: IFormField[] = [
+const formFields: IFormField<TChangePasswordFields>[] = [
     {
         title: 'Старый пароль',
         name: 'oldPassword',

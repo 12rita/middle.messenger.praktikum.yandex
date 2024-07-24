@@ -12,11 +12,11 @@ import {
 import { user } from '../../shared/const.ts';
 import { template } from './template.ts';
 import { IProfile, IProfileProps } from './types.ts';
-import { IFormField, IPage, PAGES } from '../../shared';
+import { IFormField, IPage, PAGES, TSettingsFields } from '../../shared';
 import styles from './styles.module.css';
 import { IEventBus } from '../../shared/components/EventBus/types.ts';
 
-const formFields: IFormField[] = [
+const formFields: IFormField<TSettingsFields>[] = [
     { title: 'Почта', name: 'email', value: user['email'] },
     {
         title: 'Имя в чате',

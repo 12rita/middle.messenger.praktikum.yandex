@@ -1,10 +1,13 @@
-import { IProps } from '../../shared';
+import { IProps, TChangePasswordFields, TSettingsFields } from '../../shared';
 
 export interface IProfileFieldProps extends IProps {
     title: string;
     key: string;
     type: TInputType;
-    value: string | number;
+    value: string;
     disabled: boolean;
-    name: string;
+    name: TSettingsFields | TChangePasswordFields;
+}
+export interface IInnerInputProps extends IProps, IProfileFieldProps {
+    onBlur: (e: Event) => void;
 }

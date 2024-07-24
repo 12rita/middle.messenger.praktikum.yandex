@@ -1,23 +1,31 @@
 import { Block, Form } from '../../components';
 import { template } from './template.ts';
 import global from '../../globalStyles.module.css';
-import { IPage, PAGES } from '../../shared';
+import {
+    IFormField,
+    IFormValues,
+    IPage,
+    PAGES,
+    TSignUpFields
+} from '../../shared';
 
-const formFields = [
-    { title: 'Почта', value: 'email' },
-    { title: 'Имя', value: 'first_name' },
-    { title: 'Фамилия', value: 'second_name' },
-    { title: 'Логин', value: 'login' },
-    { title: 'Телефон', value: 'phone' },
+const formFields: IFormField<TSignUpFields>[] = [
+    { title: 'Почта', value: '', name: 'email', type: 'email' },
+    { title: 'Имя', value: '', name: 'first_name' },
+    { title: 'Фамилия', value: '', name: 'second_name' },
+    { title: 'Логин', value: '', name: 'login' },
+    { title: 'Телефон', value: '', name: 'phone', type: 'phone' },
     {
         title: 'Пароль',
-        value: 'password',
-        type: 'password' as TInputType
+        name: 'password',
+        value: '',
+        type: 'password'
     },
     {
         title: 'Пароль (ещё раз)',
-        value: 'password',
-        type: 'password' as TInputType
+        name: 'password',
+        value: '',
+        type: 'password'
     }
 ];
 
@@ -27,7 +35,8 @@ export class SignUpPage extends Block {
             history.emit('push', PAGES.signIn);
         };
 
-        const onSignUp = () => {
+        const onSignUp = (values: IFormValues) => {
+            console.log(values);
             history.emit('push', PAGES.chats);
         };
 

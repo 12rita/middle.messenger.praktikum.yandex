@@ -6,17 +6,18 @@
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
     border-radius: 12px;
     padding: 30px;
-    position: relative;
+    display: flex;
+    flex-direction: column;
     box-sizing: border-box;
 }
 
 .small {
-    height: 450px;
+    min-height: 450px;
 }
 
 .big {
 
-    height: 615px;
+    min-height: 615px;
 }
 
 .title {
@@ -27,22 +28,21 @@
     line-height: 20px;
     margin: 20px 0 40px;
     text-align: center;
-    color: #1E1E1E;
+    color: var(--black);
 }
 
 .form {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    margin-bottom: 50px;
 }
 
 .signInFooter {
-    width: calc(100% - 60px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 14px;
     align-items: center;
-    position: absolute;
-    bottom: 30px;
+    margin-top:auto;
 }
