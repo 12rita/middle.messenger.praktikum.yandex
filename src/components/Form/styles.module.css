@@ -1,15 +1,22 @@
-@import '../../globalStyles.css';
-
+@import '../../globalStyles.module.css';
 
 .formWrapper {
     width: 340px;
-    height: 450px;
     background: #FFFFFF;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
     border-radius: 12px;
     padding: 30px;
     position: relative;
     box-sizing: border-box;
+}
+
+.small {
+    height: 450px;
+}
+
+.big {
+
+    height: 615px;
 }
 
 .title {

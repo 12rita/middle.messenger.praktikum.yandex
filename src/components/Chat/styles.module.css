@@ -1,4 +1,5 @@
-@import '../../globalStyles.css';
+@import '../../globalStyles.module.css';
+
 
 .chatFieldWrapper {
     width: 100%;

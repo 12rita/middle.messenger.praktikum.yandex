@@ -24,12 +24,6 @@ export class EventBus<TProps> implements IEventBus<TProps> {
         );
     };
 
-    offAll: TVoid = () => {
-        Object.keys(this.listeners).forEach(listener => {
-            delete this.listeners[listener];
-        });
-    };
-
     emit: TEmit<TProps> = (event, ...args) => {
         if (!this.listeners[event]) {
             throw new Error(`Нет события: ${event}`);

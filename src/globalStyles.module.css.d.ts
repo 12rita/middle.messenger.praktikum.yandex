@@ -12,3 +12,4 @@ export const subtitle: string;
 export const basicLine: string;
 export const textButton: string;
 export const dangerousButton: string;
+export const layout: string;

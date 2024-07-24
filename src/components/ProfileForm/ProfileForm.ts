@@ -1,12 +1,14 @@
-import { IProfileFormProps } from './types.ts';
-import { Block, IBlock } from '../Block';
+import { IProfileForm, IProfileFormProps, THandleChange } from './types.ts';
+import { Block, IBlock, IFormValues, IValues } from '../../shared';
 import { template } from './template.ts';
 import { ProfileField } from '../ProfileField';
+export class ProfileForm
+    extends Block<IProfileFormProps>
+    implements IProfileForm
+{
+    _values: IFormValues = {};
 
-export class ProfileForm extends Block<IProfileFormProps> {
-    _values = {};
-
-    _setValues(args) {
+    _setValues(args: IValues) {
         const { name, value } = args;
         this._values[name] = value;
     }
@@ -22,7 +24,10 @@ export class ProfileForm extends Block<IProfileFormProps> {
                 type: 'text',
                 events: {
                     change: e => {
-                        handleChange(e.target.value, field.name);
+                        handleChange({
+                            value: (e.target as HTMLInputElement)?.value,
+                            name: field.name
+                        });
                     }
                 }
             });
@@ -33,7 +38,7 @@ export class ProfileForm extends Block<IProfileFormProps> {
             inputs
         });
 
-        const handleChange = (value, name) => {
+        const handleChange: THandleChange = ({ value, name }) => {
             this._setValues({ name, value });
         };
 

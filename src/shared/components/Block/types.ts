@@ -26,7 +26,7 @@ export interface ICompileProps {
     [key: string]: IBlock | IBlock[] | unknown;
 }
 
-export interface IProps extends IEventBus {
+export interface IProps extends Partial<IEventBus> {
     events?: IEvent;
     className?: string | string[];
     [key: string]: IBlock | IBlock[] | unknown;

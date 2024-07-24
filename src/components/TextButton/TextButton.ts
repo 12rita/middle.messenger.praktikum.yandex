@@ -1,5 +1,5 @@
 import { ITextButtonProps } from './types.ts';
-import { Block } from '../Block';
+import { Block } from '../../shared';
 import styles from './styles.module.css';
 import { template } from './template.ts';
 

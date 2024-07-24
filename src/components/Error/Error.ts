@@ -1,5 +1,5 @@
 import { IErrorProps } from './types.ts';
-import { Block } from '../Block';
+import { Block } from '../../shared';
 import { template } from './template.ts';
 import { TextButton } from '../TextButton';
 

@@ -2,7 +2,7 @@ import styles from './styles.module.css';
 import attache from '../../static/attach.svg';
 import sendButton from '../../static/sendButton.svg';
 
-export const template = `<div class="${styles.chatFieldWrapper}">
+export const template = `
   <div class="${styles.header}">
   <div class="${styles.chatAvatar}"></div>
   <div class="title">{{title}}</div>
@@ -24,5 +24,4 @@ export const template = `<div class="${styles.chatFieldWrapper}">
 
 <button class="${styles.sendMessage}" ><img alt="attach" src="${sendButton}"></button>
 </div>
-  </div>
-</div>`;
+  </div>`;

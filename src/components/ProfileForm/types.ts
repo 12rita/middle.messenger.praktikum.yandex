@@ -1,12 +1,10 @@
-import { IProps } from '../Block';
+import { IBlock, IFormField, IFormValues, IProps, IValues } from '../../shared';
 import { IProfileFieldProps } from '../ProfileField/types.ts';
-import { user } from '../../const.ts';
 
-export interface IFormField {
-    title: string;
-    name: keyof typeof user;
-    value: string | number;
+export interface IProfileForm extends IBlock<IProfileFormProps> {
+    values: IFormValues;
 }
+export type THandleChange = (props: IValues) => void;
 
 export interface IProfileFormProps extends IProps, Partial<IProfileFieldProps> {
     id: string;

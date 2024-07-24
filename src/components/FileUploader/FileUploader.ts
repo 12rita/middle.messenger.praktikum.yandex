@@ -1,5 +1,5 @@
 import { IFileUploaderProps } from './types.ts';
-import { Block, EVENTS } from '../Block';
+import { Block, EVENTS } from '../../shared';
 import { template } from './template.ts';
 import noPicture from '../../static/noPicture.svg';
 

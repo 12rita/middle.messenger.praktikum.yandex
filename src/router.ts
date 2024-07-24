@@ -1,23 +1,22 @@
 import {
-    ChangePassword,
-    Chats,
+    ChangePasswordPage,
+    ChatsPage,
     Page_404,
     Page_500,
-    Profile,
+    ProfilePage,
     SignInPage,
     SignUpPage
 } from './pages';
-import { Block } from './components';
-import { EventBus } from './components/EventBus';
+import { Block, IBlock, EventBus, PAGES, TPages } from './shared';
 
 const Pages = {
     '/signIn': SignInPage,
     '/signUp': SignUpPage,
-    '/profile': Profile,
+    '/profile': ProfilePage,
     '/404': Page_404,
     '/500': Page_500,
-    '/chats': Chats,
-    '/changePassword': ChangePassword
+    '/chats': ChatsPage,
+    '/changePassword': ChangePasswordPage
 };
 
 export class Router extends Block {
@@ -28,16 +27,18 @@ export class Router extends Block {
         super('div', { page });
         this.history = history;
         this.history.on('push', this._componentDidUpdate.bind(this));
-        this.history.emit('push', '/signIn');
+        this.history.emit('push', PAGES.signIn);
     }
 
-    componentDidUpdate(newPath: string) {
+    componentDidUpdate(newPath: TPages) {
         const oldPath = window.location.pathname;
         console.log(oldPath, newPath);
         if (oldPath !== newPath) {
             const newPage = Pages[newPath] ?? Pages['/404'];
 
-            this.children.page = new newPage({ history: this.history });
+            this.children.page = new newPage({
+                history: this.history
+            }) as IBlock;
             window.history.pushState({}, '', newPath);
             return true;
         }

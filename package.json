@@ -7,8 +7,8 @@
     "node": ">=16"
   },
   "scripts": {
-    "dev": "eslint --fix && vite",
-    "build": "eslint --fix && tsc && vite build",
+    "dev": "eslint --fix && stylelint --fix && tsc && vite",
+    "build": "eslint --fix && stylelint --fix && tsc && vite build",
     "preview": "vite preview",
     "start": "npm run build && npm run preview"
   },

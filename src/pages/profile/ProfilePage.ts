@@ -5,17 +5,16 @@ import {
     ProfileForm,
     BackButton,
     FileUploader,
-    type IFormField,
     EVENTS,
     ProfileButtonBlock,
     SubmitButton
 } from '../../components';
-import { user } from '../../const.ts';
+import { user } from '../../shared/const.ts';
 import { template } from './template.ts';
-import { IProfileProps } from './types.ts';
-import { IPage, PAGES } from '../types.ts';
+import { IProfile, IProfileProps } from './types.ts';
+import { IFormField, IPage, PAGES } from '../../shared';
 import styles from './styles.module.css';
-import { IEventBus } from '../../components/EventBus/types.ts';
+import { IEventBus } from '../../shared/components/EventBus/types.ts';
 
 const formFields: IFormField[] = [
     { title: 'Почта', name: 'email', value: user['email'] },
@@ -37,7 +36,10 @@ const formFields: IFormField[] = [
     { title: 'Телефон', name: 'phone', value: user['phone'] }
 ];
 
-export class Profile extends Block<IProps, IProfileProps> {
+export class ProfilePage
+    extends Block<IProps, IProfileProps>
+    implements IProfile
+{
     buttonBlock: IBlock;
     constructor({ history }: IPage) {
         const formId = 'changeDataForm';
@@ -76,7 +78,7 @@ export class Profile extends Block<IProps, IProfileProps> {
             avatar,
             className: styles.layout
         });
-        this.buttonBlock = buttonBlock;
+        this.buttonBlock = buttonBlock as unknown as IBlock;
 
         const handleChangeData = () => {
             this._changeData();
@@ -104,7 +106,7 @@ export class Profile extends Block<IProps, IProfileProps> {
             onClick: () => {
                 this._saveData();
             }
-        }) as IBlock;
+        }) as unknown as IBlock;
         this.emit(EVENTS.FLOW_CDU);
     };
 
@@ -114,8 +116,11 @@ export class Profile extends Block<IProps, IProfileProps> {
 
     render() {
         return this.compile(template, {
-            ...this.children,
             ...this.props,
+            form: this.children.form as IBlock,
+            backButton: this.children.backButton as IBlock,
+            buttonBlock: this.children.buttonBlock as IBlock,
+            avatar: this.children.avatar as IBlock,
             title: user.display_name
         });
     }

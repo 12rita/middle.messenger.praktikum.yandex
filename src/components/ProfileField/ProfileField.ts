@@ -1,5 +1,5 @@
 import { IProfileFieldProps } from './types.ts';
-import { Block } from '../Block';
+import { Block } from '../../shared';
 import { template } from './template.ts';
 
 export class ProfileField extends Block<IProfileFieldProps> {

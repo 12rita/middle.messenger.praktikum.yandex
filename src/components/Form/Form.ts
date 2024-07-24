@@ -1,22 +1,26 @@
-import { IFormCompileProps, IFormProps } from './types.ts';
-import { Block, IBlock } from '../Block';
+import {
+    IForm,
+    IFormCompileProps,
+    IFormProps,
+    THandleChange
+} from './types.ts';
+import { Block, IBlock, IFormValues, IValues } from '../../shared';
 import { template } from './template.ts';
 import { Input } from '../Input';
 import { TextButton } from '../TextButton';
 import { SubmitButton } from '../SubmitButton';
+import styles from './styles.module.css';
 
-export class Form extends Block<IFormProps, IFormCompileProps> {
-    _values: { [key: string]: string | number } = {};
+export class Form
+    extends Block<IFormProps, IFormCompileProps>
+    implements IForm
+{
+    _values: IFormValues = {};
 
-    _setValues(args) {
+    _setValues(args: IValues) {
         const { name, value } = args;
         this._values[name] = value;
     }
-
-    _handleClick = e => {
-        e.preventDefault();
-        console.log(this.values);
-    };
 
     get values() {
         return this._values;
@@ -30,7 +34,10 @@ export class Form extends Block<IFormProps, IFormCompileProps> {
                 name: field.value,
                 events: {
                     change: e => {
-                        handleChange(e.target.value, field.value);
+                        handleChange({
+                            value: (e.target as HTMLInputElement)?.value,
+                            name: field.value
+                        });
                     }
                 }
             });
@@ -46,12 +53,17 @@ export class Form extends Block<IFormProps, IFormCompileProps> {
             label: props.submitButtonLabel,
             onClick: props.onSubmitClick
         });
-        super('div', { ...props, inputs, textButton, submitButton });
-        const handleChange = (value, name) => {
+        super('div', {
+            ...props,
+            inputs,
+            textButton,
+            submitButton,
+            className: [styles.formWrapper, styles[props.size]]
+        });
+        const handleChange: THandleChange = ({ value, name }) => {
             this._setValues({ name, value });
             console.log(this.values);
         };
-        // this.on('inputChange', this._setValues.bind(this));
     }
 
     render() {

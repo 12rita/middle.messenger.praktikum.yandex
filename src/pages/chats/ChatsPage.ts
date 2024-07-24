@@ -1,12 +1,19 @@
-import { Block, Chat, ChatPreview, EVENTS, TextButton } from '../../components';
+import {
+    Block,
+    Chat,
+    ChatPreview,
+    EVENTS,
+    IBlock,
+    TextButton
+} from '../../components';
 import arrowRight from '../../static/arrowRight.svg';
 import { data } from './data.ts';
 import { Plug } from '../../components';
 import styles from './styles.module.css';
 import { template } from './template.ts';
-import { PAGES, IPage } from '../types.ts';
+import { PAGES, IPage } from '../../shared';
 
-export class Chats extends Block {
+export class ChatsPage extends Block {
     activeChatId: string = '';
 
     constructor({ history }: IPage) {
@@ -47,7 +54,7 @@ export class Chats extends Block {
             if (event.key === 'Escape') {
                 this.children.activeChat = new Plug({
                     label: 'Выберите чат, чтобы отправить сообщение'
-                });
+                }) as unknown as IBlock;
                 this.emit(EVENTS.FLOW_CDU);
             }
         });
@@ -58,7 +65,9 @@ export class Chats extends Block {
         const activeChat = data.find(item => item.id === id);
 
         if (activeChat) {
-            this.children.activeChat = new Chat({ ...activeChat });
+            this.children.activeChat = new Chat({
+                ...activeChat
+            }) as unknown as IBlock;
             this.activeChatId = id;
             this.emit(EVENTS.FLOW_CDU);
         }
@@ -70,6 +79,6 @@ export class Chats extends Block {
     }
 
     render() {
-        return this.compile(template, { form: this.children.form });
+        return this.compile(template, { ...this.children });
     }
 }

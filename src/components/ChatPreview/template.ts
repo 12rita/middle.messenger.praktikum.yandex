@@ -1,16 +1,17 @@
 import styles from './styles.module.css';
+import global from '../../globalStyles.module.css';
 
-export const template = `<li id="chat-{{id}}" class="${styles.wrapper}">
-  <div class="basicLine ${styles.previewLine}"></div>
+export const template = `
+  <div class="${global.basicLine} ${styles.previewLine}"></div>
   <div class="${styles.chat}">
     <div class="${styles.avatar}"></div>
     <div class="${styles.info}">
-      <div class="title blackText">{{title}}</div>
-      <div class="${styles.message} grayText body2">{{message}}</div>
+      <div class="${global.title} ${global.blackText}">{{title}}</div>
+      <div class="${styles.message} ${global.grayText} ${global.body2}">{{message}}</div>
     </div>
     <div class="${styles.time}">
-      <div class="grayText subtitle">{{time}}</div>
-      <div class="${styles.indicator} body3">{{indicator}}</div>
+      <div class="${global.grayText} ${global.subtitle}">{{time}}</div>
+      <div class="${styles.indicator} ${global.body3}">{{indicator}}</div>
     </div>
   </div>
-</li>`;
+`;

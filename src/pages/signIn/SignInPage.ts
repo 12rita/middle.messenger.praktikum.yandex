@@ -1,6 +1,7 @@
 import { Block, Form } from '../../components';
 import { template } from './template.ts';
-import { PAGES, IPage } from '../types.ts';
+import { PAGES, IPage } from '../../shared';
+import global from '../../globalStyles.module.css';
 
 export class SignInPage extends Block {
     constructor(props: IPage) {
@@ -19,8 +20,7 @@ export class SignInPage extends Block {
             history.emit('push', PAGES.signUp);
         };
 
-        const onSubmitClick = e => {
-            e.preventDefault();
+        const onSubmitClick = () => {
             history.emit('push', PAGES.chats);
         };
 
@@ -34,14 +34,13 @@ export class SignInPage extends Block {
             onTextClick: onTextClick,
             textButtonLabel: 'Нет аккаунта?',
             href: '../signUp/SignUpPage.html',
-            submitButtonLabel: 'Войти'
+            submitButtonLabel: 'Войти',
+            size: 'small'
         });
-        super('div', { form });
+        super('main', { form, className: global.layout });
     }
 
     render() {
         return this.compile(template, { form: this.children.form });
     }
 }
-
-// export const signInPage = new SignInPage({});

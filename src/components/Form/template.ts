@@ -1,6 +1,6 @@
 import styles from './styles.module.css';
 
-export const template = `<div class=${styles.formWrapper}>
+export const template = `
     <h1 class=${styles.title}>{{title}}</h1>
     <form  class=${styles.form} id="{{id}}" name="{{name}}">
     {{#each inputs}}
@@ -10,4 +10,4 @@ export const template = `<div class=${styles.formWrapper}>
     <div class=${styles.signInFooter}>
     {{{submitButton}}}
     {{{textButton}}}
-    </div>`;
+    `;

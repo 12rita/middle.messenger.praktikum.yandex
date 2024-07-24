@@ -1,4 +1,4 @@
-import { IProps } from '../Block';
+import { IProps } from '../../shared';
 
 type TButtonType = 'classic' | 'gray' | 'danger';
 

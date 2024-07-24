@@ -154,10 +154,7 @@ export class Block<
         this.emit(EVENTS.FLOW_CDM);
     }
 
-    _componentDidUpdate<T extends { [key: string]: unknown } = IBlockProps>(
-        oldProps: T,
-        newProps: T
-    ) {
+    _componentDidUpdate<T = IBlockProps>(oldProps: T, newProps: T) {
         const response = this.componentDidUpdate(oldProps, newProps);
 
         if (!response) {
@@ -168,14 +165,12 @@ export class Block<
     }
 
     componentDidUpdate<T = IBlockProps>(
-        oldProps: T | null,
-        newProps: T | null
+        oldProps: (T | string) | null,
+        newProps: (T | string) | null
     ) {
         if (oldProps === null && newProps === null) {
             return false;
-        } else if (oldProps === null) {
-            return true;
-        } else if (newProps === null) {
+        } else if (oldProps === null || newProps === null) {
             return true;
         } else if (
             typeof oldProps === 'string' &&
@@ -187,10 +182,14 @@ export class Block<
             typeof newProps === 'object'
         ) {
             return (
-                Object.keys(oldProps).some(key => {
-                    return oldProps[key] !== newProps[key];
+                Object.keys(oldProps as Record<string, unknown>).some(key => {
+                    return (
+                        (oldProps as Record<string, unknown>)[key] !==
+                        (newProps as Record<string, unknown>)[key]
+                    );
                 }) &&
-                Object.keys(oldProps).length !== Object.keys(newProps).length
+                Object.keys(oldProps as Record<string, unknown>).length !==
+                    Object.keys(newProps as Record<string, unknown>).length
             );
         } else return oldProps !== newProps;
     }

@@ -1,22 +1,32 @@
-import { IBlock, ICompileProps, IProps } from '../Block';
+import {
+    IBlock,
+    ICompileProps,
+    IFormFields,
+    IFormValues,
+    IProps,
+    IValues
+} from '../../shared';
 import { ITextButtonProps } from '../TextButton/types.ts';
 import { ISubmitButtonProps } from '../SubmitButton/types.ts';
 
-interface IFormFields {
-    title: string;
-    value: string;
-    type?: TInputType;
+export interface IForm extends IBlock<IFormProps> {
+    values: IFormValues;
 }
+
+export type THandleChange = (props: IValues) => void;
+
+type TFormSize = 'small' | 'big';
 
 export interface IFormProps
     extends IProps,
-        Partial<ITextButtonProps>,
-        Partial<ISubmitButtonProps> {
+        Omit<ITextButtonProps, 'onClick'>,
+        Omit<ISubmitButtonProps, 'onClick'> {
     textButtonLabel: string;
     submitButtonLabel: string;
     onSubmitClick: TVoid;
     onTextClick: TVoid;
     formFields: IFormFields[];
+    size: TFormSize;
     id: string;
     name: string;
     title: string;

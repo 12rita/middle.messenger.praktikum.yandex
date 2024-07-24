@@ -1,6 +1,6 @@
 import styles from './styles.module.css';
 import { ISubmitButtonProps } from './types.ts';
-import { Block } from '../Block';
+import { Block } from '../../shared';
 import { template } from './template.ts';
 
 export class SubmitButton extends Block<ISubmitButtonProps> {

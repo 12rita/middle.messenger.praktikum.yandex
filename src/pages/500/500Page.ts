@@ -1,14 +1,13 @@
-import { Block, Error } from '../../components';
-import { template } from '../404/template.ts';
+import { Block, Error, IBlock } from '../../components';
+import { template } from './template.ts';
 import { IPage500 } from './types.ts';
+import styles from './styles.module.css';
+import { IPage } from '../../shared';
 
-export class Page_500 extends Block<IPage500> {
-    constructor() {
+export class Page_500 extends Block<IPage, IPage500> {
+    constructor(props: IPage) {
         const handleClick = () => {
-            console.log('Click');
-            const link = document.createElement('a');
-            link.href = '../chats/Chats.html';
-            link.click();
+            props.history.emit('push', '/signIn');
         };
         const error = new Error({
             errorCode: 500,
@@ -18,12 +17,10 @@ export class Page_500 extends Block<IPage500> {
             name: 'buttonError500',
             onClick: handleClick
         });
-        super('div', { error });
+        super('div', { ...props, className: styles.layout, error });
     }
 
     render() {
-        return this.compile(template, { error: this.children.error });
+        return this.compile(template, { error: this.children.error as IBlock });
     }
 }
-
-export const page500 = new Page_500();

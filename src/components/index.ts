@@ -7,7 +7,7 @@ export { SubmitButton } from './SubmitButton';
 export { Error } from './Error';
 export { Input } from './Input';
 export { FileUploader } from './FileUploader';
-export * from './Block';
+export * from '../shared/components/Block';
 export { Form } from './Form';
 export * from './ProfileForm';
 export { BackButton } from './BackButton';

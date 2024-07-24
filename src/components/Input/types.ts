@@ -1,4 +1,4 @@
-import { IProps } from '../Block';
+import { IProps } from '../../shared';
 
 export interface IInputProps extends IProps {
     type: TInputType;

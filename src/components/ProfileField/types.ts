@@ -1,4 +1,4 @@
-import { IProps } from '../Block';
+import { IProps } from '../../shared';
 
 export interface IProfileFieldProps extends IProps {
     title: string;

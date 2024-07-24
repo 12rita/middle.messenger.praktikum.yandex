@@ -1,5 +1,4 @@
-@import '../../globalStyles.css';
-
+@import '../../globalStyles.module.css';
 
 .wrapper {
     padding:0 10px;

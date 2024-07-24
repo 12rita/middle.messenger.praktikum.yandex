@@ -1,10 +1,11 @@
 import { IChatProps } from './types.ts';
-import { Block } from '../Block';
+import { Block } from '../../shared';
 import { template } from './template.ts';
+import styles from './styles.module.css';
 
 export class Chat extends Block<IChatProps> {
     constructor(props: IChatProps) {
-        super('div', props);
+        super('div', { ...props, className: styles.chatFieldWrapper });
     }
 
     render() {

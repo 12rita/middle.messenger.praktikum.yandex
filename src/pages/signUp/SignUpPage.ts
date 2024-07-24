@@ -1,25 +1,36 @@
 import { Block, Form } from '../../components';
 import { template } from './template.ts';
+import global from '../../globalStyles.module.css';
+import { IPage, PAGES } from '../../shared';
+
+const formFields = [
+    { title: 'Почта', value: 'email' },
+    { title: 'Имя', value: 'first_name' },
+    { title: 'Фамилия', value: 'second_name' },
+    { title: 'Логин', value: 'login' },
+    { title: 'Телефон', value: 'phone' },
+    {
+        title: 'Пароль',
+        value: 'password',
+        type: 'password' as TInputType
+    },
+    {
+        title: 'Пароль (ещё раз)',
+        value: 'password',
+        type: 'password' as TInputType
+    }
+];
 
 export class SignUpPage extends Block {
-    constructor() {
-        const formFields = [
-            { title: 'Почта', value: 'email' },
-            { title: 'Имя', value: 'first_name' },
-            { title: 'Фамилия', value: 'second_name' },
-            { title: 'Логин', value: 'login' },
-            { title: 'Телефон', value: 'phone' },
-            {
-                title: 'Пароль',
-                value: 'password',
-                type: 'password' as TInputType
-            },
-            {
-                title: 'Пароль (ещё раз)',
-                value: 'password',
-                type: 'password' as TInputType
-            }
-        ];
+    constructor({ history }: IPage) {
+        const onSignIn = () => {
+            history.emit('push', PAGES.signIn);
+        };
+
+        const onSignUp = () => {
+            history.emit('push', PAGES.chats);
+        };
+
         const formId = 'signUpForm';
         const form = new Form({
             id: formId,
@@ -28,39 +39,15 @@ export class SignUpPage extends Block {
             title: 'Вход',
             label: 'Войти',
             textButtonLabel: 'Войти',
-            href: '../signIn/SignInPage.html',
-            submitButtonLabel: 'Зарегестрироваться'
+            onTextClick: onSignIn,
+            onSubmitClick: onSignUp,
+            submitButtonLabel: 'Зарегестрироваться',
+            size: 'big'
         });
-        super('div', { form });
+        super('main', { form, className: global.layout });
     }
 
     render() {
         return this.compile(template, { form: this.children.form });
     }
 }
-
-export const signUpPage = new SignUpPage();
-
-// document.addEventListener('DOMContentLoaded', () => {
-//     const form: HTMLFormElement = document.forms[
-//         'signUpForm' as TFormKey
-//     ] as HTMLFormElement;
-//
-//     const formFields = [
-//         { title: 'Почта', value: 'email' },
-//         { title: 'Имя', value: 'first_name' },
-//         { title: 'Фамилия', value: 'second_name' },
-//         { title: 'Логин', value: 'login' },
-//         { title: 'Телефон', value: 'phone' },
-//         { title: 'Пароль', value: 'password', type: 'password' },
-//         { title: 'Пароль (ещё раз)', value: 'password', type: 'password' }
-//     ];
-//     if (form)
-//         formFields.forEach(field => {
-//             form.innerHTML += input({
-//                 type: (field.type || 'text') as TInputType,
-//                 name: field.value,
-//                 placeholder: field.title
-//             });
-//         });
-// });

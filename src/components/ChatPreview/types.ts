@@ -1,7 +1,6 @@
-import { IProps } from '../Block';
+import { IProps } from '../../shared';
 
 export interface IChatPreviewProps extends IProps {
-    id: string;
     title: string;
     message: string;
     time: string;

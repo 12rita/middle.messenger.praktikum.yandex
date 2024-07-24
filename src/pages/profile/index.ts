@@ -1,2 +1,2 @@
-export { Profile } from './Profile.ts';
-export { ChangePassword } from './ChangePassword.ts';
+export { ProfilePage } from './ProfilePage.ts';
+export { ChangePasswordPage } from './ChangePasswordPage.ts';

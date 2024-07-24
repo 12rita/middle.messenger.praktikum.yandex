@@ -1,4 +1,4 @@
-import { Block } from '../Block';
+import { Block } from '../../shared';
 import { template } from './template.ts';
 import { IPlugProps } from './types.ts';
 import styles from './styles.module.css';

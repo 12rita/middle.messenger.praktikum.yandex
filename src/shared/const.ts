@@ -6,3 +6,8 @@ export const user = {
     email: '123@gmail.com',
     password: 123456
 };
+
+export const userPassword = {
+    oldPassword: user.password,
+    newPassword: user.password
+};

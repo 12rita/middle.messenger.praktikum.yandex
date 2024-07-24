@@ -1,1 +1,1 @@
-export { page500, Page_500 } from './500Page.ts';
+export { Page_500 } from './500Page.ts';

@@ -1,5 +1,4 @@
-@import '../../globalStyles.css';
-
+@import '../../globalStyles.module.css';
 .layoutError {
     display: flex;
     flex-direction: column;

@@ -1,5 +1,5 @@
 import { IBackButtonProps } from './types.ts';
-import { Block } from '../Block';
+import { Block } from '../../shared';
 import { template } from './template.ts';
 import styles from './styles.module.css';
 

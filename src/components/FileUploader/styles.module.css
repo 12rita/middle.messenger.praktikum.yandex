@@ -1,5 +1,4 @@
-@import '../../globalStyles.css';
-
+@import '../../globalStyles.module.css';
 .uploadInputWrapper {
     width: 100%;
     position: relative;

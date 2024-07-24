@@ -1,1 +1,1 @@
-export { signUpPage, SignUpPage } from './SignUpPage.ts';
+export { SignUpPage } from './SignUpPage.ts';
