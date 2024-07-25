@@ -34,6 +34,7 @@ export class ChatsPage extends Block {
         const chats = data.map(item => {
             return new ChatPreview({
                 ...item,
+                ...item.messages[0],
                 events: {
                     click: () => {
                         onChatClick(item.id);

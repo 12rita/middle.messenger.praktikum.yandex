@@ -1,7 +1,12 @@
 import { IProps } from '../../shared';
 
-export interface IChatProps extends IProps {
-    title: string;
+interface IMessage {
     message: string;
     time: string;
+}
+
+export interface IChatProps extends IProps {
+    title: string;
+    messages: IMessage[];
+    indicator: number;
 }

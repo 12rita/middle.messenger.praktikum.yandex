@@ -8,6 +8,12 @@ export interface IProfileFieldProps extends IProps {
     disabled: boolean;
     name: TSettingsFields | TChangePasswordFields;
 }
+
 export interface IInnerInputProps extends IProps, IProfileFieldProps {
     onBlur: (e: Event) => void;
+    disabled: boolean;
+}
+
+export interface IInnerInput {
+    value: string;
 }

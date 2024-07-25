@@ -20,7 +20,7 @@ export class ProfileForm
             return new ProfileField({
                 ...field,
                 disabled: field.disabled !== undefined ? field.disabled : true,
-                key: field.name,
+                key: props.key,
                 type: 'text',
                 events: {
                     change: e => {
@@ -38,11 +38,13 @@ export class ProfileForm
             inputs
         });
 
+        props.formFields.forEach(field => {
+            this._setValues({ name: field.name, value: field.value });
+        });
         const handleChange: THandleChange = ({ value, name }) => {
             this._setValues({ name, value });
         };
 
-        // this.on('inputChange', this._setValues.bind(this));
         this.on('edit', this._setEditable.bind(this));
         this.on('save', this._unsetEditable.bind(this));
     }
@@ -57,6 +59,8 @@ export class ProfileForm
         (this.children.inputs as IBlock[]).forEach(input => {
             input.setProps({ disabled: true });
         });
+
+        this.props.handleSubmit(this.values);
     }
 
     componentDidUpdate() {

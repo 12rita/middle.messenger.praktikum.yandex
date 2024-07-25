@@ -1,16 +1,25 @@
 import { IChatProps } from './types.ts';
-import { Block } from '../../shared';
+import { Block, IBlock } from '../../shared';
 import { template } from './template.ts';
 import styles from './styles.module.css';
+import { Message } from '../Message';
 
 export class Chat extends Block<IChatProps> {
     constructor(props: IChatProps) {
-        super('div', { ...props, className: styles.chatFieldWrapper });
+        const messagesBlock = props.messages.map(
+            message => new Message({ ...message })
+        );
+        super('div', {
+            ...props,
+            className: styles.chatFieldWrapper,
+            messagesBlock
+        });
     }
 
     render() {
         return this.compile(template, {
-            ...this.props
+            ...this.props,
+            messages: this.children.messagesBlock as IBlock[]
         });
     }
 }

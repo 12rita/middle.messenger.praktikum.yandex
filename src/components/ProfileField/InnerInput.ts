@@ -1,11 +1,14 @@
 import { Block } from '../../shared';
-import { IInnerInputProps } from './types.ts';
+import { IInnerInput, IInnerInputProps } from './types.ts';
 import styles from './styles.module.css';
 import global from '../../globalStyles.module.css';
 
-// <input name="{{name}}" class="${styles.fieldValue} ${global.grayText} ${global.body1}" type="{{type}}" value="{{value}}" {{disabled}}>
-export class InnerInput extends Block<IInnerInputProps> {
-    value: string = '';
+export class InnerInput extends Block<IInnerInputProps> implements IInnerInput {
+    _value: string = '';
+
+    get value() {
+        return this._value;
+    }
     constructor(props: IInnerInputProps) {
         super('input', {
             ...props,
@@ -27,9 +30,16 @@ export class InnerInput extends Block<IInnerInputProps> {
             ],
 
             events: {
-                blur: props.onBlur
+                blur: props.onBlur,
+                change: e => {
+                    handleChange(e);
+                }
             }
         });
+        this._value = props.value;
+        const handleChange = (e: Event) => {
+            this._value = (e.target as HTMLInputElement)?.value;
+        };
     }
 
     render() {

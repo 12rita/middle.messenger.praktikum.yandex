@@ -12,7 +12,13 @@ import {
 import { user } from '../../shared/const.ts';
 import { template } from './template.ts';
 import { IProfile, IProfileProps } from './types.ts';
-import { IFormField, IPage, PAGES, TSettingsFields } from '../../shared';
+import {
+    IFormField,
+    IFormValues,
+    IPage,
+    PAGES,
+    TSettingsFields
+} from '../../shared';
 import styles from './styles.module.css';
 import { IEventBus } from '../../shared/components/EventBus/types.ts';
 
@@ -46,7 +52,10 @@ export class ProfilePage
         const form = new ProfileForm({
             id: formId,
             formFields,
-            name: formId
+            key: formId,
+            handleSubmit: values => {
+                handleSubmit(values);
+            }
         });
 
         const avatar = new FileUploader({
@@ -83,7 +92,9 @@ export class ProfilePage
         const handleChangeData = () => {
             this._changeData();
         };
-
+        const handleSubmit = (values: IFormValues) => {
+            this._handleSubmit(values);
+        };
         const handleChangePassword = () => {
             history.emit('push', PAGES.changePassword);
         };
@@ -98,6 +109,11 @@ export class ProfilePage
         this.children.buttonBlock = this.buttonBlock;
         this.emit(EVENTS.FLOW_CDU);
     };
+
+    _handleSubmit = (values: IFormValues) => {
+        console.log(values);
+    };
+
     _changeData = () => {
         (this.children.form as IEventBus).emit('edit');
         (this.children.avatar as IEventBus).emit('edit');

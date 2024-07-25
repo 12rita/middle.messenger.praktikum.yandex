@@ -14,3 +14,13 @@
     border: none;
     padding: 10px 20px;
 }
+
+.error {
+    color: var(--red);
+    visibility: hidden;
+    text-align: right;
+}
+
+.errorVisible{
+    visibility: visible;
+}
