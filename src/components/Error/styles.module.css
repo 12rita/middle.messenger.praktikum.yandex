@@ -1,0 +1,15 @@
+@import '../../globalStyles.module.css';
+.layoutError {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.errorCode {
+    margin-bottom: 20px;
+}
+
+.errorText {
+    margin-bottom: 70px;
+}

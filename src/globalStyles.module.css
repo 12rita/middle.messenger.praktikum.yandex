@@ -1,0 +1,132 @@
+:root {
+    --blue: #3369F3;
+    --lightBLue: #E4EDFD;
+    --black: #1E1E1E;
+    --gray: #999999;
+    --lightGray: #EAEAEA;
+    --white: #FFFFFF;
+    --darkWhite: #FBFBFB;
+    --red: #FF0000;
+
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+}
+
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+input {
+    border: none;
+    background: none;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.whiteText {
+    color: var(--white);
+}
+
+.blackText {
+    color: var(--black);
+}
+
+.grayText {
+    color: var(--gray);
+}
+
+.redText {
+    color: var(--red);
+}
+
+.bigText {
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 40px;
+}
+
+.bigSubtext {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.body1 {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 13px;
+}
+
+.body2 {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+}
+
+.title {
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 13px;
+}
+
+.body3 {
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 12px;
+}
+
+.subtitle {
+    font-size: 9px;
+    font-weight: 500;
+    line-height: 13px;
+}
+
+.basicLine {
+    height: 1px;
+    background: var(--lightGray);
+}
+
+.textButton {
+    width: fit-content;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--blue);
+}
+
+.textButton a{
+    color: var(--blue);
+}
+
+.dangerousButton {
+    color: var(--red);
+}
+
+.dangerousButton a {
+    color: var(--red);
+}
+
+.layout {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

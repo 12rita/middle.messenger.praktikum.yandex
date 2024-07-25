@@ -1,8 +1,7 @@
-export interface IProfileFieldProps {
+import { IProps } from '../../shared';
+import { IInputProps } from '../Input';
+
+export interface IProfileFieldProps extends IProps, IInputProps {
     title: string;
     key: string;
-    type: TInputType;
-    value: string | number;
-    disabled: boolean;
-    name: string;
 }
