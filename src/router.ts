@@ -23,11 +23,17 @@ export class Router extends Block {
     history;
     constructor() {
         const history = new EventBus<TPages>();
-        const page = new SignInPage({ history });
-        super('div', { page });
+        const path = (
+            window.location.pathname === '/'
+                ? PAGES.signIn
+                : window.location.pathname
+        ) as keyof typeof Pages;
+        const page = Pages[path] ?? Pages['/404'];
+        super('div', { page: new page({ history }) });
         this.history = history;
         this.history.on('push', this._componentDidUpdate.bind(this));
-        this.history.emit('push', PAGES.signIn);
+        const pagesPath = path.substring(1) as keyof typeof PAGES;
+        this.history.emit('push', PAGES[pagesPath]);
     }
 
     componentDidUpdate(newPath: TPages) {
