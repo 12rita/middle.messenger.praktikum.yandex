@@ -7,14 +7,14 @@ export class SubmitButton extends Block<ISubmitButtonProps> {
     constructor(props: ISubmitButtonProps) {
         super('button', {
             ...props,
-            className: styles.submitButton,
+            className: props.className ?? styles.submitButton,
             events: { click: props.onClick }
         });
     }
 
     render() {
         return this.compile(template, {
-            ...this.props
+            children: this.props.label ?? this.props.children
         });
     }
 }

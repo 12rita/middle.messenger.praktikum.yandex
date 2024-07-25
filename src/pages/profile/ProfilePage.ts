@@ -1,11 +1,7 @@
 import {
-    Block,
-    IBlock,
-    IProps,
     ProfileForm,
     BackButton,
     FileUploader,
-    EVENTS,
     ProfileButtonBlock,
     SubmitButton
 } from '../../components';
@@ -13,9 +9,13 @@ import { user } from '../../shared/const.ts';
 import { template } from './template.ts';
 import { IProfile, IProfileProps } from './types.ts';
 import {
+    Block,
+    EVENTS,
+    IBlock,
     IFormField,
     IFormValues,
     IPage,
+    IProps,
     PAGES,
     TSettingsFields
 } from '../../shared';

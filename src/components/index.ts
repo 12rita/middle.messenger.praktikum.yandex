@@ -1,13 +1,13 @@
-export { Chat } from '../components/Chat';
+export { Chat } from './Chat';
 export { ChatPreview } from './ChatPreview';
 export { Plug } from './Plug';
 export { ProfileField } from './ProfileField';
 export { TextButton } from './TextButton';
 export { SubmitButton } from './SubmitButton';
 export { Error } from './Error';
+export { FormInput } from './FormInput';
 export { Input } from './Input';
 export { FileUploader } from './FileUploader';
-export * from '../shared/components/Block';
 export { Form } from './Form';
 export * from './ProfileForm';
 export { BackButton } from './BackButton';

@@ -15,7 +15,7 @@ export type TPages = {
     [K in keyof typeof PAGES]: (typeof PAGES)[K];
 }[keyof typeof PAGES];
 
-export interface IHistory extends IEventBus {}
+export interface IHistory extends IEventBus<TPages> {}
 
 export interface IPage extends Partial<IProps> {
     history: IHistory;
@@ -37,11 +37,14 @@ export type TSettingsFields =
     | 'phone';
 export type TChangePasswordFields = 'oldPassword' | 'newPassword';
 
+export type TMessageField = 'message';
+
 export type TFieldName =
     | TSignUpFields
     | TSignInFields
     | TSettingsFields
-    | TChangePasswordFields;
+    | TChangePasswordFields
+    | TMessageField;
 
 export interface IFormField<T> {
     title: string;

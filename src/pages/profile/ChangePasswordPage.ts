@@ -1,16 +1,22 @@
 import {
     BackButton,
-    Block,
     FileUploader,
-    IBlock,
-    IProps,
     ProfileForm,
     SubmitButton
 } from '../../components';
 import { user } from '../../shared/const.ts';
 
 import { IProfileProps } from './types.ts';
-import { IFormField, IPage, PAGES, TChangePasswordFields } from '../../shared';
+import {
+    Block,
+    IBlock,
+    IFormField,
+    IFormValues,
+    IPage,
+    IProps,
+    PAGES,
+    TChangePasswordFields
+} from '../../shared';
 import styles from './styles.module.css';
 import { template } from './template.ts';
 import { IForm } from '../../components/Form/types.ts';
@@ -42,7 +48,10 @@ export class ChangePasswordPage extends Block<IProps, IProfileProps> {
         const form = new ProfileForm({
             id: formId,
             formFields,
-            name: formId
+            key: formId,
+            handleSubmit: values => {
+                handleSubmit(values);
+            }
         });
 
         const avatar = new FileUploader({
@@ -70,11 +79,18 @@ export class ChangePasswordPage extends Block<IProps, IProfileProps> {
             className: styles.layout
         });
         this.history = history;
+        const handleSubmit = (values: IFormValues) => {
+            this._handleSubmit(values);
+        };
     }
 
     _saveData = () => {
         console.log((this.children.form as unknown as IForm).values);
         this.history.emit('push', PAGES.profile);
+    };
+
+    _handleSubmit = (values: IFormValues) => {
+        console.log(values);
     };
 
     componentDidUpdate() {

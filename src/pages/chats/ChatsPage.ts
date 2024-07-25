@@ -1,17 +1,11 @@
-import {
-    Block,
-    Chat,
-    ChatPreview,
-    EVENTS,
-    IBlock,
-    TextButton
-} from '../../components';
+import { Chat, ChatPreview, TextButton } from '../../components';
 import arrowRight from '../../static/arrowRight.svg';
 import { data } from './data.ts';
 import { Plug } from '../../components';
 import styles from './styles.module.css';
 import { template } from './template.ts';
-import { PAGES, IPage } from '../../shared';
+import { PAGES, IPage, Block, IBlock, EVENTS } from '../../shared';
+import { v4 as makeUUID } from 'uuid';
 
 export class ChatsPage extends Block {
     activeChatId: string = '';
@@ -67,7 +61,27 @@ export class ChatsPage extends Block {
 
         if (activeChat) {
             this.children.activeChat = new Chat({
-                ...activeChat
+                ...activeChat,
+                onSend: (value: string) => {
+                    console.log({ message: value });
+                    const currentTime = new Date(Date.now()).toLocaleTimeString(
+                        'en-US',
+                        {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }
+                    );
+                    const newMessage = {
+                        message: value,
+                        time: currentTime,
+                        id: makeUUID()
+                    };
+                    activeChat.messages.push(newMessage);
+
+                    (this.children.activeChat as unknown as Chat).setProps({
+                        messages: activeChat.messages
+                    });
+                }
             }) as unknown as IBlock;
             this.activeChatId = id;
             this.emit(EVENTS.FLOW_CDU);

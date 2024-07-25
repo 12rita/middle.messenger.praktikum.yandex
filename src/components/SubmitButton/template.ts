@@ -1,1 +1,1 @@
-export const template = `{{label}}`;
+export const template = `{{{children}}}`;

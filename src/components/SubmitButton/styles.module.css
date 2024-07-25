@@ -1,8 +1,5 @@
 @import '../../globalStyles.module.css';
 
-.wrapper {
-    width: 100%;
-}
 
 .submitButton {
     background: var(--blue);

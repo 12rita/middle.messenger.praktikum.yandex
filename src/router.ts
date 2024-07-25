@@ -22,7 +22,7 @@ const Pages = {
 export class Router extends Block {
     history;
     constructor() {
-        const history = new EventBus();
+        const history = new EventBus<TPages>();
         const page = new SignInPage({ history });
         super('div', { page });
         this.history = history;

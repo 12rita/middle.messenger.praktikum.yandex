@@ -1,46 +1,6 @@
 @import '../../globalStyles.module.css';
 
 
-.chatFieldWrapper {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.footer {
-    position: fixed;
-    bottom: 0;
-    width: calc(100% - 318px);
-
-}
-
-.chatLine {
-    width: calc(100% - 40px);
-    margin: auto;
-
-}
-
-.messageInput {
-    height: 32px;
-    margin: 0 10px;
-    width: 100%;
-    background: var(--lightGray);
-    border-radius: 30px;
-    padding: 10px 20px;
-}
-
-.sendMessage {
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.footerWrapper {
-    display: flex;
-    padding: 11px 20px;
-    align-items: center;
-}
-
 .messageText {
     background: var(--lightGray);
     padding: 11px;
@@ -53,19 +13,6 @@
     padding: 30px 20px;
 }
 
-.chatAvatar {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: #EFEFEF;
-    margin-right: 10px;
-}
-
-.header {
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-}
 
 .timeText {
     position: absolute;

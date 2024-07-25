@@ -5,7 +5,6 @@ import styles from './styles.module.css';
 
 export class Message extends Block<IMessageProps> {
     constructor(props: IMessageProps) {
-        console.log({ props });
         super('div', { ...props, className: styles.mainInfo });
     }
 

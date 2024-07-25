@@ -17,10 +17,7 @@ export default defineConfig({
     },
     plugins: [
         eslint(),
-        handlebars({
-            context: {},
-            partialDirectory: resolve(__dirname, 'src/partials')
-        })
+        handlebars()
     ],
     server: {
         port: 3000

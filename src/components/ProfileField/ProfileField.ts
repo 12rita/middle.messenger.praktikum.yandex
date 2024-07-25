@@ -1,13 +1,16 @@
-import { IInnerInput, IProfileFieldProps } from './types.ts';
+import { IProfileFieldProps } from './types.ts';
 import { Block, EVENTS, IBlock, isValidField } from '../../shared';
 import { template } from './template.ts';
-import { InnerInput } from './InnerInput.ts';
+
 import styles from './styles.module.css';
+import { Input } from '../Input';
+import global from '../../globalStyles.module.css';
 
 export class ProfileField extends Block<IProfileFieldProps> {
     constructor(props: IProfileFieldProps) {
-        const input = new InnerInput({
+        const input = new Input({
             ...props,
+            className: [styles.fieldValue, global.grayText, global.body1],
             disabled: props.disabled,
             onBlur: e => {
                 checkIsValid(e);
@@ -30,10 +33,11 @@ export class ProfileField extends Block<IProfileFieldProps> {
     };
 
     componentDidUpdate() {
-        this.children.input = new InnerInput({
+        this.children.input = new Input({
             ...this.props,
-            value: (this.children.input as unknown as IInnerInput).value,
+            value: (this.children.input as unknown as Input).value,
             disabled: this.props.disabled,
+            className: [styles.fieldValue, global.grayText, global.body1],
             onBlur: e => {
                 this._checkIsValid(e);
             }

@@ -1,6 +1,6 @@
-import { Block, Form } from '../../components';
+import { Form } from '../../components';
 import { template } from './template.ts';
-import { PAGES, IPage, IFormField, TSignInFields } from '../../shared';
+import { PAGES, IPage, IFormField, TSignInFields, Block } from '../../shared';
 import global from '../../globalStyles.module.css';
 
 export class SignInPage extends Block {

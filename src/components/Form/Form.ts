@@ -6,7 +6,7 @@ import {
 } from './types.ts';
 import { Block, IBlock, IFormValues, IValues } from '../../shared';
 import { template } from './template.ts';
-import { Input } from '../Input';
+import { FormInput } from '../FormInput';
 import { TextButton } from '../TextButton';
 import { SubmitButton } from '../SubmitButton';
 import styles from './styles.module.css';
@@ -28,7 +28,7 @@ export class Form
 
     constructor(props: IFormProps) {
         const inputs = props.formFields.map(field => {
-            return new Input({
+            return new FormInput({
                 placeholder: field.title,
                 type: field.type || 'text',
                 name: field.name,

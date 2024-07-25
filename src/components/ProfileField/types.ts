@@ -1,19 +1,7 @@
-import { IProps, TChangePasswordFields, TSettingsFields } from '../../shared';
+import { IProps } from '../../shared';
+import { IInputProps } from '../Input';
 
-export interface IProfileFieldProps extends IProps {
+export interface IProfileFieldProps extends IProps, IInputProps {
     title: string;
     key: string;
-    type: TInputType;
-    value: string;
-    disabled: boolean;
-    name: TSettingsFields | TChangePasswordFields;
-}
-
-export interface IInnerInputProps extends IProps, IProfileFieldProps {
-    onBlur: (e: Event) => void;
-    disabled: boolean;
-}
-
-export interface IInnerInput {
-    value: string;
 }

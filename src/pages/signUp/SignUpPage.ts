@@ -1,7 +1,8 @@
-import { Block, Form } from '../../components';
+import { Form } from '../../components';
 import { template } from './template.ts';
 import global from '../../globalStyles.module.css';
 import {
+    Block,
     IFormField,
     IFormValues,
     IPage,

@@ -154,7 +154,10 @@ export class Block<
         this.emit(EVENTS.FLOW_CDM);
     }
 
-    _componentDidUpdate<T = IBlockProps>(oldProps: T, newProps: T) {
+    _componentDidUpdate<T extends IBlockProps | string = IBlockProps>(
+        oldProps: T,
+        newProps?: T
+    ) {
         const response = this.componentDidUpdate(oldProps, newProps);
 
         if (!response) {
@@ -164,9 +167,9 @@ export class Block<
         this._render();
     }
 
-    componentDidUpdate<T = IBlockProps>(
-        oldProps: (T | string) | null,
-        newProps: (T | string) | null
+    componentDidUpdate<T extends IBlockProps | string = IBlockProps>(
+        oldProps: T | string,
+        newProps?: T | string
     ) {
         if (oldProps === null && newProps === null) {
             return false;

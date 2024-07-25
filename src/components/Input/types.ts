@@ -1,11 +1,11 @@
 import { IProps, TFieldName } from '../../shared';
 
 export interface IInputProps extends IProps {
+    onBlur?: (e: Event) => void;
+    disabled?: boolean;
     type: TInputType;
     name: TFieldName;
-    placeholder: string;
-}
-
-export interface IInnerInputProps extends IProps, IInputProps {
-    onBlur: (e: Event) => void;
+    placeholder?: string;
+    value?: string;
+    errorClassName?: string;
 }

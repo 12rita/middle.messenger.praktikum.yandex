@@ -1,7 +1,6 @@
 import styles from './styles.module.css';
 import global from '../../globalStyles.module.css';
 import attache from '../../static/attach.svg';
-import sendButton from '../../static/sendButton.svg';
 
 export const template = `
   <div class="${styles.header}">
@@ -17,9 +16,8 @@ export const template = `
     <div class="${global.basicLine} ${styles.chatLine}"></div>
     <div class="${styles.footerWrapper}">
     <div class="icon"><img alt="attach" src="${attache}"></div>
-  
-    <input class="${styles.messageInput}"  type="text" id="message" name="message" placeholder="Сообщение">
+  {{{input}}}   
 
-<button class="${styles.sendMessage}" ><img alt="attach" src="${sendButton}"></button>
+{{{sendButton}}}
 </div>
   </div>`;
