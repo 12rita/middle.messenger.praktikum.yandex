@@ -1,6 +1,16 @@
-import Handlebars from 'handlebars';
-import './styles.css';
+import { Block } from '../../shared';
+import { template } from './template.ts';
+import { IPlugProps } from './types.ts';
+import styles from './styles.module.css';
 
-export default Handlebars.compile(
-    `<div type="submit" class="plug body2 grayText"> Выберите чат, чтобы отправить сообщение </div>`
-);
+export class Plug extends Block<IPlugProps> {
+    constructor(props: IPlugProps) {
+        super('div', { ...props, className: styles.plug });
+    }
+
+    render() {
+        return this.compile(template, {
+            label: this.props.label ?? 'Выберите чат, чтобы отправить сообщение'
+        });
+    }
+}

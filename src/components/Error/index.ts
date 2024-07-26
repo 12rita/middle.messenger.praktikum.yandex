@@ -1,3 +1,1 @@
-import error from './Error.ts';
-
-export { error };
+export { Error } from './Error.ts';

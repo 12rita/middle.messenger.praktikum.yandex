@@ -1,3 +1,1 @@
-import chatPreview from './ChatPreview.ts';
-
-export { chatPreview };
+export { ChatPreview } from './ChatPreview.ts';

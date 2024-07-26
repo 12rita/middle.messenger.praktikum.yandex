@@ -1,0 +1,26 @@
+@import '../../globalStyles.module.css';
+
+.field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profileLine {
+   margin: 10px 0;
+}
+
+.fieldValue {
+    border: none;
+    padding: 10px 20px;
+}
+
+.error {
+    color: var(--red);
+    visibility: hidden;
+    text-align: right;
+}
+
+.errorVisible{
+    visibility: visible;
+}

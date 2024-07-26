@@ -31,5 +31,5 @@
     ],
     "eol-last": "error"
   },
-  "ignorePatterns": ["vite.config.js", "node_modules/"]
+  "ignorePatterns": ["vite.config.js", "node_modules/", "dist/"]
 }

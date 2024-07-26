@@ -7,12 +7,14 @@
     "node": ">=16"
   },
   "scripts": {
-    "dev": "eslint --fix && vite",
-    "build": "eslint --fix && tsc && vite build",
+    "dev": "npm run lint && tsc && vite",
+    "build": "npm run lint && tsc && vite build",
     "preview": "vite preview",
-    "start": "npm run build && npm run preview"
+    "start": "npm run build && npm run preview",
+    "lint": "eslint --fix && stylelint \"**/*.css\"  --fix"
   },
   "devDependencies": {
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
     "@typescript-eslint/parser": "^7.16.0",
     "create-stylelint": "^0.5.0",
@@ -36,6 +38,7 @@
     "autoprefixer": "^10.4.19",
     "handlebars": "^4.7.8",
     "stylelint-config-standard": "^36.0.1",
+    "uuid": "^10.0.0",
     "vite-plugin-handlebars": "^2.0.0"
   }
 }

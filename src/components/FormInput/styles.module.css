@@ -1,0 +1,47 @@
+@import '../../globalStyles.module.css';
+
+.label {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+
+.inputWrapper {
+    position: relative;
+}
+
+.inputWrapper .label {
+    position: absolute;
+    top: 50%;
+    display: flex;
+    transform: translateY(-50%);
+    pointer-events: none;
+    border: none;
+    background-color: var(--white);
+    color: var(--gray);
+    transition: top 0.1s ease-in-out;
+}
+
+.inputWrapper input::-moz-placeholder {
+    color: transparent;
+}
+
+.inputWrapper input::placeholder {
+    color: transparent;
+}
+
+.inputWrapper input:focus~.label,
+.inputWrapper input:not(:placeholder-shown)~.label {
+    top: 0;
+    transform: translateY(-50%);
+}
+
+.error {
+    margin-top: 7px;
+    color: var(--red);
+    visibility: hidden;
+}
+
+.errorVisible{
+    visibility: visible;
+}

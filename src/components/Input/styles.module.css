@@ -1,0 +1,30 @@
+@import '../../globalStyles.module.css';
+
+
+.input {
+    display: block;
+    width: 100%;
+    height: 30px;
+    color: var(--black);
+    border: none;
+    border-bottom: 1px solid var(--blue);
+} 
+
+.input[type="search"]::-webkit-search-decoration,
+.input[type="search"]::-webkit-search-cancel-button,
+.input[type="search"]::-webkit-search-results-button,
+.input[type="search"]::-webkit-search-results-decoration {
+    appearance: none;
+}
+
+.input::placeholder {
+    color: var(--gray);
+    opacity: 0.4;
+}
+
+.input:focus {
+    color: var(--black);
+    outline: 0;
+}
+
+

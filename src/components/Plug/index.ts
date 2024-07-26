@@ -1,3 +1,1 @@
-import plug from './Plug.ts';
-
-export { plug };
+export { Plug } from './Plug.ts';

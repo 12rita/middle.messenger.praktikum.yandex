@@ -1,5 +1,11 @@
-export interface IInputProps {
+import { IProps, TFieldName } from '../../shared';
+
+export interface IInputProps extends IProps {
+    onBlur?: (e: Event) => void;
+    disabled?: boolean;
     type: TInputType;
-    name: string;
-    placeholder: string;
+    name: TFieldName;
+    placeholder?: string;
+    value?: string;
+    errorClassName?: string;
 }
