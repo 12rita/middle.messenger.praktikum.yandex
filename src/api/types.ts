@@ -10,6 +10,7 @@ export interface IOptions {
     data?: TObject;
     timeout?: number;
     method?: keyof typeof METHODS;
+    baseUrl?: string;
 }
 
 export type TRequest = (

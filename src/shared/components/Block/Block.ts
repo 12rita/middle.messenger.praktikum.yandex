@@ -10,7 +10,7 @@ import {
 } from './types.ts';
 import Handlebars from 'handlebars';
 import { v4 as makeUUID } from 'uuid';
-import { deepClone } from '../../utils';
+import { deepClone, isEqual } from '../../utils';
 
 export class Block<
         IBlockProps extends IProps = IProps,
@@ -171,34 +171,11 @@ export class Block<
         oldProps: T | string,
         newProps?: T | string
     ) {
-        if (oldProps === null && newProps === null) {
-            return false;
-        } else if (oldProps === null || newProps === null) {
-            return true;
-        } else if (
-            typeof oldProps === 'string' &&
-            typeof newProps === 'string'
-        ) {
-            return oldProps !== newProps;
-        } else if (
-            typeof oldProps === 'object' &&
-            typeof newProps === 'object'
-        ) {
-            return (
-                Object.keys(oldProps as Record<string, unknown>).some(key => {
-                    return (
-                        (oldProps as Record<string, unknown>)[key] !==
-                        (newProps as Record<string, unknown>)[key]
-                    );
-                }) &&
-                Object.keys(oldProps as Record<string, unknown>).length !==
-                    Object.keys(newProps as Record<string, unknown>).length
-            );
-        } else return oldProps !== newProps;
+        return !isEqual(oldProps, newProps);
     }
 
     setProps = (nextProps: unknown) => {
-        if (!nextProps) {
+        if (nextProps === undefined) {
             return;
         }
 

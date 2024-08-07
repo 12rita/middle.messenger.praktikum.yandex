@@ -1,0 +1,8 @@
+@import '../../globalStyles.module.css';
+
+.error {
+    max-width: 200px;
+    color: var(--white);
+    background-color: var(--red);
+    padding: 24px 16px;
+}

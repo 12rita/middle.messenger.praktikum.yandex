@@ -1,5 +1,6 @@
 import { METHODS, TRequest } from './types.ts';
-import { queryStringify } from '../shared';
+import { queryStringify } from '@shared/utils';
+import { setError } from '@components/Toaster/Toaster.ts';
 
 export class HTTPTransport {
     get: TRequest = (url, options = {}) => {
@@ -32,27 +33,43 @@ export class HTTPTransport {
         );
     };
 
+    onError = (e: string) => {
+        setError(e);
+        console.log(e);
+        return;
+    };
+
     request: TRequest = (url, options, timeout = 5000) => {
         return new Promise((resolve, reject) => {
-            const { method, data, headers = {} } = options;
+            const { method, data, headers = {}, baseUrl } = options;
             if (!method) {
                 reject('No method');
                 return;
             }
+            const base = baseUrl
+                ? baseUrl
+                : 'https://ya-praktikum.tech/api/v2/';
             const xhr = new XMLHttpRequest();
             const isGet = method === METHODS.GET;
 
             xhr.open(
                 method,
-                isGet && !!data ? `${url}${queryStringify(data)}` : url
+                isGet && !!data
+                    ? `${base}${url}${queryStringify(data)}`
+                    : base + url
             );
 
             Object.keys(headers).forEach(key => {
                 xhr.setRequestHeader(key, headers[key] as string);
             });
 
-            xhr.onload = function () {
-                resolve(xhr);
+            xhr.onload = () => {
+                if (xhr.status <= 300) resolve(xhr);
+                else {
+                    console.log(this);
+                    this.onError(xhr.response);
+                    reject(xhr.response);
+                }
             };
 
             xhr.onabort = reject;
@@ -68,3 +85,5 @@ export class HTTPTransport {
         });
     };
 }
+
+export const api = new HTTPTransport();
