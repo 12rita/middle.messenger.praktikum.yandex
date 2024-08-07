@@ -12,6 +12,6 @@ declare module '*.module.css' {
     export default classes;
 }
 
-declare type TObject = {
-    [key: string]: unknown;
+declare type TObject<T = unknown> = {
+    [key in string]: T;
 };
