@@ -1,26 +1,3 @@
-import { IProps } from './components';
-import { IEventBus } from './components/EventBus/types.ts';
-
-export enum PAGES {
-    signIn = '/signIn',
-    signUp = '/signUp',
-    profile = '/profile',
-    page404 = '/404',
-    page500 = '/500',
-    chats = '/chats',
-    changePassword = '/changePassword'
-}
-
-export type TPages = {
-    [K in keyof typeof PAGES]: (typeof PAGES)[K];
-}[keyof typeof PAGES];
-
-export interface IHistory extends IEventBus<TPages> {}
-
-export interface IPage extends Partial<IProps> {
-    history: IHistory;
-}
-
 export type TSignUpFields =
     | 'email'
     | 'password'

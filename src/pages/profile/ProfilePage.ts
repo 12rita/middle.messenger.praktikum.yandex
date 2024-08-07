@@ -4,23 +4,22 @@ import {
     FileUploader,
     ProfileButtonBlock,
     SubmitButton
-} from '../../components';
-import { user } from '../../shared/const.ts';
+} from '@components';
+import { user } from '@shared/const.ts';
 import { template } from './template.ts';
 import { IProfile, IProfileProps } from './types.ts';
+
+import styles from './styles.module.css';
 import {
     Block,
     EVENTS,
     IBlock,
-    IFormField,
-    IFormValues,
+    IEventBus,
     IPage,
     IProps,
-    PAGES,
-    TSettingsFields
-} from '../../shared';
-import styles from './styles.module.css';
-import { IEventBus } from '../../shared/components/EventBus/types.ts';
+    PAGES
+} from '@shared/components';
+import { IFormField, IFormValues, TSettingsFields } from '@shared/types.ts';
 
 const formFields: IFormField<TSettingsFields>[] = [
     { title: 'Почта', name: 'email', value: user['email'] },
@@ -64,7 +63,7 @@ export class ProfilePage
 
         const backButton = new BackButton({
             onClick: () => {
-                history.emit('push', PAGES.chats);
+                history.back();
             }
         });
 
@@ -96,10 +95,10 @@ export class ProfilePage
             this._handleSubmit(values);
         };
         const handleChangePassword = () => {
-            history.emit('push', PAGES.changePassword);
+            history.go(PAGES.changePassword);
         };
         const handleExit = () => {
-            history.emit('push', PAGES.signIn);
+            history.go(PAGES.signIn);
         };
     }
 

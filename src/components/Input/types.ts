@@ -1,4 +1,5 @@
-import { IProps, TFieldName } from '../../shared';
+import { IProps } from '@shared/components';
+import { TFieldName } from '@shared/types.ts';
 
 export interface IInputProps extends IProps {
     onBlur?: (e: Event) => void;

@@ -1,7 +1,8 @@
 import { ITextButtonProps } from './types.ts';
-import { Block } from '../../shared';
+
 import styles from './styles.module.css';
 import { template } from './template.ts';
+import { Block } from '@shared/components';
 
 export class TextButton extends Block<ITextButtonProps> {
     constructor(props: ITextButtonProps) {

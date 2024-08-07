@@ -3,23 +3,20 @@ import {
     FileUploader,
     ProfileForm,
     SubmitButton
-} from '../../components';
-import { user } from '../../shared/const.ts';
+} from '@components';
+import { user } from '@shared/const.ts';
 
 import { IProfileProps } from './types.ts';
-import {
-    Block,
-    IBlock,
-    IFormField,
-    IFormValues,
-    IPage,
-    IProps,
-    PAGES,
-    TChangePasswordFields
-} from '../../shared';
+
 import styles from './styles.module.css';
 import { template } from './template.ts';
-import { IForm } from '../../components/Form/types.ts';
+import { IForm } from '@components/Form/types.ts';
+import {
+    IFormField,
+    IFormValues,
+    TChangePasswordFields
+} from '@shared/types.ts';
+import { Block, IBlock, IPage, IProps, PAGES } from '@shared/components';
 
 const formFields: IFormField<TChangePasswordFields>[] = [
     {
@@ -60,7 +57,7 @@ export class ChangePasswordPage extends Block<IProps, IProfileProps> {
 
         const backButton = new BackButton({
             onClick: () => {
-                history.emit('push', PAGES.profile);
+                history.back();
             }
         });
 
@@ -86,7 +83,7 @@ export class ChangePasswordPage extends Block<IProps, IProfileProps> {
 
     _saveData = () => {
         console.log((this.children.form as unknown as IForm).values);
-        this.history.emit('push', PAGES.profile);
+        this.history.go(PAGES.profile);
     };
 
     _handleSubmit = (values: IFormValues) => {

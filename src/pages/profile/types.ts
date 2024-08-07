@@ -1,4 +1,4 @@
-import { IBlock, ICompileProps } from '../../shared';
+import { IBlock, ICompileProps } from '@shared/components';
 
 export interface IProfile {
     buttonBlock: IBlock;

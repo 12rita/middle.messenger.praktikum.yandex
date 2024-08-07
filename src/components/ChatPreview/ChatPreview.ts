@@ -1,7 +1,8 @@
 import { IChatPreviewProps } from './types.ts';
-import { Block } from '../../shared';
+
 import { template } from './template.ts';
 import styles from './styles.module.css';
+import { Block } from '@shared/components';
 
 export class ChatPreview extends Block<IChatPreviewProps> {
     constructor(props: IChatPreviewProps) {

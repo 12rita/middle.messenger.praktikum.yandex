@@ -1,8 +1,9 @@
-import { Block, EVENTS, isValidField } from '../../shared';
 import { template } from './template.ts';
 import { IFormInputProps } from './types.ts';
 import { Input } from '../Input';
 import styles from './styles.module.css';
+import { isValidField } from '@shared/utils';
+import { Block, EVENTS } from '@shared/components';
 
 export class FormInput extends Block<IFormInputProps> {
     value: string = '';

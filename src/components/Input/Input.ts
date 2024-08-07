@@ -1,7 +1,7 @@
-import { Block } from '../../shared';
 import { IInputProps } from './types.ts';
 import styles from './styles.module.css';
 import global from '../../globalStyles.module.css';
+import { Block } from '@shared/components';
 
 export class Input extends Block<IInputProps> {
     _value: string = '';
@@ -17,7 +17,7 @@ export class Input extends Block<IInputProps> {
                 ? props.className
                 : [styles.input, global.body1],
             attributes: [
-                { value: 'input', name: 'id' },
+                // { value: 'input', name: 'id' },
                 {
                     value: props.type,
                     name: 'type'

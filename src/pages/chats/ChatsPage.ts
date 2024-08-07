@@ -1,11 +1,12 @@
-import { Chat, ChatPreview, TextButton } from '../../components';
+import { Chat, ChatPreview, TextButton, Plug } from '@components';
 import arrowRight from '../../static/arrowRight.svg';
 import { data } from './data.ts';
-import { Plug } from '../../components';
+
 import styles from './styles.module.css';
 import { template } from './template.ts';
-import { PAGES, IPage, Block, IBlock, EVENTS } from '../../shared';
+
 import { v4 as makeUUID } from 'uuid';
+import { Block, EVENTS, IBlock, IPage, PAGES } from '@shared/components';
 
 export class ChatsPage extends Block {
     activeChatId: string = '';
@@ -21,7 +22,7 @@ export class ChatsPage extends Block {
             </span>`,
             type: 'gray',
             onClick: () => {
-                history.emit('push', PAGES.profile);
+                history.go(PAGES.profile);
             }
         });
 

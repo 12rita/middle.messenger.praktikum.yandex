@@ -1,7 +1,7 @@
 import { IErrorProps } from './types.ts';
-import { Block } from '../../shared';
 import { template } from './template.ts';
-import { TextButton } from '../TextButton';
+import { TextButton } from '@/components';
+import { Block } from '@shared/components';
 
 export class Error extends Block<IErrorProps> {
     constructor(props: IErrorProps) {

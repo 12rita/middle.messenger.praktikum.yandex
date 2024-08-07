@@ -1,7 +1,8 @@
 import { IProfileForm, IProfileFormProps, THandleChange } from './types.ts';
-import { Block, IBlock, IFormValues, IValues } from '../../shared';
 import { template } from './template.ts';
-import { ProfileField } from '../ProfileField';
+import { ProfileField } from '@/components';
+import { IFormValues, IValues } from '@shared/types.ts';
+import { Block, IBlock } from '@shared/components';
 export class ProfileForm
     extends Block<IProfileFormProps>
     implements IProfileForm

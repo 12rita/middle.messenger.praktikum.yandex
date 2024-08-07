@@ -1,13 +1,13 @@
-import { Error } from '../../components';
+import { Error } from '@components';
 import { template } from './template.ts';
 import { IPage500 } from './types.ts';
 import styles from './styles.module.css';
-import { Block, IBlock, IPage, PAGES } from '../../shared';
+import { Block, IBlock, IPage, PAGES } from '@shared/components';
 
 export class Page_500 extends Block<IPage, IPage500> {
     constructor(props: IPage) {
         const handleClick = () => {
-            props.history.emit('push', PAGES.signIn);
+            props.history.go(PAGES.signIn);
         };
         const error = new Error({
             errorCode: 500,

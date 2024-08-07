@@ -1,10 +1,12 @@
 import { IProfileFieldProps } from './types.ts';
-import { Block, EVENTS, IBlock, isValidField } from '../../shared';
+
 import { template } from './template.ts';
 
 import styles from './styles.module.css';
 import { Input } from '../Input';
 import global from '../../globalStyles.module.css';
+import { Block, EVENTS, IBlock } from '@shared/components';
+import { isValidField } from '@shared/utils';
 
 export class ProfileField extends Block<IProfileFieldProps> {
     constructor(props: IProfileFieldProps) {

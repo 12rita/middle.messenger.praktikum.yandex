@@ -1,7 +1,8 @@
-import { Form } from '../../components';
+import { Form } from '@components';
 import { template } from './template.ts';
-import { PAGES, IPage, IFormField, TSignInFields, Block } from '../../shared';
-import global from '../../globalStyles.module.css';
+import global from '@/globalStyles.module.css';
+import { Block, IPage, PAGES } from '@shared/components';
+import { IFormField, TSignInFields } from '@shared/types.ts';
 
 export class SignInPage extends Block {
     constructor(props: IPage) {
@@ -18,11 +19,11 @@ export class SignInPage extends Block {
         const { history } = props;
 
         const onTextClick = () => {
-            history.emit('push', PAGES.signUp);
+            history.go(PAGES.signUp);
         };
 
         const onSubmitClick = () => {
-            history.emit('push', PAGES.chats);
+            history.go(PAGES.chats);
         };
 
         const form = new Form({

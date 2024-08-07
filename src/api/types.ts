@@ -7,7 +7,7 @@ export enum METHODS {
 
 export interface IOptions {
     headers?: TObject;
-    data?: XMLHttpRequestBodyInit;
+    data?: TObject;
     timeout?: number;
     method?: keyof typeof METHODS;
 }

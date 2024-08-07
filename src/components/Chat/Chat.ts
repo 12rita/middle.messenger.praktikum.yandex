@@ -1,11 +1,12 @@
 import { IChatProps } from './types.ts';
-import { Block } from '../../shared';
+
 import { template } from './template.ts';
 import styles from './styles.module.css';
 import { Message } from '../Message';
 import { Input } from '../Input';
 import sendIcon from '../../static/sendButton.svg';
-import { SubmitButton } from '../SubmitButton';
+import { SubmitButton } from '@/components';
+import { Block } from '@shared/components';
 
 export class Chat extends Block<IChatProps> {
     constructor(props: IChatProps) {

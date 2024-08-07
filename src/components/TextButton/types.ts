@@ -1,4 +1,4 @@
-import { IProps } from '../../shared';
+import { IProps } from '@shared/components';
 
 type TButtonType = 'classic' | 'gray' | 'danger';
 

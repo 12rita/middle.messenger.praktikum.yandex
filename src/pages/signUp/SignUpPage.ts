@@ -1,14 +1,8 @@
-import { Form } from '../../components';
+import { Form } from '@components';
 import { template } from './template.ts';
-import global from '../../globalStyles.module.css';
-import {
-    Block,
-    IFormField,
-    IFormValues,
-    IPage,
-    PAGES,
-    TSignUpFields
-} from '../../shared';
+import global from '@/globalStyles.module.css';
+import { IFormField, IFormValues, TSignUpFields } from '@shared/types.ts';
+import { Block, IPage, PAGES } from '@shared/components';
 
 const formFields: IFormField<TSignUpFields>[] = [
     { title: 'Почта', value: '', name: 'email', type: 'email' },
@@ -33,12 +27,12 @@ const formFields: IFormField<TSignUpFields>[] = [
 export class SignUpPage extends Block {
     constructor({ history }: IPage) {
         const onSignIn = () => {
-            history.emit('push', PAGES.signIn);
+            history.go(PAGES.signIn);
         };
 
         const onSignUp = (values: IFormValues) => {
             console.log(values);
-            history.emit('push', PAGES.chats);
+            history.go(PAGES.chats);
         };
 
         const formId = 'signUpForm';

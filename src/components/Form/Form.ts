@@ -4,12 +4,14 @@ import {
     IFormProps,
     THandleChange
 } from './types.ts';
-import { Block, IBlock, IFormValues, IValues } from '../../shared';
+
 import { template } from './template.ts';
 import { FormInput } from '../FormInput';
-import { TextButton } from '../TextButton';
-import { SubmitButton } from '../SubmitButton';
+import { TextButton } from '@/components';
+import { SubmitButton } from '@/components';
 import styles from './styles.module.css';
+import { IFormValues, IValues } from '@shared/types.ts';
+import { Block, IBlock } from '@shared/components';
 
 export class Form
     extends Block<IFormProps, IFormCompileProps>
