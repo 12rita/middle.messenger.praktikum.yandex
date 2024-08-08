@@ -21,7 +21,9 @@ export class NewChat extends Block<INewChatProps> {
     }
     onAdd = () => {
         this.children.modal = new NewChatModal({
-            onClick: () => {
+            onClick: (e: Event) => {
+                const formEl = e.target?.closest('#addForm');
+                if (formEl) return;
                 this.children.modal = [];
             }
         });

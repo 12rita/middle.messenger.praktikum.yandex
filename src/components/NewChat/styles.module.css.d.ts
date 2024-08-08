@@ -3,3 +3,7 @@ export const error: string;
 export const addButton: string;
 export const modal: string;
 export const wrapper: string;
+export const form: string;
+export const search: string;
+export const searchWrapper: string;
+export const searchIcon: string;

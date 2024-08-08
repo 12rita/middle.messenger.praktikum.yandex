@@ -15,12 +15,43 @@
 .modal {
     width: 100%;
     height: 100vh;
-    background-color: var(--gray);
-    opacity: 0.5;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .wrapper {
     position: absolute;
     width: 100%;
     height: 100vh;
+}
+
+.form {
+    width: 400px;
+    height: 800px;
+    background-color: white;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.search {
+    width: 100%;
+    height: 32px;
+    background: var(--lightGray);
+    border: 0;
+    border-radius: 5px;
+    margin-top: 16px;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.search::placeholder {
+    text-align: center;
+}
+
+
+.searchIcon {
+    order: -1;
 }

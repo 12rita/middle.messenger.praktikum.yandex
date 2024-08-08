@@ -1,5 +1,5 @@
 import styles from './styles.module.css';
-
+import global from '@/globalStyles.module.css';
 export const template = `
 {{{modal}}}
  </div>
@@ -7,11 +7,12 @@ export const template = `
 </div>`;
 
 export const modalTemplate = `
-<div >
-<div class="${styles.header}">
-  New Chat
+<div id="addForm" class="${styles.form}">
+<div class="${global.bigSubtext}">
+  Новый чат
 </div>
-<label for="search"></label>
-<input  type="text" id="search" name="search" placeholder="🔍 Поиск">
+<div>
+    <label for="search"></label>
+    <input class="${styles.search}" type="text" id="search" name="search" placeholder="🔍 Поиск">
 </div>
 `;
