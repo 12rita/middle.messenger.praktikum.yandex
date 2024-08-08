@@ -7,10 +7,12 @@ export enum METHODS {
 
 export interface IOptions {
     headers?: TObject;
-    data?: TObject;
+    data?: TObject | FormData;
     timeout?: number;
+    mode?: string;
     method?: keyof typeof METHODS;
     baseUrl?: string;
+    credentials?: string;
 }
 
 export type TRequest = (

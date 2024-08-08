@@ -12,7 +12,7 @@ type TIsValidField = ({ name, value }: IFieldProps) => {
 
 const rules = {
     password: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/,
-    phone: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/,
+    phone: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
     message: /^.+$/,
     name: /^[А-ЯA-Z][а-яa-zА-ЯA-Z]{2,19}$/,
     login: /^(?=.*[a-zA-Z])[a-zA-Z0-9-_]{3,20}$/,

@@ -1,7 +1,7 @@
 import { Form } from '@components';
 import { template } from './template.ts';
 import global from '@/globalStyles.module.css';
-import { IFormField, IFormValues, TSignUpFields } from '@shared/types.ts';
+import { IFormField, TSignUpFields } from '@shared/types.ts';
 import { Block, IPage, PAGES } from '@shared/components';
 import { api } from '@api/HTTPTransport.ts';
 import { ROUTES } from '@api';
@@ -33,9 +33,9 @@ export class SignUpPage extends Block {
             history.go(PAGES.signIn);
         };
 
-        const onSignUp = (values: IFormValues) => {
+        const onSignUp = () => {
             // console.log(values);
-            this.signUp(values);
+            this.signUp();
             // history.go(PAGES.chats);
         };
 
@@ -57,18 +57,21 @@ export class SignUpPage extends Block {
     signUp = () => {
         const myUserForm = document.getElementById(formId);
 
-        const form = new FormData(myUserForm);
+        if (myUserForm) {
+            const form = new FormData(myUserForm as HTMLFormElement);
 
-        api.post(ROUTES.signUp, {
-            credentials: 'include',
-            mode: 'cors',
-            // headers: {
-            //     'content-type': 'multipart/form-data'
-            // },
-            data: form
-        })
-            .then(data => console.log({ data }))
-            .catch(e => console.log({ e }));
+            api.post(ROUTES.signUp, {
+                credentials: 'include',
+                mode: 'cors',
+                headers: {
+                    accept: 'application/json'
+                    // 'content-type': 'multipart/form-data'
+                },
+                data: form
+            })
+                .then(data => console.log({ data }))
+                .catch(e => console.log({ e }));
+        }
     };
 
     render() {

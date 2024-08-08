@@ -1,1 +1,1 @@
-export { Toaster } from './Toaster.ts';
+export { Toaster, setError } from './Toaster.ts';

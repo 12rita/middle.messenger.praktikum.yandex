@@ -1,7 +1,8 @@
 import { IProps } from '@shared/components';
 
-type TToaster = 'error' | 'success';
+type TToaster = 'Error' | 'Success';
 export interface IToasterProps extends IProps {
     text: string;
-    type: TToaster;
+    type?: TToaster;
+    title?: string;
 }

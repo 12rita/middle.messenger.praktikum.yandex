@@ -1,13 +1,12 @@
+import { IProfileFieldProps } from '../ProfileField/types.ts';
+import { IBlock, IProps } from '@shared/components';
 import {
-    IBlock,
     IFormField,
     IFormValues,
-    IProps,
     IValues,
     TChangePasswordFields,
     TSettingsFields
-} from '../../shared';
-import { IProfileFieldProps } from '../ProfileField/types.ts';
+} from '@shared/types.ts';
 
 export interface IProfileForm extends IBlock<IProfileFormProps> {
     values: IFormValues;

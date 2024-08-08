@@ -1,7 +1,13 @@
 import { isObject } from './isObject.ts';
 
-export const isEqual = (a: object, b: object): boolean => {
+type TIsEqual = (a: object | string, b?: object | string) => boolean;
+
+export const isEqual: TIsEqual = (a, b) => {
+    if (!b) return true;
     if (Object.keys(a).length !== Object.keys(b).length) return false;
+    if (typeof a === 'string' && typeof b === 'string') {
+        return a === b;
+    } else if (typeof a === 'string' || typeof b === 'string') return false;
 
     return Object.keys(a).every(key => {
         if (!(key in b)) return false;

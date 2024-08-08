@@ -1,6 +1,3 @@
-@import '../../globalStyles.module.css';
-
-
 .messageText {
     background: var(--lightGray);
     padding: 11px;

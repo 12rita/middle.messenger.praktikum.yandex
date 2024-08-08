@@ -1,6 +1,6 @@
 import { METHODS, TRequest } from './types.ts';
 import { queryStringify } from '@shared/utils';
-import { setError } from '@components/Toaster/Toaster.ts';
+import { setError } from '@components/Toaster';
 
 export class HTTPTransport {
     get: TRequest = (url, options = {}) => {
@@ -34,14 +34,25 @@ export class HTTPTransport {
     };
 
     onError = (e: string) => {
-        setError(e);
-        console.log(e);
-        return;
+        try {
+            const errorMessage = JSON.parse(e);
+            const { reason, error } = errorMessage;
+            setError({ title: error, text: reason });
+        } catch (err) {
+            setError({ text: e });
+        }
     };
 
     request: TRequest = (url, options, timeout = 5000) => {
         return new Promise((resolve, reject) => {
-            const { method, data, headers = {}, baseUrl } = options;
+            const {
+                method,
+                data,
+                headers = {},
+                credentials,
+
+                baseUrl
+            } = options;
             if (!method) {
                 reject('No method');
                 return;
@@ -55,18 +66,19 @@ export class HTTPTransport {
             xhr.open(
                 method,
                 isGet && !!data
-                    ? `${base}${url}${queryStringify(data)}`
+                    ? `${base}${url}${queryStringify(data as TObject)}`
                     : base + url
             );
 
             Object.keys(headers).forEach(key => {
                 xhr.setRequestHeader(key, headers[key] as string);
             });
+            xhr.withCredentials = credentials === 'include';
+            console.log(xhr.withCredentials);
 
             xhr.onload = () => {
                 if (xhr.status <= 300) resolve(xhr);
                 else {
-                    console.log(this);
                     this.onError(xhr.response);
                     reject(xhr.response);
                 }

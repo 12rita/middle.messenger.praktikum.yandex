@@ -1,8 +1,11 @@
-@import '../../globalStyles.module.css';
-
 .error {
-    max-width: 200px;
+    min-width: 200px;
     color: var(--white);
     background-color: var(--red);
     padding: 24px 16px;
+    border-radius: 8px;
+}
+
+.title {
+    margin-bottom: 8px;
 }
