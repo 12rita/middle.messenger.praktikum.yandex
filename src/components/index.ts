@@ -12,3 +12,4 @@ export { Form } from './Form';
 export * from './ProfileForm';
 export { BackButton } from './BackButton';
 export { ProfileButtonBlock } from './ProfileButtonBlock';
+export { NewChat } from './NewChat';

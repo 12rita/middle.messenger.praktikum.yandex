@@ -1,4 +1,4 @@
-import { Chat, ChatPreview, TextButton, Plug } from '@components';
+import { Chat, ChatPreview, TextButton, Plug, NewChat } from '@components';
 import arrowRight from '../../static/arrowRight.svg';
 import { data } from './data.ts';
 
@@ -15,6 +15,8 @@ export class ChatsPage extends Block {
         const plug = new Plug({
             label: 'Выберите чат, чтобы отправить сообщение'
         });
+
+        const newChat = new NewChat({});
 
         const profileButton = new TextButton({
             children: `<span> Профиль
@@ -38,7 +40,7 @@ export class ChatsPage extends Block {
             });
         });
 
-        super('div', { activeChat: plug, chats, profileButton });
+        super('div', { activeChat: plug, chats, profileButton, newChat });
         this.escapeEvent();
         const onChatClick = (id: string) => {
             this._onChatClick(id);

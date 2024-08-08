@@ -29,7 +29,7 @@ export class Block<
         super();
         const { children, props } = this._getChildren(propsAndChildren);
 
-        this.children = children;
+        this.children = this._makePropsProxy(children) as IChildren;
         this._id = makeUUID();
         this._meta = {
             tagName,
@@ -39,7 +39,7 @@ export class Block<
         this.props = this._makePropsProxy({
             ...props,
             __id: this._id
-        });
+        }) as IBlockProps;
 
         this._registerEvents();
         this.emit(EVENTS.INIT);
@@ -204,7 +204,7 @@ export class Block<
         return this.element;
     };
 
-    _makePropsProxy(props: IBlockProps) {
+    _makePropsProxy(props: IBlockProps | IChildren) {
         return new Proxy(props, {
             get: (target, prop) => {
                 const value = target[prop as string];
@@ -213,7 +213,7 @@ export class Block<
             set: (target, prop, value) => {
                 const oldObj = deepClone(target) as IBlockProps;
                 (target as { [key: string]: unknown })[prop as string] = value;
-                this.emit(EVENTS.FLOW_CDU, oldObj, target);
+                this.emit(EVENTS.FLOW_CDU, oldObj, target as IBlockProps);
                 return true;
             },
             deleteProperty() {

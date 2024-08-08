@@ -20,5 +20,6 @@ export const template = `<main class=${styles.layout}>
     <div id="chatField" class="${styles.chatField}">
     {{{activeChat}}}
     </div>
+    {{{newChat}}}
 
 </main>`;
