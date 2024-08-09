@@ -1,7 +1,7 @@
 import { Form } from '@components';
 import { template } from './template.ts';
 import global from '@/globalStyles.module.css';
-import { IFormField, TSignUpFields } from '@shared/types.ts';
+import { IFormField, IFormValues, TSignUpFields } from '@shared/types.ts';
 import { Block, IPage, PAGES } from '@shared/components';
 import { api } from '@api/HTTPTransport.ts';
 import { ROUTES } from '@api';
@@ -28,14 +28,15 @@ const formFields: IFormField<TSignUpFields>[] = [
 const formId = 'signUpForm';
 
 export class SignUpPage extends Block {
+    history;
     constructor({ history }: IPage) {
         const onSignIn = () => {
             history.go(PAGES.signIn);
         };
 
-        const onSignUp = () => {
+        const onSignUp = (values: IFormValues) => {
             // console.log(values);
-            this.signUp();
+            this.signUp(values);
             // history.go(PAGES.chats);
         };
 
@@ -52,24 +53,28 @@ export class SignUpPage extends Block {
             size: 'big'
         });
         super('main', { form, className: global.layout });
+        this.history = history;
     }
 
-    signUp = () => {
+    signUp = (values: IFormValues) => {
         const myUserForm = document.getElementById(formId);
 
         if (myUserForm) {
-            const form = new FormData(myUserForm as HTMLFormElement);
+            // const form = new FormData(myUserForm as HTMLFormElement);
 
             api.post(ROUTES.signUp, {
                 credentials: 'include',
                 mode: 'cors',
                 headers: {
-                    accept: 'application/json'
-                    // 'content-type': 'multipart/form-data'
+                    accept: 'application/json',
+                    'content-type': 'application/json'
                 },
-                data: form
+                data: JSON.stringify(values)
             })
-                .then(data => console.log({ data }))
+                .then(data => {
+                    console.log({ data });
+                    this.history.go(PAGES.chats);
+                })
                 .catch(e => console.log({ e }));
         }
     };

@@ -1,6 +1,7 @@
-import { TPages } from './types.ts';
+import { PAGES, TPages } from './types.ts';
 import { Route } from './route.ts';
 import { Pages } from './pages.ts';
+import { api, ROUTES } from '@api';
 
 export class Router {
     routes: Route[] = [];
@@ -36,17 +37,40 @@ export class Router {
         this.routes.push(baseRoute);
     }
 
+    checkAuthorise = () => {
+        api.get(ROUTES.user, {
+            credentials: 'include',
+            mode: 'cors',
+            headers: {
+                accept: 'application/json',
+                'content-type': 'application/json'
+            }
+        })
+            .then(() => {
+                this._onRoute(window.location.pathname);
+            })
+            .catch(e => {
+                console.log({ e });
+                this._onRoute(PAGES.signIn);
+            });
+    };
+
     start() {
         window.onpopstate = event => {
             this._onRoute((event.currentTarget as Window).location.pathname);
         };
 
-        this._onRoute(window.location.pathname);
+        // this._onRoute(window.location.pathname);
+
+        this.checkAuthorise();
     }
 
     _onRoute(pathname: string) {
-        const route = this.getRoute(pathname);
-
+        let route = this.getRoute(pathname);
+        console.log({ pathname, route });
+        if (!route) {
+            route = this.getRoute(PAGES.page404);
+        }
         if (this._currentRoute && this._currentRoute !== route) {
             this._currentRoute.leave();
         }
