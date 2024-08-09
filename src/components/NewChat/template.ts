@@ -12,7 +12,14 @@ export const modalTemplate = `
   Новый чат
 </div>
 <div>
-    <label for="search"></label>
-    <input class="${styles.search}" type="text" id="search" name="search" placeholder="🔍 Поиск">
+   {{{input}}}
+</div>
+
+{{{users}}}
+<div>
+   {{{inputName}}}
+</div>
+<div class="${styles.button}">
+{{{submitButton}}}
 </div>
 `;

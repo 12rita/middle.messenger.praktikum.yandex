@@ -1,5 +1,8 @@
 export enum ROUTES {
     signUp = 'auth/signup',
     signIn = 'auth/signin',
-    user = 'auth/user'
+    user = 'auth/user',
+    users = 'user/search',
+    chats = 'chats',
+    addUsers = 'chats/users'
 }

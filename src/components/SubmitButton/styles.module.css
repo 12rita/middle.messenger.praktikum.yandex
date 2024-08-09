@@ -8,6 +8,11 @@
     border: none;
 }
 
+.submitButton:disabled {
+    background: var(--gray);
+    cursor: default;
+}
+
 .submitButton a {
     color: var(--white);
 }

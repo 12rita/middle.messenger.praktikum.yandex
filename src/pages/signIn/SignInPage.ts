@@ -59,7 +59,8 @@ export class SignInPage extends Block {
             })
                 .then(data => {
                     console.log({ data });
-                    this.props.history.go(PAGES.chats);
+                    console.log(this.props);
+                    (this.props as IPage).history.go(PAGES.chats);
                 })
                 .catch(e => console.log({ e }));
         }

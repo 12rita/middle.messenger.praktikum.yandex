@@ -21,7 +21,8 @@ export type TFieldName =
     | TSignInFields
     | TSettingsFields
     | TChangePasswordFields
-    | TMessageField;
+    | TMessageField
+    | string;
 
 export interface IFormField<T> {
     title: string;
@@ -38,4 +39,15 @@ export interface IFormValues {
 export interface IValues {
     name: string;
     value: string | number;
+}
+
+export interface IUser {
+    id: number;
+    first_name: string;
+    second_name: string;
+    display_name: string;
+    phone: string;
+    login: string;
+    avatar: string;
+    email: string;
 }

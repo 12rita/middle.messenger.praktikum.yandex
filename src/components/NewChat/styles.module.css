@@ -10,6 +10,11 @@
     border-radius: 50%;
     width: 50px;
     height: 50px;
+    background-color: var(--blue);
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-size: 1.2rem;
 }
 
 .modal {
@@ -19,6 +24,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: fixed; /* Sit on top of the page content */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
 }
 
@@ -30,10 +40,12 @@
 
 .form {
     width: 400px;
-    height: 800px;
+    height: 600px;
     background-color: white;
     padding: 16px;
     border-radius: 8px;
+    display: flex;
+    flex-direction: column;
 }
 
 .search {
@@ -51,7 +63,6 @@
     text-align: center;
 }
 
-
-.searchIcon {
-    order: -1;
+.button {
+    margin-top: auto;
 }

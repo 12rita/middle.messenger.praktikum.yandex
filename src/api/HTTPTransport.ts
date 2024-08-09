@@ -48,8 +48,11 @@ export class HTTPTransport {
             const {
                 method,
                 data,
-                headers = {},
-                credentials,
+                headers = {
+                    accept: 'application/json',
+                    'content-type': 'application/json'
+                },
+                credentials = 'include',
 
                 baseUrl
             } = options;
@@ -74,11 +77,16 @@ export class HTTPTransport {
                 xhr.setRequestHeader(key, headers[key] as string);
             });
             xhr.withCredentials = credentials === 'include';
-            console.log(xhr.withCredentials);
 
             xhr.onload = () => {
-                if (xhr.status <= 300) resolve(xhr);
-                else {
+                if (xhr.status <= 300) {
+                    try {
+                        const res = JSON.parse(xhr.responseText);
+                        resolve(res);
+                    } catch {
+                        resolve(xhr);
+                    }
+                } else {
                     this.onError(xhr.response);
                     reject(xhr.response);
                 }

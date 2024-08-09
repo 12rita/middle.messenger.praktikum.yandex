@@ -31,7 +31,7 @@ export class Router {
             });
             this.routes.push(route);
         });
-        const baseRoute = new Route('/', Pages['/sign-in'], {
+        const baseRoute = new Route('/', Pages[PAGES.chats], {
             rootQuery: this._rootQuery
         });
         this.routes.push(baseRoute);
@@ -67,7 +67,7 @@ export class Router {
 
     _onRoute(pathname: string) {
         let route = this.getRoute(pathname);
-        console.log({ pathname, route });
+
         if (!route) {
             route = this.getRoute(PAGES.page404);
         }

@@ -7,7 +7,7 @@ export enum METHODS {
 
 export interface IOptions {
     headers?: TObject;
-    data?: TObject | FormData;
+    data?: TObject | FormData | string;
     timeout?: number;
     mode?: string;
     method?: keyof typeof METHODS;

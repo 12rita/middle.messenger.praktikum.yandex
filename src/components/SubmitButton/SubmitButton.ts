@@ -8,9 +8,28 @@ export class SubmitButton extends Block<ISubmitButtonProps> {
     constructor(props: ISubmitButtonProps) {
         super('button', {
             ...props,
+            attributes: [
+                ...(props.disabled ? [{ name: 'disabled', value: 'true' }] : [])
+            ],
             className: props.className ?? styles.submitButton,
             events: { click: props.onClick }
         });
+    }
+
+    componentDidUpdate(
+        oldProps: ISubmitButtonProps,
+        newProps: ISubmitButtonProps
+    ) {
+        if (oldProps.disabled !== newProps.disabled) {
+            this.setAttributes([
+                {
+                    name: 'disabled',
+                    value: newProps.disabled ? 'true' : 'false',
+                    remove: !newProps.disabled
+                }
+            ]);
+            return true;
+        } else return false;
     }
 
     render() {

@@ -6,7 +6,8 @@ import {
     IChildren,
     TGetContent,
     IProps,
-    ICompileProps
+    ICompileProps,
+    IAttribute
 } from './types.ts';
 import Handlebars from 'handlebars';
 import { v4 as makeUUID } from 'uuid';
@@ -154,10 +155,7 @@ export class Block<
         this.emit(EVENTS.FLOW_CDM);
     }
 
-    _componentDidUpdate<T extends IBlockProps | string = IBlockProps>(
-        oldProps: T,
-        newProps?: T
-    ) {
+    _componentDidUpdate(oldProps: unknown, newProps?: unknown) {
         const response = this.componentDidUpdate(oldProps, newProps);
 
         if (!response) {
@@ -167,11 +165,15 @@ export class Block<
         this._render();
     }
 
-    componentDidUpdate<T extends IBlockProps | string = IBlockProps>(
-        oldProps: T | string,
-        newProps?: T | string
-    ) {
-        return !isEqual(oldProps, newProps);
+    componentDidUpdate(oldProps: unknown, newProps?: unknown) {
+        return !isEqual(oldProps as object, newProps as object);
+    }
+
+    setAttributes(attributes: IAttribute[]) {
+        attributes.forEach(({ name, value, remove }) => {
+            if (remove) this.element.removeAttribute(name);
+            else this.element.setAttribute(name, value);
+        });
     }
 
     setProps = (nextProps: unknown) => {
@@ -192,7 +194,8 @@ export class Block<
         this._removeEvents();
         this._element.innerHTML = '';
         this._element.appendChild(block);
-
+        // this._setAttributes(this._element);
+        // this._setStyles(this._element);
         this._addEvents();
     }
 
@@ -222,21 +225,33 @@ export class Block<
         });
     }
 
-    _createDocumentElement(tagName: string) {
-        const element = document.createElement(tagName);
-        element.setAttribute('data-id', this._id);
+    _setStyles(element: HTMLElement) {
         const className = this.props.className || '';
-        const attributes = this.props.attributes;
+
         if (className) {
             if (Array.isArray(className))
                 className.forEach(el => element.classList.add(el));
             else element.classList.add(className);
         }
+    }
+
+    _setAttributes(element: HTMLElement) {
+        const attributes = this.props.attributes;
+
         if (attributes) {
             attributes.forEach(({ name, value }) => {
                 element.setAttribute(name, value);
             });
         }
+    }
+
+    _createDocumentElement(tagName: string) {
+        const element = document.createElement(tagName);
+        element.setAttribute('data-id', this._id);
+
+        this._setStyles(element);
+        this._setAttributes(element);
+
         return element;
     }
 }

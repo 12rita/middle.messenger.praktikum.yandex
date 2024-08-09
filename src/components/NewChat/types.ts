@@ -2,7 +2,7 @@ import { IProps } from '@shared/components';
 
 export interface INewChatProps extends IProps {
     addChatClass?: string;
-    onClick?: (event) => void;
+    onClose?: (event?: Event) => void;
 }
 
 export interface IAddButtonProps extends IProps {

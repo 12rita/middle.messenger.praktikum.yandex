@@ -19,7 +19,7 @@ export class Input extends Block<IInputProps> {
             attributes: [
                 // { value: 'input', name: 'id' },
                 {
-                    value: props.type,
+                    value: props.type ?? 'text',
                     name: 'type'
                 },
                 {
@@ -49,6 +49,7 @@ export class Input extends Block<IInputProps> {
                 ...(props.onBlur && { blur: props.onBlur }),
                 input: e => {
                     handleChange(e);
+                    props.onChange && props.onChange(e);
                 }
             }
         });
