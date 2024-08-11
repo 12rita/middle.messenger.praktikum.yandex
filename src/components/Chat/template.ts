@@ -8,9 +8,13 @@ export const template = `
   <div class="${global.title}">{{title}}</div>
   </div>
   <div class="${global.basicLine} ${styles.chatLine}"></div>
+  <div class="${styles.messages}"> 
+
       {{#each messagesBlock}}
     {{{this}}}
     {{/each}}
+    
+    </div>
     
     <div class="${styles.footer}">
     <div class="${global.basicLine} ${styles.chatLine}"></div>

@@ -75,6 +75,21 @@ export class Input extends Block<IInputProps> {
         (this.element as HTMLInputElement).value = this._value;
     };
 
+    componentDidUpdate(oldProps, newProps) {
+        if (oldProps.disabled !== newProps.disabled) {
+            this.setAttributes([
+                {
+                    name: 'disabled',
+                    value: String(this.props.disabled),
+                    remove: !this.props.disabled
+                }
+            ]);
+
+            return true;
+        }
+        return false;
+    }
+
     render() {
         return this.compile('', {
             placeholder: this.props.placeholder,

@@ -10,11 +10,16 @@ export enum CHAT_ROUTES {
     addUsers = 'chats/users/'
 }
 
+export enum CHAT_PATHS {
+    chats = 'chats.preview.data',
+    activeChat = 'chats.activeChat.data'
+}
+
 class ChatAPIClass extends BaseAPI {
     getChats(title: string = '') {
         api.get(CHAT_ROUTES.chats, { ...(title && { data: { title } }) }).then(
             data => {
-                store.set('chats.data', data);
+                store.set('chats.preview.data', data);
             }
         );
     }
@@ -58,20 +63,20 @@ class ChatAPIClass extends BaseAPI {
             socket.addEventListener('open', () => {
                 console.log('Соединение установлено');
 
+                // socket.send(
+                //     JSON.stringify({
+                //         content: 'Моё первое сообщение миру!',
+                //         type: 'message'
+                //     })
+                // );
+
                 socket.send(
                     JSON.stringify({
-                        content: 'Моё первое сообщение миру!',
-                        type: 'message'
+                        content: '0',
+                        type: 'get old'
                     })
                 );
             });
-
-            socket.send(
-                JSON.stringify({
-                    content: '0',
-                    type: 'get old'
-                })
-            );
 
             socket.addEventListener('close', event => {
                 if (event.wasClean) {
@@ -84,8 +89,18 @@ class ChatAPIClass extends BaseAPI {
             });
 
             socket.addEventListener('message', event => {
-                console.log('Получены данные', event.data);
-                store.set('chats.messages', data);
+                console.log('Получены данные', event);
+                try {
+                    const res = JSON.parse(event.data);
+                    if (Array.isArray(res)) {
+                        store.set('chats.messages', res);
+                        console.log({ res, store });
+                    } else {
+                        store.set('chats.lastMessage', res);
+                    }
+                } catch {
+                    // store.set('chats.messages', event.data);
+                }
             });
 
             socket.addEventListener('error', event => {

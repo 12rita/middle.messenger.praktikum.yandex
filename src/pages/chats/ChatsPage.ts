@@ -7,7 +7,7 @@ import { chatApi } from '@api';
 import { connect } from '@shared/stores';
 import { isEqual } from '@shared/utils';
 import store, { StoreEvents } from '@shared/stores/Store.ts';
-import { v4 as makeUUID } from 'uuid';
+
 import { IApiData, IState } from './types.ts';
 
 const arrowIcon = `<span> Профиль
@@ -86,46 +86,51 @@ export class ChatsPageBase extends Block {
     _onChatClick(id: number) {
         if (this.activeChatId === id) return false;
 
-        chatApi.getToken(id);
+        // const activeChat = data.find(item => item.id === id);
 
-        const activeChat = data.find(item => item.id === id);
-
-        if (activeChat) {
+        if (id) {
             this.children.activeChat = new Chat({
-                ...activeChat,
+                id,
+                messages: [],
+                title: 'chat',
+                indicator: 0,
                 onSend: (value: string) => {
                     console.log({ message: value });
-                    const currentTime = new Date(Date.now()).toLocaleTimeString(
-                        'en-US',
-                        {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        }
-                    );
-                    const newMessage = {
-                        message: value,
-                        time: currentTime,
-                        id: makeUUID()
-                    };
-                    activeChat.messages.push(newMessage);
-
-                    (this.children.activeChat as unknown as Chat).setProps({
-                        messages: activeChat.messages
-                    });
+                    // const currentTime = new Date(Date.now()).toLocaleTimeString(
+                    //     'en-US',
+                    //     {
+                    //         hour: '2-digit',
+                    //         minute: '2-digit'
+                    //     }
+                    // );
+                    // const newMessage = {
+                    //     message: value,
+                    //     time: currentTime,
+                    //     id: makeUUID()
+                    // };
+                    // // activeChat.messages.push(newMessage);
+                    //
+                    // (this.children.activeChat as unknown as Chat).setProps({
+                    //     messages: activeChat.messages
+                    // });
                 }
             }) as unknown as IBlock;
             this.activeChatId = id;
-            this.emit(EVENTS.FLOW_CDU);
+
+            // this.emit(EVENTS.FLOW_CDU);
         }
+
         return false;
     }
 
     componentDidUpdate(oldProps: IState, newProps: IState) {
-        if (!isEqual(oldProps, newProps)) {
+        if (!isEqual(oldProps?.chats, newProps?.chats)) {
             (this.children.chatsList as IBlock).setProps({
                 chatsData: newProps.chats
             });
 
+            return true;
+        } else if (!isEqual(this.children.activeChat)) {
             return true;
         }
         return false;
@@ -136,6 +141,7 @@ export class ChatsPageBase extends Block {
     }
 }
 const withStore = connect(state => ({
-    chats: (state?.chats as IApiData)?.data
+    chats: (state?.chats?.preview as IApiData)?.data,
+    messages: state.chats?.messages
 }));
 export const ChatsPage = withStore(ChatsPageBase);

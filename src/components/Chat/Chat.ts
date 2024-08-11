@@ -7,12 +7,15 @@ import { Input } from '../Input';
 import sendIcon from '../../static/sendButton.svg';
 import { SubmitButton } from '@/components';
 import { Block } from '@shared/components';
+import { connect } from '@shared/stores';
 
-export class Chat extends Block<IChatProps> {
+import { IMessage } from '@shared/types.ts';
+import { chatApi } from '@api';
+import { isEqual } from '@shared/utils';
+
+export class ChatBase extends Block<IChatProps> {
     constructor(props: IChatProps) {
-        const messagesBlock = props.messages.map(
-            message => new Message({ ...message })
-        );
+        const messagesBlock = [] as Message[];
 
         const input = new Input({
             ...props,
@@ -61,23 +64,43 @@ export class Chat extends Block<IChatProps> {
         };
 
         sendEvent();
+        this.init();
     }
+    init = () => {
+        chatApi.getToken(this.props.id);
+    };
 
-    componentDidUpdate(newProps: IChatProps | string) {
-        const { messages: newMessages } = newProps as IChatProps;
-        (this.children.messagesBlock as unknown as Message[]).push(
-            new Message({ ...newMessages[newMessages.length - 1] })
-        );
-        (this.children.input as unknown as Input).emit('clear');
-        return true;
+    componentDidUpdate(oldProps: IChatProps, newProps: IChatProps) {
+        console.log(oldProps, newProps);
+        if (!isEqual(oldProps.messages, newProps.messages)) {
+            const { messages: newMessages = [] } = newProps as IChatProps;
+
+            (this.children.messagesBlock as unknown as Message[]) =
+                newMessages?.map(message => {
+                    return new Message({ ...message });
+                });
+
+            (this.children.input as unknown as Input).emit('clear');
+
+            console.log({ child: this.children.messagesBlock });
+            return true;
+        }
+
+        return false;
     }
 
     render() {
         return this.compile(template, {
             ...this.props,
-            messages: this.children.messagesBlock,
+            messagesBlock: this.children.messagesBlock,
             input: this.children.input,
             sendButton: this.children.sendButton
         });
     }
 }
+
+const withStore = connect(state => ({
+    messages: (state?.chats as { messages: IMessage[] })?.messages
+}));
+
+export const Chat = withStore(ChatBase);

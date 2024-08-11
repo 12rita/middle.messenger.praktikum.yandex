@@ -1,19 +1,21 @@
 import { isObject } from './isObject.ts';
 
 export const merge = (lhs: TObject, rhs: TObject): TObject => {
-    const result: TObject = {};
-    console.log({ lhs, rhs });
-    Object.keys(rhs).forEach(key => {
-        if (lhs[key]) {
-            if (isObject(lhs[key] as TObject) && isObject(rhs[key] as TObject))
-                result[key] = merge(lhs[key] as TObject, rhs[key] as TObject);
-            else result[key] = rhs[key];
-        } else result[key] = rhs[key];
-    });
+    for (const p in rhs) {
+        if (!Object.prototype.hasOwnProperty.call(rhs, p)) {
+            continue;
+        }
 
-    Object.keys(lhs).forEach(key => {
-        if (result[key] === undefined) result[key] = lhs[key];
-    });
-    console.log('2', result);
-    return result;
+        try {
+            if (isObject(rhs[p] as TObject)) {
+                rhs[p] = merge(lhs[p] as TObject, rhs[p] as TObject);
+            } else {
+                lhs[p] = rhs[p];
+            }
+        } catch (e) {
+            lhs[p] = rhs[p];
+        }
+    }
+
+    return lhs;
 };
