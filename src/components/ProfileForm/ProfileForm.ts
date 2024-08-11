@@ -64,8 +64,8 @@ export class ProfileForm
         this.props.handleSubmit(this.values);
     }
 
-    componentDidUpdate(newProps) {
-        console.log({ newProps });
+    componentDidUpdate() {
+        // console.log({ newProps });
         return true;
     }
 

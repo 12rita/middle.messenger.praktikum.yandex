@@ -31,7 +31,7 @@ export class SignUpPage extends Block {
     history;
     constructor({ history }: IPage) {
         const onSignIn = () => {
-            history.go(PAGES.signIn);
+            history && history.go(PAGES.signIn);
         };
 
         const onSignUp = (values: IFormValues) => {
@@ -73,7 +73,7 @@ export class SignUpPage extends Block {
             })
                 .then(data => {
                     console.log({ data });
-                    this.history.go(PAGES.chats);
+                    this.history?.go(PAGES.chats);
                 })
                 .catch(e => console.log({ e }));
         }

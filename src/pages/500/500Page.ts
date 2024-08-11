@@ -6,8 +6,9 @@ import { Block, IBlock, IPage, PAGES } from '@shared/components';
 
 export class Page_500 extends Block<IPage, IPage500> {
     constructor(props: IPage) {
+        const { history } = props;
         const handleClick = () => {
-            props.history.go(PAGES.signIn);
+            history && history.go(PAGES.signIn);
         };
         const error = new Error({
             errorCode: 500,

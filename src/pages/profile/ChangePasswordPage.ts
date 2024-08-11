@@ -57,7 +57,7 @@ export class ChangePasswordPage extends Block<IProps, IProfileProps> {
 
         const backButton = new BackButton({
             onClick: () => {
-                history.back();
+                history && history.back();
             }
         });
 
@@ -83,7 +83,7 @@ export class ChangePasswordPage extends Block<IProps, IProfileProps> {
 
     _saveData = () => {
         console.log((this.children.form as unknown as IForm).values);
-        this.history.go(PAGES.profile);
+        this.history && this.history.go(PAGES.profile);
     };
 
     _handleSubmit = (values: IFormValues) => {

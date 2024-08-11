@@ -1,4 +1,4 @@
-import { TextButton, Plug, NewChat, ChatList, Input } from '@components';
+import { TextButton, Plug, NewChat, ChatList, Input, Chat } from '@components';
 import arrowRight from '../../static/arrowRight.svg';
 import styles from './styles.module.css';
 import { template } from './template.ts';
@@ -7,7 +7,7 @@ import { chatApi } from '@api';
 import { connect } from '@shared/stores';
 import { isEqual } from '@shared/utils';
 import store, { StoreEvents } from '@shared/stores/Store.ts';
-
+import { v4 as makeUUID } from 'uuid';
 import { IApiData, IState } from './types.ts';
 
 const arrowIcon = `<span> Профиль
@@ -88,35 +88,35 @@ export class ChatsPageBase extends Block {
 
         chatApi.getToken(id);
 
-        // const activeChat = data.find(item => item.id === id);
+        const activeChat = data.find(item => item.id === id);
 
-        // if (activeChat) {
-        //     this.children.activeChat = new Chat({
-        //         ...activeChat,
-        //         onSend: (value: string) => {
-        //             console.log({ message: value });
-        //             const currentTime = new Date(Date.now()).toLocaleTimeString(
-        //                 'en-US',
-        //                 {
-        //                     hour: '2-digit',
-        //                     minute: '2-digit'
-        //                 }
-        //             );
-        //             const newMessage = {
-        //                 message: value,
-        //                 time: currentTime,
-        //                 id: makeUUID()
-        //             };
-        //             activeChat.messages.push(newMessage);
-        //
-        //             (this.children.activeChat as unknown as Chat).setProps({
-        //                 messages: activeChat.messages
-        //             });
-        //         }
-        //     }) as unknown as IBlock;
-        //     this.activeChatId = id;
-        //     this.emit(EVENTS.FLOW_CDU);
-        // }
+        if (activeChat) {
+            this.children.activeChat = new Chat({
+                ...activeChat,
+                onSend: (value: string) => {
+                    console.log({ message: value });
+                    const currentTime = new Date(Date.now()).toLocaleTimeString(
+                        'en-US',
+                        {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }
+                    );
+                    const newMessage = {
+                        message: value,
+                        time: currentTime,
+                        id: makeUUID()
+                    };
+                    activeChat.messages.push(newMessage);
+
+                    (this.children.activeChat as unknown as Chat).setProps({
+                        messages: activeChat.messages
+                    });
+                }
+            }) as unknown as IBlock;
+            this.activeChatId = id;
+            this.emit(EVENTS.FLOW_CDU);
+        }
         return false;
     }
 

@@ -6,6 +6,7 @@ import { IFormField, IFormValues, TSignInFields } from '@shared/types.ts';
 import { api, ROUTES } from '@api';
 const formId = 'signInForm';
 export class SignInPage extends Block {
+    history;
     constructor(props: IPage) {
         const formFields: IFormField<TSignInFields>[] = [
             { title: 'Логин', name: 'login', value: '' },
@@ -18,9 +19,10 @@ export class SignInPage extends Block {
         ];
 
         const { history } = props;
+        console.log({ history });
 
         const onTextClick = () => {
-            history.go(PAGES.signUp);
+            history && history.go(PAGES.signUp);
         };
 
         const onSubmitClick = (values: IFormValues) => {
@@ -40,11 +42,12 @@ export class SignInPage extends Block {
             size: 'small'
         });
         super('main', { form, className: global.layout });
+        this.history = history;
     }
 
     signIn = (values: IFormValues) => {
         const myUserForm = document.getElementById(formId);
-
+        console.log(this);
         if (myUserForm) {
             // const form = new FormData(myUserForm as HTMLFormElement);
 
@@ -60,7 +63,7 @@ export class SignInPage extends Block {
                 .then(data => {
                     console.log({ data });
                     console.log(this.props);
-                    (this.props as IPage).history.go(PAGES.chats);
+                    (this.props as IPage)?.history?.go(PAGES.chats);
                 })
                 .catch(e => console.log({ e }));
         }

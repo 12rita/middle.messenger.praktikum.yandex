@@ -66,6 +66,13 @@ class ChatAPIClass extends BaseAPI {
                 );
             });
 
+            socket.send(
+                JSON.stringify({
+                    content: '0',
+                    type: 'get old'
+                })
+            );
+
             socket.addEventListener('close', event => {
                 if (event.wasClean) {
                     console.log('Соединение закрыто чисто');
@@ -78,6 +85,7 @@ class ChatAPIClass extends BaseAPI {
 
             socket.addEventListener('message', event => {
                 console.log('Получены данные', event.data);
+                store.set('chats.messages', data);
             });
 
             socket.addEventListener('error', event => {

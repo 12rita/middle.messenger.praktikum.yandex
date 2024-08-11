@@ -6,8 +6,9 @@ import { Block, IBlock, IPage, PAGES } from '@shared/components';
 
 export class Page_404 extends Block<IPage, IPage404> {
     constructor(props: IPage) {
+        const { history } = props;
         const handleClick = () => {
-            props.history.go(PAGES.signIn);
+            history && history.go(PAGES.signIn);
         };
         const error = new Error({
             errorCode: 404,

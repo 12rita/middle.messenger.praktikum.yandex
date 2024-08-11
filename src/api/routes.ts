@@ -5,5 +5,5 @@ export enum ROUTES {
     users = 'user/search/',
     chats = 'chats/',
     addUsers = 'chats/users/',
-    chatToken = 'api/v2/chats/token/'
+    chatToken = 'chats/token/'
 }

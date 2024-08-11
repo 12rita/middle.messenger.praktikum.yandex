@@ -10,10 +10,12 @@ export class User {
             .then(data => {
                 this.data = data as IUser;
                 this.authorised = true;
-                callback();
             })
             .catch(e => {
                 console.log(e);
+            })
+            .finally(() => {
+                callback();
             });
     };
 }
