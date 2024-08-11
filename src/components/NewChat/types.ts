@@ -1,4 +1,5 @@
 import { IProps } from '@shared/components';
+import { IUser } from '@shared/types.ts';
 
 export interface INewChatProps extends IProps {
     addChatClass?: string;
@@ -7,4 +8,8 @@ export interface INewChatProps extends IProps {
 
 export interface IAddButtonProps extends IProps {
     onClick: TVoid;
+}
+
+export interface IState {
+    users: IUser[];
 }

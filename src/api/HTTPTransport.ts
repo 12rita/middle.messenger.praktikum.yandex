@@ -55,7 +55,7 @@ export class HTTPTransport {
                 credentials = 'include',
 
                 baseUrl
-            } = options;
+            } = options || {};
             if (!method) {
                 reject('No method');
                 return;

@@ -21,8 +21,7 @@ export type TFieldName =
     | TSignInFields
     | TSettingsFields
     | TChangePasswordFields
-    | TMessageField
-    | string;
+    | TMessageField;
 
 export interface IFormField<T> {
     title: string;
@@ -50,4 +49,19 @@ export interface IUser {
     login: string;
     avatar: string;
     email: string;
+}
+
+export interface IMessage {
+    user: IUser;
+    time: string;
+    content: string;
+}
+
+export interface IChatPreview {
+    id: number;
+    title: string;
+    avatar: string;
+    unread_count: number;
+    created_by: number;
+    last_message: IMessage;
 }

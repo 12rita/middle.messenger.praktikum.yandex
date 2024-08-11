@@ -7,6 +7,7 @@ import { Input } from '../Input';
 import global from '../../globalStyles.module.css';
 import { Block, EVENTS, IBlock } from '@shared/components';
 import { isValidField } from '@shared/utils';
+import { TFieldName } from '@shared/types.ts';
 
 export class ProfileField extends Block<IProfileFieldProps> {
     constructor(props: IProfileFieldProps) {
@@ -26,7 +27,7 @@ export class ProfileField extends Block<IProfileFieldProps> {
 
     _checkIsValid = (e: Event) => {
         const { message } = isValidField({
-            name: this.props.name,
+            name: this.props.name as TFieldName,
             value: (e.target as HTMLInputElement)?.value
         });
         this.props.error = message;
@@ -34,7 +35,8 @@ export class ProfileField extends Block<IProfileFieldProps> {
         this.emit(EVENTS.FLOW_CDU);
     };
 
-    componentDidUpdate() {
+    componentDidUpdate(newProps) {
+        console.log({ newProps });
         this.children.input = new Input({
             ...this.props,
             value: (this.children.input as unknown as Input).value,

@@ -19,5 +19,5 @@ export type TPages = {
 export type TPageBlock = (typeof Pages)[keyof typeof Pages];
 
 export interface IPage extends Partial<IProps> {
-    history: Router;
+    history?: Router;
 }

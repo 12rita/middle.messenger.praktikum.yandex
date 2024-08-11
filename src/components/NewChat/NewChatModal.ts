@@ -1,12 +1,14 @@
-import { INewChatProps } from './types.ts';
+import { INewChatProps, IState } from './types.ts';
 import { modalTemplate } from './template.ts';
 import styles from './styles.module.css';
 import { Block } from '@shared/components';
 import { Input, SubmitButton } from '@components';
-import { api, ROUTES } from '@api';
+import { chatApi, userApi } from '@api';
 import { UserList } from '@components/UserList';
+import { connect } from '@shared/stores';
+import { isEqual } from '@shared/utils';
 
-export class NewChatModal extends Block<INewChatProps> {
+class NewChatModalBase extends Block<INewChatProps> {
     constructor(props: INewChatProps) {
         const input = new Input({
             type: 'text',
@@ -57,46 +59,31 @@ export class NewChatModal extends Block<INewChatProps> {
     }
 
     init = () => {
-        api.post(ROUTES.users, {
-            data: JSON.stringify({ login: '' })
-        }).then(data => {
-            (this.children.users as Block).setProps({ users: data });
-        });
+        userApi.search({ login: '' });
     };
 
     onCreate = () => {
-        api.post(ROUTES.chats, {
-            data: JSON.stringify({
-                title: (this.children.inputName as unknown as Input).value
-            })
-        }).then(data => {
-            const activeUsers = (this.children.users as unknown as UserList)
-                .active;
+        const title = (this.children.inputName as unknown as Input).value;
+        const users = Array.from(
+            (this.children.users as unknown as UserList).active
+        ) as number[];
 
-            const addUsersData = {
-                users: Array.from(activeUsers),
-                chatId: (data as { id: number }).id
-            };
-            api.put(ROUTES.addUsers, {
-                data: JSON.stringify(addUsersData)
-            }).then(() => {
-                this.props.onClose && this.props.onClose();
-            });
-        });
+        chatApi.createNewChat({ title, users, onClose: this.props.onClose });
     };
 
     onSearch = (e: Event) => {
         setTimeout(() => {
-            const data = {
-                login: (e.target as HTMLInputElement)?.value
-            };
-            api.post(ROUTES.users, {
-                data: JSON.stringify(data)
-            }).then(data => {
-                (this.children.users as Block).setProps({ users: data });
-            });
+            userApi.search({ login: (e.target as HTMLInputElement)?.value });
         }, 300); //debounce
     };
+
+    componentDidUpdate(oldProps: IState, newProps: IState) {
+        if (!isEqual(oldProps.users, newProps.users)) {
+            (this.children.users as Block).setProps({ users: newProps.users });
+            return true;
+        }
+        return false;
+    }
 
     render() {
         return this.compile(modalTemplate, {
@@ -105,3 +92,6 @@ export class NewChatModal extends Block<INewChatProps> {
         });
     }
 }
+
+const withStore = connect(state => ({ users: (state?.chat as IState)?.users }));
+export const NewChatModal = withStore(NewChatModalBase);

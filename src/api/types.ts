@@ -17,6 +17,6 @@ export interface IOptions {
 
 export type TRequest = (
     url: string,
-    options: IOptions,
+    options?: IOptions,
     timeout?: number
 ) => Promise<unknown>;

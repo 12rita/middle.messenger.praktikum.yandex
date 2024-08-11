@@ -1,8 +1,8 @@
 import { IProps } from '@shared/components';
+import { IMessage } from '@shared/types.ts';
 
 export interface IChatPreviewProps extends IProps {
     title: string;
-    message: string;
-    time: string;
-    indicator: number;
+    last_message: IMessage;
+    unread_count: number;
 }

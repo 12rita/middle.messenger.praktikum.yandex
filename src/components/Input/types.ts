@@ -6,7 +6,7 @@ export interface IInputProps extends IProps {
     onChange?: (e: Event) => void;
     disabled?: boolean;
     type?: TInputType;
-    name: TFieldName;
+    name: TFieldName | string;
     placeholder?: string;
     value?: string;
     errorClassName?: string;

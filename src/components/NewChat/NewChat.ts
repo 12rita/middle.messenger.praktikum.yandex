@@ -19,6 +19,7 @@ export class NewChat extends Block<INewChatProps> {
     }
     onAdd = () => {
         this.children.modal = new NewChatModal({
+            newProps: 'newProps',
             onClose: (e?: Event) => {
                 if (!e) {
                     this.children.modal = [];

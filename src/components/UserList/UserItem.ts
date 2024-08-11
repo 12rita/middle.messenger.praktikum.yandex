@@ -21,11 +21,14 @@ export class UserItem extends Block<IUserItemProps> {
 
     render() {
         const { display_name, avatar } = this.props.user;
-
+        const link = avatar
+            ? `https://ya-praktikum.tech/api/v2/resources${avatar}`
+            : noPicture;
         return this.compile(itemTemplate, {
             ...this.props,
             name: display_name ?? 'No name',
-            avatar: avatar ?? noPicture
+            link,
+            avatar: link
         });
     }
 }

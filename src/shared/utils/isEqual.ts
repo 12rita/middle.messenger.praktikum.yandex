@@ -1,13 +1,19 @@
 import { isObject } from './isObject.ts';
+import { isEqualArrays } from '@shared/utils/isEqualArrays.ts';
 
-type TIsEqual = (a: object | string, b?: object | string) => boolean;
+type TIsEqual = (a?: object | string, b?: object | string) => boolean;
 
 export const isEqual: TIsEqual = (a, b) => {
-    if (!b) return true;
+    if (!a && !b) return true;
+    if (!a || !b) return false;
     if (Object.keys(a).length !== Object.keys(b).length) return false;
     if (typeof a === 'string' && typeof b === 'string') {
         return a === b;
     } else if (typeof a === 'string' || typeof b === 'string') return false;
+
+    if (Array.isArray(a) && Array.isArray(b)) {
+        return isEqualArrays(a, b);
+    }
 
     return Object.keys(a).every(key => {
         if (!(key in b)) return false;

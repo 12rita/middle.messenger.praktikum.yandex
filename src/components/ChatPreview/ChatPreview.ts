@@ -10,8 +10,12 @@ export class ChatPreview extends Block<IChatPreviewProps> {
     }
 
     render() {
+        const { time, content } = this.props.last_message ?? {};
         return this.compile(template, {
-            ...this.props
+            ...this.props,
+            indicator: this.props.unread_count,
+            time,
+            message: content
         });
     }
 }

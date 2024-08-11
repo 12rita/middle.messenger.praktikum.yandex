@@ -4,6 +4,7 @@ import { Input } from '../Input';
 import styles from './styles.module.css';
 import { isValidField } from '@shared/utils';
 import { Block, EVENTS } from '@shared/components';
+import { TFieldName } from '@shared/types.ts';
 
 export class FormInput extends Block<IFormInputProps> {
     value: string = '';
@@ -22,7 +23,7 @@ export class FormInput extends Block<IFormInputProps> {
 
         const checkIsValid = (e: Event) => {
             const { message } = isValidField({
-                name: props.name,
+                name: props.name as TFieldName,
                 value: (e.target as HTMLInputElement)?.value
             });
             this.props.error = message;

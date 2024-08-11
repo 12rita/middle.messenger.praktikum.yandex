@@ -63,7 +63,7 @@ export class ProfilePage
 
         const backButton = new BackButton({
             onClick: () => {
-                history.back();
+                history && history.back();
             }
         });
 
@@ -95,10 +95,10 @@ export class ProfilePage
             this._handleSubmit(values);
         };
         const handleChangePassword = () => {
-            history.go(PAGES.changePassword);
+            history && history.go(PAGES.changePassword);
         };
         const handleExit = () => {
-            history.go(PAGES.signIn);
+            history && history.go(PAGES.signIn);
         };
     }
 
@@ -122,12 +122,12 @@ export class ProfilePage
                 this._saveData();
             }
         }) as unknown as IBlock;
-        this.emit(EVENTS.FLOW_CDU);
+        // this.emit(EVENTS.FLOW_CDU);
     };
 
-    componentDidUpdate() {
-        return true;
-    }
+    // componentDidUpdate() {
+    //     return true;
+    // }
 
     render() {
         return this.compile(template, {
