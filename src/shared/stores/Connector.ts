@@ -1,11 +1,12 @@
 import { Block, IProps } from '@shared/components';
 import store, { StoreEvents } from './Store.ts';
 import { isEqual } from '@shared/utils';
-
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 export function connect(mapStateToProps: (state: TObject) => TObject) {
-    return function <C extends new (args: P) => Block, P = IProps>(
-        Component: C
-    ) {
+    return function <
+        C extends new (args: P) => Block<P>,
+        P extends IProps = any
+    >(Component: C) {
         //@ts-expect-error some kind of known error that I have no idea of how to fix
         return class extends Component {
             constructor(props: P) {
@@ -20,7 +21,6 @@ export function connect(mapStateToProps: (state: TObject) => TObject) {
                     // при обновлении получаем новое состояние
 
                     const newState = mapStateToProps(store.getState());
-                    console.log(JSON.stringify(newState));
 
                     // если что-то из используемых данных поменялось, обновляем компонент
                     if (!isEqual(state, newState)) {

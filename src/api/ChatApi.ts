@@ -16,6 +16,8 @@ export enum CHAT_PATHS {
 }
 
 class ChatAPIClass extends BaseAPI {
+    _socket: WebSocket | null = null;
+
     getChats(title: string = '') {
         api.get(CHAT_ROUTES.chats, { ...(title && { data: { title } }) }).then(
             data => {
@@ -54,62 +56,82 @@ class ChatAPIClass extends BaseAPI {
         });
     }
 
-    getToken(id: number) {
-        api.post(`${ROUTES.chatToken}${id}`).then(data => {
-            const { token } = data as { token: string };
-            const socket = new WebSocket(
-                `wss://ya-praktikum.tech/ws/chats/${user?.data?.id}/${id}/${token}`
-            );
-            socket.addEventListener('open', () => {
-                console.log('Соединение установлено');
-
-                // socket.send(
-                //     JSON.stringify({
-                //         content: 'Моё первое сообщение миру!',
-                //         type: 'message'
-                //     })
-                // );
-
-                socket.send(
-                    JSON.stringify({
-                        content: '0',
-                        type: 'get old'
-                    })
-                );
-            });
-
-            socket.addEventListener('close', event => {
-                if (event.wasClean) {
-                    console.log('Соединение закрыто чисто');
-                } else {
-                    console.log('Обрыв соединения');
-                }
-
-                console.log(`Код: ${event.code} | Причина: ${event.reason}`);
-            });
-
-            socket.addEventListener('message', event => {
-                console.log('Получены данные', event);
-                try {
-                    const res = JSON.parse(event.data);
-                    if (Array.isArray(res)) {
-                        store.set('chats.messages', res);
-                        console.log({ res, store });
-                    } else {
-                        store.set('chats.lastMessage', res);
-                    }
-                } catch {
-                    // store.set('chats.messages', event.data);
-                }
-            });
-
-            socket.addEventListener('error', event => {
-                console.log(
-                    'Ошибка',
-                    (event as unknown as { message: string }).message
-                );
-            });
+    getOldMessages = async (id: number) => {
+        await this.getToken(id).then(() => {
+            this._socket &&
+                this._socket.addEventListener('open', () => {
+                    this._socket?.send(
+                        JSON.stringify({
+                            content: '0',
+                            type: 'get old'
+                        })
+                    );
+                });
+            // console.log(this._socket?.readyState, WebSocket.OPEN);
+            // if (this._socket && this._socket.readyState === WebSocket.OPEN)
+            //     this._socket.send(
+            //         JSON.stringify({
+            //             content: '0',
+            //             type: 'get old'
+            //         })
+            //     );
         });
+    };
+
+    sendMessage(content: string) {
+        if (this._socket && this._socket.readyState === WebSocket.OPEN)
+            this._socket.send(
+                JSON.stringify({
+                    content,
+                    type: 'message'
+                })
+            );
+    }
+
+    openSocket = ({ id, token }: { id: number; token: string }) => {
+        const socket = new WebSocket(
+            `wss://ya-praktikum.tech/ws/chats/${user?.data?.id}/${id}/${token}`
+        );
+        this._socket = socket;
+
+        socket.addEventListener('close', event => {
+            if (event.wasClean) {
+                console.log('Соединение закрыто чисто');
+            } else {
+                console.log('Обрыв соединения');
+            }
+
+            console.log(`Код: ${event.code} | Причина: ${event.reason}`);
+        });
+
+        socket.addEventListener('message', event => {
+            console.log('Получены данные', event);
+            try {
+                const res = JSON.parse(event.data);
+                if (Array.isArray(res)) {
+                    store.set('chats.messages', res);
+                    console.log({ res, store });
+                } else {
+                    store.set('chats.lastMessage', res);
+                    console.log({ res, store });
+                }
+            } catch {
+                // store.set('chats.messages', event.data);
+            }
+        });
+
+        socket.addEventListener('error', event => {
+            console.log(
+                'Ошибка',
+                (event as unknown as { message: string }).message
+            );
+        });
+    };
+
+    async getToken(id: number) {
+        const data = await api.post(`${ROUTES.chatToken}${id}`);
+        const { token } = data as { token: string };
+        this.openSocket({ id, token });
     }
 
     request() {

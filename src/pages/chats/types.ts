@@ -1,7 +1,12 @@
-import { IChatPreview } from '@shared/types.ts';
+import { IChatPreview, IMessage } from '@shared/types.ts';
 
 export interface IState {
-    chats: IChatPreview[];
+    chats: {
+        preview: {
+            data: IChatPreview[];
+        };
+        messages: IMessage[];
+    };
 }
 
 export interface IApiData {

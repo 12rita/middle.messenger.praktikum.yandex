@@ -12,3 +12,8 @@ export interface IChatProps extends IProps {
     indicator?: number;
     onSend: (value: string) => void;
 }
+
+export interface IRenderProps {
+    messages?: IMessage[];
+    lastMessage?: IMessage;
+}

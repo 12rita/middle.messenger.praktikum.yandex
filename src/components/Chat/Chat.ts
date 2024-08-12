@@ -1,4 +1,4 @@
-import { IChatProps } from './types.ts';
+import { IChatProps, IRenderProps } from './types.ts';
 
 import { template } from './template.ts';
 import styles from './styles.module.css';
@@ -45,7 +45,8 @@ export class ChatBase extends Block<IChatProps> {
 
         const onSend = () => {
             const isValid = validateMessage();
-            isValid && props.onSend(input.value);
+            isValid && chatApi.sendMessage(input.value);
+            (this.children.input as unknown as Input).emit('clear');
         };
 
         const validateMessage = () => {
@@ -67,22 +68,38 @@ export class ChatBase extends Block<IChatProps> {
         this.init();
     }
     init = () => {
-        chatApi.getToken(this.props.id);
+        void chatApi.getOldMessages(this.props.id);
     };
 
-    componentDidUpdate(oldProps: IChatProps, newProps: IChatProps) {
+    componentDidUpdate(oldProps: IRenderProps, newProps: IRenderProps) {
         console.log(oldProps, newProps);
-        if (!isEqual(oldProps.messages, newProps.messages)) {
-            const { messages: newMessages = [] } = newProps as IChatProps;
+        if (!isEqual(oldProps, newProps)) {
+            if (!isEqual(oldProps.lastMessage, newProps.lastMessage)) {
+                (this.children.messagesBlock as unknown as Message[]).push(
+                    new Message({ ...newProps.lastMessage })
+                );
+            }
+            if (!isEqual(oldProps.messages, newProps.messages)) {
+                const { messages = [] } = newProps as IChatProps;
 
-            (this.children.messagesBlock as unknown as Message[]) =
-                newMessages?.map(message => {
-                    return new Message({ ...message });
-                });
+                const newMessages = messages
+                    ?.map(message => {
+                        return new Message({ ...message });
+                    })
+                    .reverse();
 
-            (this.children.input as unknown as Input).emit('clear');
+                (this.children.messagesBlock as unknown as Message[]) =
+                    newMessages;
 
-            console.log({ child: this.children.messagesBlock });
+                (this.children.input as unknown as Input).emit('clear');
+            }
+            // this.children.messagesBlock.
+
+            const messages = document.getElementById('messages');
+            if (messages) {
+                messages.scrollTo({ top: messages.scrollHeight });
+            }
+            console.log(this.children.messagesBlock);
             return true;
         }
 
@@ -100,7 +117,8 @@ export class ChatBase extends Block<IChatProps> {
 }
 
 const withStore = connect(state => ({
-    messages: (state?.chats as { messages: IMessage[] })?.messages
+    messages: (state?.chats as { messages: IMessage[] })?.messages,
+    lastMessage: state?.chats?.lastMessage
 }));
 
 export const Chat = withStore(ChatBase);

@@ -8,7 +8,8 @@ import { connect } from '@shared/stores';
 import { isEqual } from '@shared/utils';
 import store, { StoreEvents } from '@shared/stores/Store.ts';
 
-import { IApiData, IState } from './types.ts';
+import { IState } from './types.ts';
+import { IChatPreview } from '@shared/types.ts';
 
 const arrowIcon = `<span> Профиль
                 <img class="${styles.profileButton}" src="${arrowRight}" alt="arrow">
@@ -16,6 +17,7 @@ const arrowIcon = `<span> Профиль
 
 export class ChatsPageBase extends Block {
     activeChatId: number = -1;
+    chats: IChatPreview[] = [];
 
     constructor({ history }: IPage) {
         const plug = new Plug({
@@ -86,13 +88,13 @@ export class ChatsPageBase extends Block {
     _onChatClick(id: number) {
         if (this.activeChatId === id) return false;
 
-        // const activeChat = data.find(item => item.id === id);
+        const activeChat = this.chats.find(item => item.id === id);
 
-        if (id) {
+        if (activeChat) {
             this.children.activeChat = new Chat({
                 id,
                 messages: [],
-                title: 'chat',
+                title: activeChat.title,
                 indicator: 0,
                 onSend: (value: string) => {
                     console.log({ message: value });
@@ -123,11 +125,15 @@ export class ChatsPageBase extends Block {
         return false;
     }
 
-    componentDidUpdate(oldProps: IState, newProps: IState) {
+    componentDidUpdate(
+        oldProps: { chats: IChatPreview[] },
+        newProps: { chats: IChatPreview[] }
+    ) {
         if (!isEqual(oldProps?.chats, newProps?.chats)) {
             (this.children.chatsList as IBlock).setProps({
                 chatsData: newProps.chats
             });
+            this.chats = newProps.chats;
 
             return true;
         } else if (!isEqual(this.children.activeChat)) {
@@ -141,7 +147,7 @@ export class ChatsPageBase extends Block {
     }
 }
 const withStore = connect(state => ({
-    chats: (state?.chats?.preview as IApiData)?.data,
-    messages: state.chats?.messages
+    chats: (state as unknown as IState)?.chats?.preview?.data,
+    messages: (state as unknown as IState)?.chats?.messages
 }));
 export const ChatsPage = withStore(ChatsPageBase);

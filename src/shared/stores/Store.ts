@@ -14,8 +14,7 @@ class Store extends EventBus {
         return this.state;
     }
     public set(path: string, value: unknown) {
-        set(this.state, path, value);
-        console.log(JSON.stringify(this.state));
+        this.state = set(this.state, path, value) as TObject;
 
         // метод EventBus
         this.emit(StoreEvents.Updated);

@@ -35,10 +35,13 @@ export class ProfileField extends Block<IProfileFieldProps> {
         this.emit(EVENTS.FLOW_CDU);
     };
 
-    componentDidUpdate(oldProps, newProps) {
+    componentDidUpdate(
+        oldProps: IProfileFieldProps,
+        newProps: IProfileFieldProps
+    ) {
         console.log({ newProps, oldProps, input: this.children.input });
         if (!isEqual(oldProps, newProps)) {
-            this.children.input.setProps({
+            (this.children.input as unknown as Input).setProps({
                 value: (this.children.input as unknown as Input).value,
                 disabled: this.props.disabled
             });
