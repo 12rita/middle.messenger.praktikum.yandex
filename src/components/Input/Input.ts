@@ -17,7 +17,14 @@ export class Input extends Block<IInputProps> {
                 ? props.className
                 : [styles.input, global.body1],
             attributes: [
-                // { value: 'input', name: 'id' },
+                ...(props.id
+                    ? [
+                          {
+                              name: 'id',
+                              value: props.id
+                          }
+                      ]
+                    : []),
                 {
                     value: props.type ?? 'text',
                     name: 'type'

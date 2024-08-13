@@ -3,6 +3,7 @@ import { IChatPreviewProps } from './types.ts';
 import { template } from './template.ts';
 import styles from './styles.module.css';
 import { Block } from '@shared/components';
+import { getTime } from '@shared/utils';
 
 export class ChatPreview extends Block<IChatPreviewProps> {
     constructor(props: IChatPreviewProps) {
@@ -14,7 +15,7 @@ export class ChatPreview extends Block<IChatPreviewProps> {
         return this.compile(template, {
             ...this.props,
             indicator: this.props.unread_count,
-            time,
+            time: getTime(time),
             message: content
         });
     }

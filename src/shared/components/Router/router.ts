@@ -1,7 +1,8 @@
 import { PAGES, TPages } from './types.ts';
 import { Route } from './route.ts';
 import { Pages } from './pages.ts';
-import { user } from '@shared/stores/User.ts';
+
+import store, { StoreEvents } from '@shared/stores/Store.ts';
 
 export class Router {
     routes: Route[] = [];
@@ -22,6 +23,7 @@ export class Router {
 
         Router.__instance = this;
         this.init();
+        store.on(StoreEvents.Updated, this.start);
     }
 
     init() {
@@ -42,9 +44,10 @@ export class Router {
             this._onRoute((event.currentTarget as Window).location.pathname);
         };
 
-        console.log({ user });
+        // console.log({ user: store.getState().user });
+        const user = store.getState().user;
 
-        if (user.authorised) {
+        if (user) {
             this._onRoute(window.location.pathname);
         } else {
             this._onRoute(PAGES.signIn);

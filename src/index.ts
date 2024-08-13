@@ -1,8 +1,10 @@
 import { Router } from '@shared/components';
-import { user } from '@shared/stores/User.ts';
 
-const router = new Router('#app');
-user.checkAuthorise(router.start);
+import { userApi } from '@api';
+
+userApi.checkAuthorise();
+new Router('#app');
+// user.checkAuthorise(router.start);
 // router.start();
 
 // const root = document.getElementById('app');

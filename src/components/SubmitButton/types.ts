@@ -5,4 +5,6 @@ export interface ISubmitButtonProps extends IProps {
     children?: string;
     onClick: (event: Event) => void;
     disabled?: boolean;
+    type?: 'submit';
+    form?: string;
 }

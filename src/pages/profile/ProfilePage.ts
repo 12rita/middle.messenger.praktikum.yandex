@@ -3,7 +3,8 @@ import {
     BackButton,
     FileUploader,
     ProfileButtonBlock,
-    SubmitButton
+    SubmitButton,
+    Avatar
 } from '@components';
 import { user } from '@shared/const.ts';
 import { template } from './template.ts';
@@ -12,14 +13,21 @@ import { IProfile, IProfileProps } from './types.ts';
 import styles from './styles.module.css';
 import {
     Block,
-    EVENTS,
     IBlock,
     IEventBus,
     IPage,
     IProps,
     PAGES
 } from '@shared/components';
-import { IFormField, IFormValues, TSettingsFields } from '@shared/types.ts';
+import {
+    IFormField,
+    IFormValues,
+    IUser,
+    TSettingsFields
+} from '@shared/types.ts';
+import store from '@shared/stores/Store.ts';
+import { authApi, userApi } from '@api';
+import { isEqual } from '@shared/utils';
 
 const formFields: IFormField<TSettingsFields>[] = [
     { title: 'Почта', name: 'email', value: user['email'] },
@@ -48,18 +56,20 @@ export class ProfilePage
     buttonBlock: IBlock;
     constructor({ history }: IPage) {
         const formId = 'changeDataForm';
+        const user = store.getState().user as IUser;
+
         const form = new ProfileForm({
             id: formId,
-            formFields,
+            formFields: formFields.map(field => {
+                return { ...field, value: user[field.name] };
+            }),
             key: formId,
             handleSubmit: values => {
-                handleSubmit(values);
+                this._handleSubmit(values);
             }
         });
 
-        const avatar = new FileUploader({
-            label: 'Поменять аватар'
-        }) as IBlock;
+        const avatar = new Avatar({ src: user.avatar });
 
         const backButton = new BackButton({
             onClick: () => {
@@ -91,43 +101,60 @@ export class ProfilePage
         const handleChangeData = () => {
             this._changeData();
         };
-        const handleSubmit = (values: IFormValues) => {
-            this._handleSubmit(values);
-        };
+
         const handleChangePassword = () => {
             history && history.go(PAGES.changePassword);
         };
         const handleExit = () => {
-            history && history.go(PAGES.signIn);
+            authApi.logout().then(() => {
+                history && history.go(PAGES.signIn);
+            });
         };
     }
 
-    _saveData = () => {
-        (this.children.form as IEventBus).emit('save');
-        (this.children.avatar as IEventBus).emit('save');
-        this.children.buttonBlock = this.buttonBlock;
-        this.emit(EVENTS.FLOW_CDU);
-    };
-
     _handleSubmit = (values: IFormValues) => {
-        console.log(values);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, avatar, login, ...user } = store.getState().user as IUser;
+        const myForm = document.getElementById('avatarForm');
+
+        const form = new FormData(myForm as HTMLFormElement);
+
+        if (!isEqual(values, user as IUser)) {
+            userApi.updateProfile(values as unknown as IUser);
+        }
+        if ((form.get('avatar') as { size: number })?.size) {
+            userApi.updateAvatar(form).then(data => {
+                this.setProps({
+                    avatar: new Avatar({ src: (data as IUser).avatar })
+                });
+            });
+        } else {
+            this.setProps({
+                avatar: new Avatar({ src: avatar })
+            });
+        }
+        this.setProps({ buttonBlock: this.buttonBlock });
     };
 
     _changeData = () => {
         (this.children.form as IEventBus).emit('edit');
-        (this.children.avatar as IEventBus).emit('edit');
-        this.children.buttonBlock = new SubmitButton({
-            label: 'Сохранить',
-            onClick: () => {
-                this._saveData();
-            }
-        }) as unknown as IBlock;
-        // this.emit(EVENTS.FLOW_CDU);
-    };
 
-    // componentDidUpdate() {
-    //     return true;
-    // }
+        this.setProps({
+            avatar: new FileUploader({
+                label: 'Поменять аватар'
+            }),
+            buttonBlock: new SubmitButton({
+                label: 'Сохранить',
+                form: 'changeDataForm',
+                type: 'submit',
+                onClick: e => {
+                    e.preventDefault();
+
+                    (this.children.form as IEventBus).emit('save');
+                }
+            })
+        });
+    };
 
     render() {
         return this.compile(template, {

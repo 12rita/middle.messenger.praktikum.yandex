@@ -1,19 +1,27 @@
 .messageText {
-    background: var(--lightGray);
-    padding: 11px;
     color: var(--black);
     border-radius: 8px;
     position: relative;
+    display: flex;
+    align-items: flex-end;
 }
 
 .mainInfo {
-    padding: 30px 20px;
+    padding: 11px;
+    margin: 16px 8px;
+    border-radius: 8px;
+    width: fit-content;
 }
 
+.myMessage {
+    background-color: var(--lightBLue);
+    margin-left: auto;
+}
+
+.othersMessage {
+    background-color: var(--lightGray);
+}
 
 .timeText {
-    position: absolute;
-    bottom: 11px;
-    right: 11px;
     margin: 11px 0 0 11px;
 }

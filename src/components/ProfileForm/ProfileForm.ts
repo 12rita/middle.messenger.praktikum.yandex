@@ -22,7 +22,6 @@ export class ProfileForm
                 ...field,
                 disabled: field.disabled !== undefined ? field.disabled : true,
                 key: props.key,
-                type: 'text',
                 events: {
                     change: e => {
                         handleChange({
@@ -57,11 +56,10 @@ export class ProfileForm
     }
 
     _unsetEditable() {
+        this.props.handleSubmit(this.values);
         (this.children.inputs as IBlock[]).forEach(input => {
             input.setProps({ disabled: true });
         });
-
-        this.props.handleSubmit(this.values);
     }
 
     componentDidUpdate() {

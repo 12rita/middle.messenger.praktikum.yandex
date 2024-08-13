@@ -39,7 +39,6 @@ export class ProfileField extends Block<IProfileFieldProps> {
         oldProps: IProfileFieldProps,
         newProps: IProfileFieldProps
     ) {
-        console.log({ newProps, oldProps, input: this.children.input });
         if (!isEqual(oldProps, newProps)) {
             (this.children.input as unknown as Input).setProps({
                 value: (this.children.input as unknown as Input).value,
@@ -47,15 +46,7 @@ export class ProfileField extends Block<IProfileFieldProps> {
             });
             return true;
         }
-        // this.children.input = new Input({
-        //     ...this.props,
-        //     value: (this.children.input as unknown as Input).value,
-        //     disabled: this.props.disabled,
-        //     className: [styles.fieldValue, global.grayText, global.body1],
-        //     onBlur: e => {
-        //         this._checkIsValid(e);
-        //     }
-        // }) as unknown as IBlock;
+
         return false;
     }
 

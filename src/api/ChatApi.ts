@@ -60,6 +60,8 @@ class ChatAPIClass extends BaseAPI {
         await this.getToken(id).then(() => {
             this._socket &&
                 this._socket.addEventListener('open', () => {
+                    store.set('chats.messages', []);
+                    store.set('chats.lastMessage', {});
                     this._socket?.send(
                         JSON.stringify({
                             content: '0',
@@ -67,14 +69,6 @@ class ChatAPIClass extends BaseAPI {
                         })
                     );
                 });
-            // console.log(this._socket?.readyState, WebSocket.OPEN);
-            // if (this._socket && this._socket.readyState === WebSocket.OPEN)
-            //     this._socket.send(
-            //         JSON.stringify({
-            //             content: '0',
-            //             type: 'get old'
-            //         })
-            //     );
         });
     };
 
@@ -106,17 +100,18 @@ class ChatAPIClass extends BaseAPI {
 
         socket.addEventListener('message', event => {
             console.log('Получены данные', event);
-            try {
-                const res = JSON.parse(event.data);
-                if (Array.isArray(res)) {
-                    store.set('chats.messages', res);
-                    console.log({ res, store });
-                } else {
-                    store.set('chats.lastMessage', res);
-                    console.log({ res, store });
+            // console.log({ store: store.getState().chats.messages });
+            if (event.type === 'message') {
+                try {
+                    const res = JSON.parse(event.data);
+                    if (Array.isArray(res)) {
+                        store.set('chats.messages', res);
+                    } else {
+                        store.set('chats.lastMessage', res);
+                    }
+                } catch {
+                    // store.set('chats.messages', event.data);
                 }
-            } catch {
-                // store.set('chats.messages', event.data);
             }
         });
 

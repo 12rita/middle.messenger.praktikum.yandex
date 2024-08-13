@@ -25,6 +25,7 @@ export class Block<
     props: IBlockProps;
     children: IChildren = {};
     _id;
+    _setUpdate = false;
 
     constructor(tagName = 'div', propsAndChildren = {} as IBlockProps) {
         super();
@@ -176,12 +177,45 @@ export class Block<
         });
     }
 
+    setChildren = (nextChild: unknown) => {
+        if (nextChild === undefined) {
+            return;
+        }
+
+        this._setUpdate = false;
+        const oldValue = deepClone(this.props);
+
+        Object.assign(this.children, nextChild);
+
+        if (this._setUpdate) {
+            this.emit(EVENTS.FLOW_CDU, oldValue, this.props);
+            this._setUpdate = false;
+        }
+    };
+
     setProps = (nextProps: unknown) => {
         if (nextProps === undefined) {
             return;
         }
 
-        Object.assign(this.props, nextProps);
+        this._setUpdate = false;
+        const oldValue = deepClone(this.props);
+        const { children, props } = this._getChildren(nextProps as IBlockProps);
+
+        if (Object.values(children).length) {
+            Object.assign(this.children, children);
+        }
+
+        if (Object.values(props).length) {
+            Object.assign(this.props, props);
+        }
+
+        if (this._setUpdate) {
+            this.emit(EVENTS.FLOW_CDU, oldValue, this.props);
+            this._setUpdate = false;
+        }
+
+        // Object.assign(this.props, nextProps);
     };
 
     get element() {
@@ -214,9 +248,19 @@ export class Block<
                 return typeof value === 'function' ? value.bind(target) : value;
             },
             set: (target, prop, value) => {
-                const oldObj = deepClone(target) as IBlockProps;
-                (target as { [key: string]: unknown })[prop as string] = value;
-                this.emit(EVENTS.FLOW_CDU, oldObj, target as IBlockProps);
+                // const oldObj = deepClone(target) as IBlockProps;
+                if (
+                    (target as { [key: string]: unknown })[prop as string] !==
+                    value
+                ) {
+                    // console.log({ old: target[prop], new: value });
+                    (target as { [key: string]: unknown })[prop as string] =
+                        value;
+
+                    this._setUpdate = true;
+                }
+
+                // this.emit(EVENTS.FLOW_CDU, oldObj, target as IBlockProps);
                 return true;
             },
             deleteProperty() {

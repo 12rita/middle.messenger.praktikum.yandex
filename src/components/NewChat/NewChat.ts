@@ -18,17 +18,23 @@ export class NewChat extends Block<INewChatProps> {
         });
     }
     onAdd = () => {
-        this.children.modal = new NewChatModal({
-            newProps: 'newProps',
-            onClose: (e?: Event) => {
-                if (!e) {
-                    this.children.modal = [];
-                    return;
+        this.setProps({
+            modal: new NewChatModal({
+                onClose: (e?: Event) => {
+                    if (!e) {
+                        this.setChildren({ modal: [] });
+                        // this.children.modal = [];
+                        return;
+                    }
+                    const formEl = (e.target as HTMLElement)?.closest(
+                        '#addForm'
+                    );
+
+                    if (formEl) return;
+
+                    this.setChildren({ modal: [] });
                 }
-                const formEl = (e.target as HTMLElement)?.closest('#addForm');
-                if (formEl) return;
-                this.children.modal = [];
-            }
+            })
         });
     };
 
@@ -36,7 +42,7 @@ export class NewChat extends Block<INewChatProps> {
         return this.compile(template, {
             ...this.props,
             addButton: this.children.addButton,
-            modal: this.children.modal
+            modal: this.props.modal === null ? null : this.children.modal
         });
     }
 }

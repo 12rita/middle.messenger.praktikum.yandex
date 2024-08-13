@@ -8,8 +8,6 @@ import sendIcon from '../../static/sendButton.svg';
 import { SubmitButton } from '@/components';
 import { Block } from '@shared/components';
 import { connect } from '@shared/stores';
-
-import { IMessage } from '@shared/types.ts';
 import { chatApi } from '@api';
 import { isEqual } from '@shared/utils';
 
@@ -72,19 +70,26 @@ export class ChatBase extends Block<IChatProps> {
     };
 
     componentDidUpdate(oldProps: IRenderProps, newProps: IRenderProps) {
-        console.log(oldProps, newProps);
         if (!isEqual(oldProps, newProps)) {
-            if (!isEqual(oldProps.lastMessage, newProps.lastMessage)) {
+            console.log({ oldProps, newProps });
+            if (
+                !isEqual(oldProps.lastMessage, newProps.lastMessage) &&
+                newProps.lastMessage
+            ) {
+                console.log('newLastMessage: ', newProps.lastMessage);
                 (this.children.messagesBlock as unknown as Message[]).push(
                     new Message({ ...newProps.lastMessage })
                 );
+                console.log({ block: this.children.messagesBlock });
             }
             if (!isEqual(oldProps.messages, newProps.messages)) {
                 const { messages = [] } = newProps as IChatProps;
 
                 const newMessages = messages
                     ?.map(message => {
-                        return new Message({ ...message });
+                        return new Message({
+                            ...message
+                        });
                     })
                     .reverse();
 
@@ -93,13 +98,14 @@ export class ChatBase extends Block<IChatProps> {
 
                 (this.children.input as unknown as Input).emit('clear');
             }
-            // this.children.messagesBlock.
 
-            const messages = document.getElementById('messages');
-            if (messages) {
-                messages.scrollTo({ top: messages.scrollHeight });
-            }
-            console.log(this.children.messagesBlock);
+            // const messages = document.getElementById('messages');
+            //
+            // if (messages) {
+            //     messages.scrollTop = messages.scrollHeight;
+            //     console.log(messages.scrollTop);
+            // }
+
             return true;
         }
 
@@ -107,18 +113,25 @@ export class ChatBase extends Block<IChatProps> {
     }
 
     render() {
-        return this.compile(template, {
+        const block = this.compile(template, {
             ...this.props,
             messagesBlock: this.children.messagesBlock,
             input: this.children.input,
             sendButton: this.children.sendButton
         });
+        const messages = document.getElementById('messages');
+
+        if (messages) {
+            messages.scrollTop = messages.scrollHeight;
+            // console.log(messages.scrollHeight, messages.scrollTop);
+        }
+        return block;
     }
 }
 
 const withStore = connect(state => ({
-    messages: (state?.chats as { messages: IMessage[] })?.messages,
-    lastMessage: state?.chats?.lastMessage
+    messages: (state?.chats as IRenderProps)?.messages,
+    lastMessage: (state?.chats as IRenderProps)?.lastMessage
 }));
 
 export const Chat = withStore(ChatBase);

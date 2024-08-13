@@ -7,3 +7,5 @@ export { merge } from './merge.ts';
 export { set } from './set.ts';
 export { trim } from './trim.ts';
 export { isEqualArrays } from './isEqualArrays.ts';
+export { getTime } from './getTime.ts';
+export { getPictureUrl } from './getPictureUrl.ts';

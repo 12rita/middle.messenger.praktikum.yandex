@@ -12,7 +12,10 @@ export type TSettingsFields =
     | 'second_name'
     | 'display_name'
     | 'phone';
-export type TChangePasswordFields = 'oldPassword' | 'newPassword';
+export type TChangePasswordFields =
+    | 'oldPassword'
+    | 'newPassword'
+    | 'newPasswordRepeat';
 
 export type TMessageField = 'message';
 
@@ -41,7 +44,7 @@ export interface IValues {
 }
 
 export interface IUser {
-    id: number;
+    id?: number;
     first_name: string;
     second_name: string;
     display_name: string;

@@ -9,7 +9,11 @@ export class SubmitButton extends Block<ISubmitButtonProps> {
         super('button', {
             ...props,
             attributes: [
-                ...(props.disabled ? [{ name: 'disabled', value: 'true' }] : [])
+                ...(props.disabled
+                    ? [{ name: 'disabled', value: 'true' }]
+                    : []),
+                ...(props.type ? [{ name: 'type', value: props.type }] : []),
+                ...(props.form ? [{ name: 'form', value: props.form }] : [])
             ],
             className: props.className ?? styles.submitButton,
             events: { click: props.onClick }

@@ -8,7 +8,7 @@ declare module '*.png' {
     export default content;
 }
 
-declare type TInputType = 'password' | 'text' | 'email' | 'phone';
+declare type TInputType = 'password' | 'text' | 'email' | 'phone' | 'file';
 
 declare type TVoid = () => void;
 

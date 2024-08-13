@@ -1,12 +1,17 @@
 import { isObject } from './isObject.ts';
 import { isEqualArrays } from '@shared/utils/isEqualArrays.ts';
 
-type TIsEqual = (a?: object | string, b?: object | string) => boolean;
+type TIsEqual = (
+    a?: object | string | number,
+    b?: object | string | number
+) => boolean;
 
 export const isEqual: TIsEqual = (a, b) => {
     if (!a && !b) return true;
     if (!a || !b) return false;
     if (Object.keys(a).length !== Object.keys(b).length) return false;
+    if (typeof a !== typeof b) return false;
+    if (typeof a === 'number' || typeof b === 'number') return a === b;
     if (typeof a === 'string' && typeof b === 'string') {
         return a === b;
     } else if (typeof a === 'string' || typeof b === 'string') return false;
