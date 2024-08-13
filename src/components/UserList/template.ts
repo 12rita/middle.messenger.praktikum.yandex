@@ -8,6 +8,11 @@ export const existedTemplate = `
       {{#each usersBlock}}
     {{{this}}}
     {{/each}}
+<div class=" ${styles.title}">
+
+
+    {{{deleteButton}}}
+    </div>
 `;
 
 export const template = `

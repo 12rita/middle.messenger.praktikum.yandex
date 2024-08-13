@@ -9,6 +9,15 @@ export enum StoreEvents {
 // наследуем Store от EventBus, чтобы его методы были сразу доступны у экземпляра Store
 class Store extends EventBus {
     state: TObject = {};
+    // user;
+    // chatsPreview;
+    // chat:{
+    //     id: {
+    //         lastMessage,
+    //         messages,
+    //         users
+    //     }
+    // }
 
     public getState() {
         return this.state;

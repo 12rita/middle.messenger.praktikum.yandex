@@ -1,4 +1,5 @@
 import { IProps } from '@shared/components';
+import { TButtonType } from '@shared/types.ts';
 
 export interface ISubmitButtonProps extends IProps {
     label?: string;
@@ -7,4 +8,5 @@ export interface ISubmitButtonProps extends IProps {
     disabled?: boolean;
     type?: 'submit';
     form?: string;
+    color?: TButtonType;
 }

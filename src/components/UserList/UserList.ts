@@ -38,7 +38,6 @@ export class UserListBase extends Block {
 
     componentDidUpdate(oldProps: IUserListProps, newProps: IUserListProps) {
         if (!isEqual(oldProps.users, newProps.users)) {
-            console.log({ oldProps, newProps });
             const newUsers = deepClone(this.users);
 
             newUsers.push(...deepClone(newProps.users));

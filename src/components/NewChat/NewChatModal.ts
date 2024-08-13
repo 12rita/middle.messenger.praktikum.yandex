@@ -35,7 +35,7 @@ export class NewChatModal extends Block<INewChatProps> {
 
         const deleteButton = new SubmitButton({
             label: 'Удалить чат',
-            className: styles.deleteButton,
+            color: 'danger',
             onClick: () => {
                 this.onDelete();
             }
@@ -137,14 +137,6 @@ export class NewChatModal extends Block<INewChatProps> {
             userApi.search({ login: (e.target as HTMLInputElement)?.value });
         }, 300); //debounce
     };
-    //
-    // componentDidUpdate(oldProps: IState, newProps: IState) {
-    //     if (!isEqual(oldProps.users, newProps.users)) {
-    //         (this.children.users as Block).setProps({ users: newProps.users });
-    //         return true;
-    //     }
-    //     return false;
-    // }
 
     render() {
         return this.compile(modalTemplate, {

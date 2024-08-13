@@ -5,7 +5,7 @@ import store, { StoreEvents } from '@shared/stores/Store.ts';
 import { IUser } from '@shared/types.ts';
 
 export enum CHAT_ROUTES {
-    chats = 'chats/',
+    chats = 'chats?',
     chatsUsers = 'chats/users/',
     chatToken = 'chats/token/',
     avatar = 'chats/avatar/'
@@ -17,7 +17,7 @@ class ChatAPIClass extends BaseAPI {
     getChats(title: string = '') {
         api.get(CHAT_ROUTES.chats, { ...(title && { data: { title } }) }).then(
             data => {
-                store.set('chats.preview.data', data);
+                store.set('chatsPreview', data);
             }
         );
     }
@@ -37,41 +37,26 @@ class ChatAPIClass extends BaseAPI {
         avatar?: FormData;
         id: number;
     }) => {
+        const addUsersData = {
+            users,
+            chatId: id
+        };
         return api
-            .get(`chats/${id}/users/`)
-            .then(existedUsers => {
-                const deletableUsers = (existedUsers as IUser[])
-                    .filter(user => !users.includes(user.id as number))
-                    .map(user => user.id);
-                if (deletableUsers.length) {
-                    this.deleteChatUsers({
-                        users: deletableUsers as number[],
-                        id
-                    });
-                }
+            .put(CHAT_ROUTES.chatsUsers, {
+                data: JSON.stringify(addUsersData)
             })
             .then(() => {
-                const addUsersData = {
-                    users,
-                    chatId: id
-                };
-                return api
-                    .put(CHAT_ROUTES.chatsUsers, {
-                        data: JSON.stringify(addUsersData)
-                    })
-                    .then(() => {
-                        if (avatar) {
-                            avatar.append('chatId', id.toString());
-                            api.put(CHAT_ROUTES.avatar, {
-                                data: avatar,
-                                headers: {}
-                            }).then(() => {
-                                store.emit(StoreEvents.chatsUpdated);
-                            });
-                        } else {
-                            store.emit(StoreEvents.chatsUpdated);
-                        }
+                if (avatar) {
+                    avatar.append('chatId', id.toString());
+                    api.put(CHAT_ROUTES.avatar, {
+                        data: avatar,
+                        headers: {}
+                    }).then(() => {
+                        store.emit(StoreEvents.chatsUpdated);
                     });
+                } else {
+                    store.emit(StoreEvents.chatsUpdated);
+                }
             });
     };
 
@@ -124,9 +109,7 @@ class ChatAPIClass extends BaseAPI {
     };
 
     getChatUsers = (id: number) => {
-        return api.get(`chats/${id}/users/`).then(data => {
-            store.set('chat.existedUsers', data);
-        });
+        return api.get(`chats/${id}/users/`);
     };
 
     sendMessage(content: string) {
@@ -161,9 +144,9 @@ class ChatAPIClass extends BaseAPI {
                 try {
                     const res = JSON.parse(event.data);
                     if (Array.isArray(res)) {
-                        store.set('chats.messages', res);
+                        store.set(`chats.messages`, res);
                     } else {
-                        store.set('chats.lastMessage', res);
+                        store.set(`chats.lastMessage`, res);
                     }
                 } catch (e) {
                     console.log(e);

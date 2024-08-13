@@ -132,6 +132,6 @@ export class ChatsPageBase extends Block {
     }
 }
 const withStore = connect(state => ({
-    chats: (state as unknown as IState)?.chats?.preview?.data
+    chats: (state as unknown as IState)?.chatsPreview
 }));
 export const ChatsPage = withStore(ChatsPageBase);

@@ -19,7 +19,7 @@ export class Avatar extends Block<IFileUploaderProps> {
 
             src: this.props.src ? getPictureUrl(this.props.src) : '',
             styles: this.props.src
-                ? this.props.imageClassname ?? styles.backgroundImg
+                ? (this.props.imageClassname ?? styles.backgroundImg)
                 : styles.hidden
         });
     }

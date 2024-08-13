@@ -1,5 +1,4 @@
 .submitButton {
-    background: var(--blue);
     cursor: pointer;
     border-radius: 8px;
     color: var(--white);
@@ -15,4 +14,16 @@
 
 .submitButton a {
     color: var(--white);
+}
+
+.danger {
+    background: var(--red);
+}
+
+.classic {
+    background: var(--blue);
+}
+
+.gray {
+    background: var(--gray);
 }

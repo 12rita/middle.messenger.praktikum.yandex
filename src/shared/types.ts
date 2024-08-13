@@ -68,3 +68,4 @@ export interface IChatPreview {
     created_by: number;
     last_message: IMessage;
 }
+export type TButtonType = 'classic' | 'gray' | 'danger';

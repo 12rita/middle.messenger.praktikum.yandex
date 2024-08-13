@@ -1,6 +1,5 @@
 import styles from './styles.module.css';
 import { ISubmitButtonProps } from './types.ts';
-
 import { template } from './template.ts';
 import { Block } from '@shared/components';
 
@@ -15,7 +14,10 @@ export class SubmitButton extends Block<ISubmitButtonProps> {
                 ...(props.type ? [{ name: 'type', value: props.type }] : []),
                 ...(props.form ? [{ name: 'form', value: props.form }] : [])
             ],
-            className: props.className ?? styles.submitButton,
+            className: props.className ?? [
+                styles.submitButton,
+                props.color ? styles[props.color] : styles.classic
+            ],
             events: { click: props.onClick }
         });
     }
@@ -24,6 +26,7 @@ export class SubmitButton extends Block<ISubmitButtonProps> {
         oldProps: ISubmitButtonProps,
         newProps: ISubmitButtonProps
     ) {
+        console.log({ newProps });
         if (oldProps.disabled !== newProps.disabled) {
             this.setAttributes([
                 {
