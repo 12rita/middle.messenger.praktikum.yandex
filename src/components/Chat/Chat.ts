@@ -5,15 +5,27 @@ import styles from './styles.module.css';
 import { Message } from '../Message';
 import { Input } from '../Input';
 import sendIcon from '../../static/sendButton.svg';
-import { SubmitButton } from '@/components';
+import { Avatar, SubmitButton } from '@/components';
 import { Block } from '@shared/components';
 import { connect } from '@shared/stores';
 import { chatApi } from '@api';
 import { isEqual } from '@shared/utils';
+import { NewChatModal } from '@components/NewChat/NewChatModal.ts';
 
 export class ChatBase extends Block<IChatProps> {
     constructor(props: IChatProps) {
         const messagesBlock = [] as Message[];
+
+        const avatarBlock = new Avatar({
+            src: props.avatar,
+            wrapperClassname: styles.chatAvatar,
+            imageClassname: styles.chatAvatar,
+            events: {
+                click: () => {
+                    this._onChatClick();
+                }
+            }
+        });
 
         const input = new Input({
             ...props,
@@ -38,6 +50,7 @@ export class ChatBase extends Block<IChatProps> {
             className: styles.chatFieldWrapper,
             messagesBlock,
             sendButton,
+            avatarBlock,
             input
         });
 
@@ -66,26 +79,48 @@ export class ChatBase extends Block<IChatProps> {
         this.init();
     }
     init = () => {
-        void chatApi.getOldMessages(this.props.id);
+        chatApi.getOldMessages(this.props.id).then(() => {
+            chatApi.getChats(); //to mark read
+        });
+    };
+
+    _onChatClick = () => {
+        this.setProps({
+            modal: new NewChatModal({
+                edit: true,
+                title: this.props.title,
+                chatId: this.props.id,
+                onClose: (e?: Event) => {
+                    if (!e) {
+                        this.setChildren({ modal: [] });
+                        return;
+                    }
+                    const formEl = (e.target as HTMLElement)?.closest(
+                        '#addForm'
+                    );
+
+                    if (formEl) return;
+
+                    this.setChildren({ modal: [] });
+                }
+            })
+        });
     };
 
     componentDidUpdate(oldProps: IRenderProps, newProps: IRenderProps) {
         if (!isEqual(oldProps, newProps)) {
-            console.log({ oldProps, newProps });
             if (
                 !isEqual(oldProps.lastMessage, newProps.lastMessage) &&
                 newProps.lastMessage
             ) {
-                console.log('newLastMessage: ', newProps.lastMessage);
                 (this.children.messagesBlock as unknown as Message[]).push(
                     new Message({ ...newProps.lastMessage })
                 );
-                console.log({ block: this.children.messagesBlock });
             }
             if (!isEqual(oldProps.messages, newProps.messages)) {
                 const { messages = [] } = newProps as IChatProps;
 
-                const newMessages = messages
+                (this.children.messagesBlock as unknown as Message[]) = messages
                     ?.map(message => {
                         return new Message({
                             ...message
@@ -93,18 +128,8 @@ export class ChatBase extends Block<IChatProps> {
                     })
                     .reverse();
 
-                (this.children.messagesBlock as unknown as Message[]) =
-                    newMessages;
-
                 (this.children.input as unknown as Input).emit('clear');
             }
-
-            // const messages = document.getElementById('messages');
-            //
-            // if (messages) {
-            //     messages.scrollTop = messages.scrollHeight;
-            //     console.log(messages.scrollTop);
-            // }
 
             return true;
         }

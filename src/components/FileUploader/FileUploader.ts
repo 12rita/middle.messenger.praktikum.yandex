@@ -11,6 +11,7 @@ export class FileUploader extends Block<IFileUploaderProps> {
             name: 'avatar',
             type: 'file',
             id: 'uploadInput',
+            accept: 'image/*',
             className: [styles.inputFile]
         });
 

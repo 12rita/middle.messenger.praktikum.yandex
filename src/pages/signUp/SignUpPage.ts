@@ -3,8 +3,7 @@ import { template } from './template.ts';
 import global from '@/globalStyles.module.css';
 import { IFormField, IFormValues, TSignUpFields } from '@shared/types.ts';
 import { Block, IPage, PAGES } from '@shared/components';
-import { api } from '@api/HTTPTransport.ts';
-import { ROUTES } from '@api';
+import { authApi } from '@api';
 
 const formFields: IFormField<TSignUpFields>[] = [
     { title: 'Почта', value: '', name: 'email', type: 'email' },
@@ -60,22 +59,9 @@ export class SignUpPage extends Block {
         const myUserForm = document.getElementById(formId);
 
         if (myUserForm) {
-            // const form = new FormData(myUserForm as HTMLFormElement);
-
-            api.post(ROUTES.signUp, {
-                credentials: 'include',
-                mode: 'cors',
-                headers: {
-                    accept: 'application/json',
-                    'content-type': 'application/json'
-                },
-                data: JSON.stringify(values)
-            })
-                .then(data => {
-                    console.log({ data });
-                    this.history?.go(PAGES.chats);
-                })
-                .catch(e => console.log({ e }));
+            authApi.signUp(values).then(() => {
+                this.history?.go(PAGES.chats);
+            });
         }
     };
 

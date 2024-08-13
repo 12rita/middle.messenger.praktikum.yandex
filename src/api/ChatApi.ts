@@ -2,17 +2,13 @@ import { BaseAPI } from './BaseApi.ts';
 import { api } from './HTTPTransport.ts';
 
 import store, { StoreEvents } from '@shared/stores/Store.ts';
-import { ROUTES } from '@api/routes.ts';
-import { user } from '@shared/stores/User.ts';
+import { IUser } from '@shared/types.ts';
 
 export enum CHAT_ROUTES {
     chats = 'chats/',
-    addUsers = 'chats/users/'
-}
-
-export enum CHAT_PATHS {
-    chats = 'chats.preview.data',
-    activeChat = 'chats.activeChat.data'
+    chatsUsers = 'chats/users/',
+    chatToken = 'chats/token/',
+    avatar = 'chats/avatar/'
 }
 
 class ChatAPIClass extends BaseAPI {
@@ -26,34 +22,79 @@ class ChatAPIClass extends BaseAPI {
         );
     }
 
+    deleteChatUsers = ({ users, id }: { users: number[]; id: number }) => {
+        return api.delete(CHAT_ROUTES.chatsUsers, {
+            data: JSON.stringify({ users, chatId: id })
+        });
+    };
+
+    updateChat = ({
+        users,
+        avatar,
+        id
+    }: {
+        users: number[];
+        avatar?: FormData;
+        id: number;
+    }) => {
+        return api
+            .get(`chats/${id}/users/`)
+            .then(existedUsers => {
+                const deletableUsers = (existedUsers as IUser[])
+                    .filter(user => !users.includes(user.id as number))
+                    .map(user => user.id);
+                if (deletableUsers.length) {
+                    this.deleteChatUsers({
+                        users: deletableUsers as number[],
+                        id
+                    });
+                }
+            })
+            .then(() => {
+                const addUsersData = {
+                    users,
+                    chatId: id
+                };
+                return api
+                    .put(CHAT_ROUTES.chatsUsers, {
+                        data: JSON.stringify(addUsersData)
+                    })
+                    .then(() => {
+                        if (avatar) {
+                            avatar.append('chatId', id.toString());
+                            api.put(CHAT_ROUTES.avatar, {
+                                data: avatar,
+                                headers: {}
+                            }).then(() => {
+                                store.emit(StoreEvents.chatsUpdated);
+                            });
+                        } else {
+                            store.emit(StoreEvents.chatsUpdated);
+                        }
+                    });
+            });
+    };
+
     createNewChat({
         title,
         users,
-        onClose
+        avatar
     }: {
         title: string;
         users: number[];
-        onClose?: TVoid;
+        avatar: FormData;
     }) {
-        api.post(CHAT_ROUTES.chats, {
-            data: JSON.stringify({
-                title
+        return api
+            .post(CHAT_ROUTES.chats, {
+                data: JSON.stringify({
+                    title
+                })
             })
-        }).then(data => {
-            const addUsersData = {
-                users,
-                chatId: (data as { id: number }).id
-            };
-            api.put(CHAT_ROUTES.addUsers, {
-                data: JSON.stringify(addUsersData)
-            }).then(() => {
-                // store.set('chats.data', data);
-                store.emit(StoreEvents.chatsUpdated);
-                // eventEmitter.emit(GLOBAL_EVENTS.chatsUpdate);
-                console.log(onClose);
-                onClose && onClose();
+            .then(data => {
+                const id = (data as { id: number }).id;
+
+                this.updateChat({ users, avatar, id });
             });
-        });
     }
 
     getOldMessages = async (id: number) => {
@@ -72,6 +113,22 @@ class ChatAPIClass extends BaseAPI {
         });
     };
 
+    deleteChat = (id: number) => {
+        return api
+            .delete(CHAT_ROUTES.chats, {
+                data: JSON.stringify({ chatId: id })
+            })
+            .then(() => {
+                store.emit(StoreEvents.chatsUpdated);
+            });
+    };
+
+    getChatUsers = (id: number) => {
+        return api.get(`chats/${id}/users/`).then(data => {
+            store.set('chat.existedUsers', data);
+        });
+    };
+
     sendMessage(content: string) {
         if (this._socket && this._socket.readyState === WebSocket.OPEN)
             this._socket.send(
@@ -83,8 +140,9 @@ class ChatAPIClass extends BaseAPI {
     }
 
     openSocket = ({ id, token }: { id: number; token: string }) => {
+        const user = store.getState().user as IUser;
         const socket = new WebSocket(
-            `wss://ya-praktikum.tech/ws/chats/${user?.data?.id}/${id}/${token}`
+            `wss://ya-praktikum.tech/ws/chats/${user?.id}/${id}/${token}`
         );
         this._socket = socket;
 
@@ -99,8 +157,6 @@ class ChatAPIClass extends BaseAPI {
         });
 
         socket.addEventListener('message', event => {
-            console.log('Получены данные', event);
-            // console.log({ store: store.getState().chats.messages });
             if (event.type === 'message') {
                 try {
                     const res = JSON.parse(event.data);
@@ -109,8 +165,8 @@ class ChatAPIClass extends BaseAPI {
                     } else {
                         store.set('chats.lastMessage', res);
                     }
-                } catch {
-                    // store.set('chats.messages', event.data);
+                } catch (e) {
+                    console.log(e);
                 }
             }
         });
@@ -124,14 +180,9 @@ class ChatAPIClass extends BaseAPI {
     };
 
     async getToken(id: number) {
-        const data = await api.post(`${ROUTES.chatToken}${id}`);
+        const data = await api.post(`${CHAT_ROUTES.chatToken}${id}`);
         const { token } = data as { token: string };
         this.openSocket({ id, token });
-    }
-
-    request() {
-        // Здесь уже не нужно писать полный путь /api/v1/chats/
-        return api.get('/full');
     }
 }
 

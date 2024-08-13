@@ -10,7 +10,7 @@ export interface IChatProps extends IProps {
     id: number;
     messages?: IMessage[];
     indicator?: number;
-    onSend: (value: string) => void;
+    avatar?: string;
 }
 
 export interface IRenderProps {

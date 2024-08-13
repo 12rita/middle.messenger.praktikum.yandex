@@ -45,6 +45,7 @@
     border-radius: 50%;
     background: #EFEFEF;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .header {

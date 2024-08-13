@@ -3,8 +3,9 @@ import { template } from './template.ts';
 import global from '@/globalStyles.module.css';
 import { Block, IPage, PAGES } from '@shared/components';
 import { IFormField, IFormValues, TSignInFields } from '@shared/types.ts';
-import { api, ROUTES } from '@api';
+import { authApi } from '@api';
 const formId = 'signInForm';
+
 export class SignInPage extends Block {
     history;
     constructor(props: IPage) {
@@ -19,7 +20,6 @@ export class SignInPage extends Block {
         ];
 
         const { history } = props;
-        console.log({ history });
 
         const onTextClick = () => {
             history && history.go(PAGES.signUp);
@@ -47,25 +47,11 @@ export class SignInPage extends Block {
 
     signIn = (values: IFormValues) => {
         const myUserForm = document.getElementById(formId);
-        console.log(this);
-        if (myUserForm) {
-            // const form = new FormData(myUserForm as HTMLFormElement);
 
-            api.post(ROUTES.signIn, {
-                credentials: 'include',
-                mode: 'cors',
-                headers: {
-                    accept: 'application/json',
-                    'content-type': 'application/json'
-                },
-                data: JSON.stringify(values)
-            })
-                .then(data => {
-                    console.log({ data });
-                    console.log(this.props);
-                    this.history?.go(PAGES.chats);
-                })
-                .catch(e => console.log({ e }));
+        if (myUserForm) {
+            authApi.signIn(values).then(() => {
+                this.history?.go(PAGES.chats);
+            });
         }
     };
 

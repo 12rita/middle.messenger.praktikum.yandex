@@ -94,30 +94,8 @@ export class ChatsPageBase extends Block {
         if (activeChat) {
             this.setProps({
                 activeChat: new Chat({
-                    id,
                     messages: [],
-                    title: activeChat.title,
-                    indicator: activeChat.unread_count,
-                    onSend: (value: string) => {
-                        console.log({ message: value });
-                        // const currentTime = new Date(Date.now()).toLocaleTimeString(
-                        //     'en-US',
-                        //     {
-                        //         hour: '2-digit',
-                        //         minute: '2-digit'
-                        //     }
-                        // );
-                        // const newMessage = {
-                        //     message: value,
-                        //     time: currentTime,
-                        //     id: makeUUID()
-                        // };
-                        // // activeChat.messages.push(newMessage);
-                        //
-                        // (this.children.activeChat as unknown as Chat).setProps({
-                        //     messages: activeChat.messages
-                        // });
-                    }
+                    ...activeChat
                 }) as unknown as IBlock
             });
         }

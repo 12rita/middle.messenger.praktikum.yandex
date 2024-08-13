@@ -26,6 +26,7 @@
     list-style: none;
     padding: 0;
     height: 400px;
+    width: 400px;
     overflow-y: auto;
 }
 
@@ -38,4 +39,8 @@
 .active:hover {
     background-color: #8c8b8b;
     border-radius: 4px;
+}
+
+.title {
+    margin: 16px 0;
 }

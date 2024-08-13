@@ -23,7 +23,6 @@ export class ChatList extends Block<IChatListProps> {
     }
 
     componentDidUpdate(oldProps: IChatListProps, newProps: IChatListProps) {
-        // console.log(oldProps, newProps);
         if (!isEqual(oldProps.chatsData, newProps.chatsData)) {
             this.children.chats =
                 newProps.chatsData.map(item => {

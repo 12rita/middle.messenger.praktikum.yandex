@@ -94,6 +94,7 @@ export class ProfilePage
             backButton,
             buttonBlock,
             avatar,
+            title: user.login,
             className: styles.layout
         });
         this.buttonBlock = buttonBlock as unknown as IBlock;
@@ -157,13 +158,13 @@ export class ProfilePage
     };
 
     render() {
+        console.log(this.props);
         return this.compile(template, {
             ...this.props,
             form: this.children.form as IBlock,
             backButton: this.children.backButton as IBlock,
             buttonBlock: this.children.buttonBlock as IBlock,
-            avatar: this.children.avatar as IBlock,
-            title: user.display_name
+            avatar: this.children.avatar as IBlock
         });
     }
 }

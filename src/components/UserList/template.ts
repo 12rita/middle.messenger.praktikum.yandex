@@ -1,6 +1,15 @@
 import styles from './styles.module.css';
 import global from '../../globalStyles.module.css';
 
+export const existedTemplate = `
+<div class="${global.bigSubtext} ${styles.title}">
+Участники чата {{title}}
+</div>
+      {{#each usersBlock}}
+    {{{this}}}
+    {{/each}}
+`;
+
 export const template = `
       {{#each usersBlock}}
     {{{this}}}

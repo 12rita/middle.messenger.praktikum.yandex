@@ -4,6 +4,9 @@ import { IUser } from '@shared/types.ts';
 export interface INewChatProps extends IProps {
     addChatClass?: string;
     onClose?: (event?: Event) => void;
+    edit?: boolean;
+    chatId?: number;
+    title?: string;
 }
 
 export interface IAddButtonProps extends IProps {
@@ -12,4 +15,5 @@ export interface IAddButtonProps extends IProps {
 
 export interface IState {
     users: IUser[];
+    existedUsers: IUser[];
 }

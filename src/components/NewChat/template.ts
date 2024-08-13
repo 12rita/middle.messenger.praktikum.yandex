@@ -7,9 +7,10 @@ export const template = `
 </div>`;
 
 export const modalTemplate = `
-<div id="addForm" class="${styles.form}">
+<div id="addForm" class="${styles.wrapper}">
+<div  class="${styles.form}">
 <div class="${global.bigSubtext}">
-  Новый чат
+  {{{header}}}
 </div>
 <div>
    {{{input}}}
@@ -19,7 +20,16 @@ export const modalTemplate = `
 <div>
    {{{inputName}}}
 </div>
-<div class="${styles.button}">
+<form id="{{avatarForm}}">
+{{{inputAvatar}}}
+</form>
+
+<div class="${styles.buttonBlock}">
+{{{deleteButton}}}
+
 {{{submitButton}}}
+</div>
+</div>
+{{{existedUsers}}}
 </div>
 `;

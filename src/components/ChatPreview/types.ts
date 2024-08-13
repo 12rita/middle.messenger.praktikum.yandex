@@ -5,4 +5,5 @@ export interface IChatPreviewProps extends IProps {
     title: string;
     last_message: IMessage;
     unread_count: number;
+    avatar?: string;
 }

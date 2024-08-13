@@ -11,4 +11,5 @@ export interface IInputProps extends IProps {
     value?: string;
     errorClassName?: string;
     id?: string;
+    accept?: string;
 }

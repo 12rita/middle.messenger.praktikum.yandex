@@ -1,51 +1,50 @@
-import { IUserListProps } from './types.ts';
-import { template } from './template.ts';
+import { IExistedUserListProps } from './types.ts';
+import { existedTemplate } from './template.ts';
 import styles from './styles.module.css';
 import { Block } from '@shared/components';
 import { UserItem } from '@components/UserList/UserItem.ts';
 import { IUser } from '@shared/types.ts';
 import { deepClone, isEqual } from '@shared/utils';
-import { userApi } from '@api';
+import { chatApi } from '@api';
 import { connect } from '@shared/stores';
 import { IState } from '@components/NewChat/types.ts';
-import store from '@shared/stores/Store.ts';
 
-export class UserListBase extends Block {
+export class ExistedUserListBase extends Block<IExistedUserListProps> {
     users: IUser[] = [];
     active = new Set();
 
-    constructor() {
-        const preLoadedUsers = (store.getState().chat as IState)?.users ?? [];
-
-        const usersBlock =
-            [...preLoadedUsers].map(
-                user => new UserItem({ user, onClick: () => {} })
-            ) ?? [];
-
+    constructor(props: IExistedUserListProps) {
         super('ul', {
+            ...props,
             className: styles.list,
-            usersBlock
+            title: 0
         });
 
-        this.users = [...preLoadedUsers];
+        this.users = [];
 
         this.init();
     }
 
     init = () => {
-        userApi.search({ login: '' });
+        chatApi.getChatUsers(this.props.id);
     };
 
-    componentDidUpdate(oldProps: IUserListProps, newProps: IUserListProps) {
-        if (!isEqual(oldProps.users, newProps.users)) {
-            console.log({ oldProps, newProps });
+    componentDidUpdate(
+        oldProps: IExistedUserListProps,
+        newProps: IExistedUserListProps
+    ) {
+        if (!isEqual(oldProps.existedUsers, newProps.existedUsers)) {
             const newUsers = deepClone(this.users);
 
-            newUsers.push(...deepClone(newProps.users));
+            const existed = newProps.existedUsers;
+            newUsers.unshift(...existed);
+            existed.forEach(user => {
+                this.active.add(user.id);
+            });
 
             if (newUsers.length) {
                 this.setProps({
-                    usersBlock: newUsers.map(
+                    usersBlock: newProps.existedUsers.map(
                         user =>
                             new UserItem({
                                 user,
@@ -72,13 +71,14 @@ export class UserListBase extends Block {
     };
 
     render() {
-        return this.compile(template, {
+        return this.compile(existedTemplate, {
             ...this.props,
-            ...this.children
+            ...this.children,
+            title: this.users?.length ?? 0
         });
     }
 }
 const withStore = connect(state => ({
-    users: (state?.chat as IState)?.users
+    existedUsers: (state?.chat as IState)?.existedUsers
 }));
-export const UserList = withStore(UserListBase);
+export const ExistedUserList = withStore(ExistedUserListBase);

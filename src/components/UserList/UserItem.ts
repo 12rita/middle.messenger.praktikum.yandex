@@ -6,9 +6,11 @@ import { Block } from '@shared/components';
 
 export class UserItem extends Block<IUserItemProps> {
     constructor(props: IUserItemProps) {
+        const className = [styles.item];
+        props.active && className.push(styles.active);
         super('li', {
             ...props,
-            className: styles.item,
+            className,
             events: {
                 click: () => {
                     this.element.classList.toggle(styles.active);

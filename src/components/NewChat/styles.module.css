@@ -32,18 +32,11 @@
 
 }
 
-.wrapper {
-    position: absolute;
-    width: 100%;
-    height: 100vh;
-}
 
 .form {
     width: 400px;
     height: 600px;
-    background-color: white;
-    padding: 16px;
-    border-radius: 8px;
+
     display: flex;
     flex-direction: column;
 }
@@ -63,6 +56,31 @@
     text-align: center;
 }
 
-.button {
+.buttonBlock {
     margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.deleteButton {
+    background-color: var(--red);
+    cursor: pointer;
+    border-radius: 8px;
+    color: var(--white);
+    width: 100%;
+    height: 37px;
+    border: none;
+}
+
+.avatar {
+    margin: 16px 0
+}
+
+.wrapper {
+    display: flex;
+    gap: 24px;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: white;
 }

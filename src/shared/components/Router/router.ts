@@ -45,9 +45,9 @@ export class Router {
         };
 
         // console.log({ user: store.getState().user });
-        const user = store.getState().user;
+        const authorised = store.getState().authorised;
 
-        if (user) {
+        if (authorised) {
             this._onRoute(window.location.pathname);
         } else {
             this._onRoute(PAGES.signIn);
