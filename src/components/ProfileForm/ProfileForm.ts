@@ -39,7 +39,7 @@ export class ProfileForm
         });
 
         props.formFields.forEach(field => {
-            this._setValues({ name: field.name, value: field.value });
+            this._setValues({ name: field.name, value: field.value as string });
         });
         const handleChange: THandleChange = ({ value, name }) => {
             this._setValues({ name, value });
