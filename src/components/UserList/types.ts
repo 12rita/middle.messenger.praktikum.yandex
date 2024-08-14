@@ -7,7 +7,6 @@ export interface IUserListProps extends IProps {
 
 export interface IExistedUserListProps extends IProps {
     id: number;
-    existedUsers: IUser[];
 }
 
 export interface IUserItemProps extends IProps {

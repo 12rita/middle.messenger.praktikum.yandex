@@ -10,7 +10,6 @@ import store, { StoreEvents } from '@shared/stores/Store.ts';
 
 import { IState } from './types.ts';
 import { IChatPreview } from '@shared/types.ts';
-import { ChatBase } from '@components/Chat/Chat.ts';
 
 const arrowIcon = `<span> Профиль
                 <img class="${styles.profileButton}" src="${arrowRight}" alt="arrow">
@@ -115,12 +114,12 @@ export class ChatsPageBase extends Block {
         }
         if (
             !isEqual(
-                (this.children.activeChat as unknown as ChatBase).props.id,
+                (this.children.activeChat as unknown as Chat).props.id,
                 this.activeChatId
             )
         ) {
             this.activeChatId = (
-                this.children.activeChat as unknown as ChatBase
+                this.children.activeChat as unknown as Chat
             ).props.id;
             return true;
         }
