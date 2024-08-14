@@ -9,7 +9,3 @@ export interface IState {
         messages: IMessage[];
     };
 }
-
-export interface IApiData {
-    data: IChatPreview[];
-}

@@ -29,7 +29,7 @@ export type TFieldName =
 export interface IFormField<T> {
     title: string;
     name: T;
-    value: string;
+    value?: string;
     type?: TInputType;
     disabled?: boolean;
 }
