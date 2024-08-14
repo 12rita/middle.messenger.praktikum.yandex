@@ -11,24 +11,20 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 index: resolve(__dirname, './src/index.html')
-
             }
         }
     },
     resolve: {
         alias: {
-            "@": resolve(__dirname, "./src"),
-            "@components": resolve(__dirname, "./src/components"),
-            "@pages": resolve(__dirname, "./src/pages"),
-            "@api": resolve(__dirname, "./src/api"),
-            "@shared": resolve(__dirname, "./src/shared"),
-            "@global": resolve(__dirname, "./globalStyles.module.css"),
-        },
+            '@': resolve(__dirname, './src'),
+            '@components': resolve(__dirname, './src/components'),
+            '@pages': resolve(__dirname, './src/pages'),
+            '@api': resolve(__dirname, './src/api'),
+            '@shared': resolve(__dirname, './src/shared'),
+            '@global': resolve(__dirname, './globalStyles.module.css')
+        }
     },
-    plugins: [
-        eslint(),
-        handlebars()
-    ],
+    plugins: [eslint(), handlebars()],
     server: {
         port: 3000
     },
