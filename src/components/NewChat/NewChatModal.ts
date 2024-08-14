@@ -145,8 +145,3 @@ export class NewChatModal extends Block<INewChatProps> {
         });
     }
 }
-
-// const withStore = connect(state => ({
-//     users: (state?.chat as IState)?.users
-// }));
-// export const NewChatModal = withStore(NewChatModalBase);

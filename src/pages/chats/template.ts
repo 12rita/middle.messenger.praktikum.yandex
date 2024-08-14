@@ -4,10 +4,7 @@ export const template = `<main class=${styles.layout}>
         <div class=${styles.headerWrapper}>
             {{{profileButton}}}
                {{{input}}}
-     
-
-
-        </div>
+             </div>
        {{{chatsList}}}
     </div>
     <div id="chatField" class="${styles.chatField}">

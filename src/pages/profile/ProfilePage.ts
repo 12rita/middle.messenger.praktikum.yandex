@@ -6,7 +6,6 @@ import {
     SubmitButton,
     Avatar
 } from '@components';
-import { user } from '@shared/const.ts';
 import { template } from './template.ts';
 import { IProfile, IProfileProps } from './types.ts';
 
@@ -30,23 +29,20 @@ import { authApi, userApi } from '@api';
 import { isEqual } from '@shared/utils';
 
 const formFields: IFormField<TSettingsFields>[] = [
-    { title: 'Почта', name: 'email', value: user['email'] },
+    { title: 'Почта', name: 'email' },
     {
         title: 'Имя в чате',
-        name: 'first_name',
-        value: user['first_name']
+        name: 'first_name'
     },
     {
         title: 'Фамилия',
-        name: 'second_name',
-        value: user['second_name']
+        name: 'second_name'
     },
     {
         title: 'Логин',
-        name: 'display_name',
-        value: user['display_name']
+        name: 'display_name'
     },
-    { title: 'Телефон', name: 'phone', value: user['phone'] }
+    { title: 'Телефон', name: 'phone' }
 ];
 
 export class ProfilePage

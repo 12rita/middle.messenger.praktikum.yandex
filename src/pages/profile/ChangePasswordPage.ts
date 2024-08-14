@@ -1,8 +1,5 @@
 import { Avatar, BackButton, ProfileForm, SubmitButton } from '@components';
-import { user } from '@shared/const.ts';
-
 import { IProfileProps } from './types.ts';
-
 import styles from './styles.module.css';
 import { template } from './template.ts';
 import { IForm } from '@components/Form/types.ts';
@@ -16,21 +13,21 @@ const formFields: IFormField<TChangePasswordFields>[] = [
         title: 'Старый пароль',
         name: 'oldPassword',
         type: 'password',
-        value: user.password,
+        value: '',
         disabled: false
     },
     {
         title: 'Новый пароль',
         name: 'newPassword',
         type: 'password',
-        value: user.password,
+        value: '',
         disabled: false
     },
     {
         title: 'Повторите новый пароль',
         name: 'newPasswordRepeat',
         type: 'password',
-        value: user.password,
+        value: '',
         disabled: false
     }
 ];
@@ -90,6 +87,7 @@ export class ChangePasswordPage extends Block<IProps, IProfileProps> {
     };
 
     render() {
+        const user = store.getState().user as IUser;
         return this.compile(template, {
             ...this.props,
             buttonBlock: this.children.buttonBlock as IBlock,
