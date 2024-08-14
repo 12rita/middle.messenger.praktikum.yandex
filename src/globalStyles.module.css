@@ -7,7 +7,14 @@
     --white: #FFFFFF;
     --darkWhite: #FBFBFB;
     --red: #FF0000;
+    --lightGreen: #b0efb0
 
+}
+
+.errorToaster {
+    position: absolute;
+    top:20px;
+    left: 20px;
 }
 
 ::-webkit-scrollbar {

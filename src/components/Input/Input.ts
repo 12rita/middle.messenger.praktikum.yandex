@@ -1,7 +1,7 @@
-import { Block } from '../../shared';
 import { IInputProps } from './types.ts';
 import styles from './styles.module.css';
 import global from '../../globalStyles.module.css';
+import { Block } from '@shared/components';
 
 export class Input extends Block<IInputProps> {
     _value: string = '';
@@ -17,8 +17,24 @@ export class Input extends Block<IInputProps> {
                 ? props.className
                 : [styles.input, global.body1],
             attributes: [
+                ...(props.accept
+                    ? [
+                          {
+                              name: 'accept',
+                              value: props.accept
+                          }
+                      ]
+                    : []),
+                ...(props.id
+                    ? [
+                          {
+                              name: 'id',
+                              value: props.id
+                          }
+                      ]
+                    : []),
                 {
-                    value: props.type,
+                    value: props.type ?? 'text',
                     name: 'type'
                 },
                 {
@@ -48,6 +64,7 @@ export class Input extends Block<IInputProps> {
                 ...(props.onBlur && { blur: props.onBlur }),
                 input: e => {
                     handleChange(e);
+                    props.onChange && props.onChange(e);
                 }
             }
         });
@@ -72,6 +89,21 @@ export class Input extends Block<IInputProps> {
         this._value = '';
         (this.element as HTMLInputElement).value = this._value;
     };
+
+    componentDidUpdate(oldProps: IInputProps, newProps: IInputProps) {
+        if (oldProps.disabled !== newProps.disabled) {
+            this.setAttributes([
+                {
+                    name: 'disabled',
+                    value: String(this.props.disabled),
+                    remove: !this.props.disabled
+                }
+            ]);
+
+            return true;
+        }
+        return false;
+    }
 
     render() {
         return this.compile('', {

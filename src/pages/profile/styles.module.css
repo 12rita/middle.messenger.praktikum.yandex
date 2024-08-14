@@ -7,16 +7,6 @@
     flex-direction: column;
 }
 
-.profilePicture {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: var(--lightGray);
-    margin-bottom: 21px;
-}
 
 .profileTitle {
     margin-bottom: 60px;
@@ -29,4 +19,8 @@
     gap: 10px;
     justify-content: flex-start;
     text-align: left;
+}
+
+.error {
+    color: var(--red);
 }

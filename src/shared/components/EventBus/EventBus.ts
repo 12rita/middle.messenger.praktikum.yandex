@@ -1,6 +1,6 @@
 import { IEventBus, IListeners, TEmit, TOff, TOn } from './types.ts';
 
-export class EventBus<TProps> implements IEventBus<TProps> {
+export class EventBus<TProps = unknown> implements IEventBus<TProps> {
     private readonly listeners: IListeners<TProps>;
     constructor() {
         this.listeners = {};

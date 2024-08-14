@@ -1,15 +1,13 @@
+import { ITextButtonProps } from '../TextButton/types.ts';
+import { ISubmitButtonProps } from '../SubmitButton/types.ts';
 import {
-    IBlock,
-    ICompileProps,
     IFormField,
     IFormValues,
-    IProps,
     IValues,
     TSignInFields,
     TSignUpFields
-} from '../../shared';
-import { ITextButtonProps } from '../TextButton/types.ts';
-import { ISubmitButtonProps } from '../SubmitButton/types.ts';
+} from '@shared/types.ts';
+import { IBlock, ICompileProps, IProps } from '@shared/components';
 
 export interface IForm extends IBlock<IFormProps> {
     values: IFormValues;

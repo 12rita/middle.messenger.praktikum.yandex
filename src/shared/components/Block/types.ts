@@ -26,9 +26,10 @@ export interface ICompileProps {
     [key: string]: IBlock | IBlock[] | unknown;
 }
 
-interface IAttribute {
+export interface IAttribute {
     name: string;
     value: string;
+    remove?: boolean;
 }
 
 export interface IProps extends Partial<IEventBus> {

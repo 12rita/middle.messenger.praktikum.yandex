@@ -1,42 +1,35 @@
-import {
-    BackButton,
-    FileUploader,
-    ProfileForm,
-    SubmitButton
-} from '../../components';
-import { user } from '../../shared/const.ts';
+import { Avatar, BackButton, ProfileForm, SubmitButton } from '@components';
+import { user } from '@shared/const.ts';
 
 import { IProfileProps } from './types.ts';
-import {
-    Block,
-    IBlock,
-    IFormField,
-    IFormValues,
-    IPage,
-    IProps,
-    PAGES,
-    TChangePasswordFields
-} from '../../shared';
+
 import styles from './styles.module.css';
 import { template } from './template.ts';
-import { IForm } from '../../components/Form/types.ts';
+import { IForm } from '@components/Form/types.ts';
+import { IFormField, IUser, TChangePasswordFields } from '@shared/types.ts';
+import { Block, IBlock, IPage, IProps, PAGES } from '@shared/components';
+import store from '@shared/stores/Store.ts';
+import { userApi } from '@api';
 
 const formFields: IFormField<TChangePasswordFields>[] = [
     {
         title: 'Старый пароль',
         name: 'oldPassword',
+        type: 'password',
         value: user.password,
         disabled: false
     },
     {
         title: 'Новый пароль',
         name: 'newPassword',
+        type: 'password',
         value: user.password,
         disabled: false
     },
     {
         title: 'Повторите новый пароль',
-        name: 'newPassword',
+        name: 'newPasswordRepeat',
+        type: 'password',
         value: user.password,
         disabled: false
     }
@@ -49,25 +42,22 @@ export class ChangePasswordPage extends Block<IProps, IProfileProps> {
             id: formId,
             formFields,
             key: formId,
-            handleSubmit: values => {
-                handleSubmit(values);
-            }
+            handleSubmit: () => {}
         });
+        const user = store.getState().user as IUser;
 
-        const avatar = new FileUploader({
-            label: 'Поменять аватар'
-        }) as IBlock;
+        const avatar = new Avatar({ src: user.avatar });
 
         const backButton = new BackButton({
             onClick: () => {
-                history.emit('push', PAGES.profile);
+                history && history.back();
             }
         });
 
         const buttonBlock = new SubmitButton({
             label: 'Сохранить',
             onClick: () => {
-                this._saveData();
+                this._handleSubmit();
             }
         });
 
@@ -79,23 +69,25 @@ export class ChangePasswordPage extends Block<IProps, IProfileProps> {
             className: styles.layout
         });
         this.history = history;
-        const handleSubmit = (values: IFormValues) => {
-            this._handleSubmit(values);
-        };
     }
 
-    _saveData = () => {
-        console.log((this.children.form as unknown as IForm).values);
-        this.history.emit('push', PAGES.profile);
+    _handleSubmit = () => {
+        const values = (this.children.form as unknown as IForm).values;
+        const { oldPassword, newPassword, newPasswordRepeat } = values;
+        if (newPassword !== newPasswordRepeat) {
+            this.setProps({ error: 'Пароли не совпадают' });
+        } else {
+            this.setProps({ error: '' });
+            userApi
+                .updatePassword({
+                    oldPassword: oldPassword as string,
+                    newPassword: newPassword as string
+                })
+                .then(() => {
+                    this.history && this.history.go(PAGES.profile);
+                });
+        }
     };
-
-    _handleSubmit = (values: IFormValues) => {
-        console.log(values);
-    };
-
-    componentDidUpdate() {
-        return true;
-    }
 
     render() {
         return this.compile(template, {

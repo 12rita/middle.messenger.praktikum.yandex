@@ -6,11 +6,12 @@ import {
     IChildren,
     TGetContent,
     IProps,
-    ICompileProps
+    ICompileProps,
+    IAttribute
 } from './types.ts';
 import Handlebars from 'handlebars';
 import { v4 as makeUUID } from 'uuid';
-import { deepClone } from '../../utils';
+import { deepClone, isEqual } from '../../utils';
 
 export class Block<
         IBlockProps extends IProps = IProps,
@@ -24,12 +25,13 @@ export class Block<
     props: IBlockProps;
     children: IChildren = {};
     _id;
+    _setUpdate = false;
 
     constructor(tagName = 'div', propsAndChildren = {} as IBlockProps) {
         super();
         const { children, props } = this._getChildren(propsAndChildren);
 
-        this.children = children;
+        this.children = this._makePropsProxy(children) as IChildren;
         this._id = makeUUID();
         this._meta = {
             tagName,
@@ -39,7 +41,7 @@ export class Block<
         this.props = this._makePropsProxy({
             ...props,
             __id: this._id
-        });
+        }) as IBlockProps;
 
         this._registerEvents();
         this.emit(EVENTS.INIT);
@@ -103,7 +105,7 @@ export class Block<
     }
 
     _registerEvents() {
-        this.on(EVENTS.INIT, this.init.bind(this));
+        this.on(EVENTS.INIT, this._init.bind(this));
         this.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         this.on(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         this.on(EVENTS.FLOW_RENDER, this._render.bind(this));
@@ -130,7 +132,7 @@ export class Block<
         this._element = this._createDocumentElement(tagName);
     }
 
-    init() {
+    _init() {
         this._createResources();
 
         this.emit(EVENTS.FLOW_RENDER);
@@ -154,10 +156,7 @@ export class Block<
         this.emit(EVENTS.FLOW_CDM);
     }
 
-    _componentDidUpdate<T extends IBlockProps | string = IBlockProps>(
-        oldProps: T,
-        newProps?: T
-    ) {
+    _componentDidUpdate(oldProps: unknown, newProps?: unknown) {
         const response = this.componentDidUpdate(oldProps, newProps);
 
         if (!response) {
@@ -167,42 +166,56 @@ export class Block<
         this._render();
     }
 
-    componentDidUpdate<T extends IBlockProps | string = IBlockProps>(
-        oldProps: T | string,
-        newProps?: T | string
-    ) {
-        if (oldProps === null && newProps === null) {
-            return false;
-        } else if (oldProps === null || newProps === null) {
-            return true;
-        } else if (
-            typeof oldProps === 'string' &&
-            typeof newProps === 'string'
-        ) {
-            return oldProps !== newProps;
-        } else if (
-            typeof oldProps === 'object' &&
-            typeof newProps === 'object'
-        ) {
-            return (
-                Object.keys(oldProps as Record<string, unknown>).some(key => {
-                    return (
-                        (oldProps as Record<string, unknown>)[key] !==
-                        (newProps as Record<string, unknown>)[key]
-                    );
-                }) &&
-                Object.keys(oldProps as Record<string, unknown>).length !==
-                    Object.keys(newProps as Record<string, unknown>).length
-            );
-        } else return oldProps !== newProps;
+    componentDidUpdate(oldProps: unknown, newProps?: unknown) {
+        return !isEqual(oldProps as object, newProps as object);
     }
 
-    setProps = (nextProps: unknown) => {
-        if (!nextProps) {
+    setAttributes(attributes: IAttribute[]) {
+        attributes.forEach(({ name, value, remove }) => {
+            if (remove) this.element.removeAttribute(name);
+            else this.element.setAttribute(name, value);
+        });
+    }
+
+    setChildren = (nextChild: unknown) => {
+        if (nextChild === undefined) {
             return;
         }
 
-        Object.assign(this.props, nextProps);
+        this._setUpdate = false;
+        const oldValue = deepClone(this.props);
+
+        Object.assign(this.children, nextChild);
+
+        if (this._setUpdate) {
+            this.emit(EVENTS.FLOW_CDU, oldValue, this.props);
+            this._setUpdate = false;
+        }
+    };
+
+    setProps = (nextProps: unknown) => {
+        if (nextProps === undefined) {
+            return;
+        }
+
+        this._setUpdate = false;
+        const oldValue = deepClone(this.props);
+        const { children, props } = this._getChildren(nextProps as IBlockProps);
+
+        if (Object.values(children).length) {
+            Object.assign(this.children, children);
+        }
+
+        if (Object.values(props).length) {
+            Object.assign(this.props, props);
+        }
+
+        if (this._setUpdate) {
+            this.emit(EVENTS.FLOW_CDU, oldValue, this.props);
+            this._setUpdate = false;
+        }
+
+        // Object.assign(this.props, nextProps);
     };
 
     get element() {
@@ -215,7 +228,8 @@ export class Block<
         this._removeEvents();
         this._element.innerHTML = '';
         this._element.appendChild(block);
-
+        // this._setAttributes(this._element);
+        // this._setStyles(this._element);
         this._addEvents();
     }
 
@@ -227,16 +241,26 @@ export class Block<
         return this.element;
     };
 
-    _makePropsProxy(props: IBlockProps) {
+    _makePropsProxy(props: IBlockProps | IChildren) {
         return new Proxy(props, {
             get: (target, prop) => {
                 const value = target[prop as string];
                 return typeof value === 'function' ? value.bind(target) : value;
             },
             set: (target, prop, value) => {
-                const oldObj = deepClone(target) as IBlockProps;
-                (target as { [key: string]: unknown })[prop as string] = value;
-                this.emit(EVENTS.FLOW_CDU, oldObj, target);
+                // const oldObj = deepClone(target) as IBlockProps;
+                if (
+                    (target as { [key: string]: unknown })[prop as string] !==
+                    value
+                ) {
+                    // console.log({ old: target[prop], new: value });
+                    (target as { [key: string]: unknown })[prop as string] =
+                        value;
+
+                    this._setUpdate = true;
+                }
+
+                // this.emit(EVENTS.FLOW_CDU, oldObj, target as IBlockProps);
                 return true;
             },
             deleteProperty() {
@@ -245,21 +269,33 @@ export class Block<
         });
     }
 
-    _createDocumentElement(tagName: string) {
-        const element = document.createElement(tagName);
-        element.setAttribute('data-id', this._id);
+    _setStyles(element: HTMLElement) {
         const className = this.props.className || '';
-        const attributes = this.props.attributes;
+
         if (className) {
             if (Array.isArray(className))
                 className.forEach(el => element.classList.add(el));
             else element.classList.add(className);
         }
+    }
+
+    _setAttributes(element: HTMLElement) {
+        const attributes = this.props.attributes;
+
         if (attributes) {
             attributes.forEach(({ name, value }) => {
                 element.setAttribute(name, value);
             });
         }
+    }
+
+    _createDocumentElement(tagName: string) {
+        const element = document.createElement(tagName);
+        element.setAttribute('data-id', this._id);
+
+        this._setStyles(element);
+        this._setAttributes(element);
+
         return element;
     }
 }

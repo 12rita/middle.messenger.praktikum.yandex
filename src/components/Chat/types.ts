@@ -1,13 +1,8 @@
-import { IProps } from '../../shared';
-
-interface IMessage {
-    message: string;
-    time: string;
-}
+import { IProps } from '@shared/components';
 
 export interface IChatProps extends IProps {
-    title: string;
-    messages: IMessage[];
-    indicator: number;
-    onSend: (value: string) => void;
+    title?: string;
+    id: number;
+    indicator?: number;
+    avatar?: string;
 }

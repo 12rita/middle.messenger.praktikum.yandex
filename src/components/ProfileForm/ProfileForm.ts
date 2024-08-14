@@ -1,7 +1,8 @@
 import { IProfileForm, IProfileFormProps, THandleChange } from './types.ts';
-import { Block, IBlock, IFormValues, IValues } from '../../shared';
 import { template } from './template.ts';
-import { ProfileField } from '../ProfileField';
+import { ProfileField } from '@/components';
+import { IFormValues, IValues } from '@shared/types.ts';
+import { Block, IBlock } from '@shared/components';
 export class ProfileForm
     extends Block<IProfileFormProps>
     implements IProfileForm
@@ -21,7 +22,6 @@ export class ProfileForm
                 ...field,
                 disabled: field.disabled !== undefined ? field.disabled : true,
                 key: props.key,
-                type: 'text',
                 events: {
                     change: e => {
                         handleChange({
@@ -56,14 +56,14 @@ export class ProfileForm
     }
 
     _unsetEditable() {
+        this.props.handleSubmit(this.values);
         (this.children.inputs as IBlock[]).forEach(input => {
             input.setProps({ disabled: true });
         });
-
-        this.props.handleSubmit(this.values);
     }
 
     componentDidUpdate() {
+        // console.log({ newProps });
         return true;
     }
 

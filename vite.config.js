@@ -16,6 +16,16 @@ export default defineConfig({
             }
         }
     },
+    resolve: {
+        alias: {
+            "@": resolve(__dirname, "./src"),
+            "@components": resolve(__dirname, "./src/components"),
+            "@pages": resolve(__dirname, "./src/pages"),
+            "@api": resolve(__dirname, "./src/api"),
+            "@shared": resolve(__dirname, "./src/shared"),
+            "@global": resolve(__dirname, "./globalStyles.module.css"),
+        },
+    },
     plugins: [
         eslint(),
         handlebars()

@@ -1,0 +1,46 @@
+.item {
+    padding: 10px;
+    border-bottom: 1px solid var(--gray);
+}
+
+.item:hover {
+    cursor: pointer;
+    background-color: var(--lightGray);
+    border-radius: 4px;
+}
+
+.image {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    gap: 16px
+
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    height: 400px;
+    width: 400px;
+    overflow-y: auto;
+}
+
+.active {
+    background-color: var(--gray);
+    border-radius: 4px;
+
+}
+
+.active:hover {
+    background-color: #8c8b8b;
+    border-radius: 4px;
+}
+
+.title {
+    margin: 16px 0;
+}

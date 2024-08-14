@@ -9,6 +9,8 @@
 - список чатов,
 - обмен сообщениями.
 
+На текущий момент в проекте реализованы реактивные компоненты с использованием базового блока и EventBus, а также используются CSS модули. 
+Для обмена сообщениями используется протокол WebSocket. Реализована возможность добавления нового чата (кнопка с плюсом в нижнем левом углу). Также можно удалить чат или отдельных пользователей (зайдя в чат, необходимо нажать на иконку чата в верхней панели)
 
 ### [Макет](https://www.figma.com/file/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=0%3A1)
 
@@ -23,19 +25,21 @@
  - `npm run dev` - запуска проекта в режиме разработчика (на 3000 порту)
  - `npm run build` - сборка проекта 
 
+И `npm run build`, и `npm run dev` запускают также проверку eslint и stylelint.
+
 ### Деплой
 
  Задеплоенный проект можно посмотреть по [ссылке](https://deploy--scintillating-churros-7dabfa.netlify.app/src/pages/chats/chats)
 
 ## Страницы
 
-- Авторизация http://localhost:3000/pages/signIn/SignInPage
-- Регистрация http://localhost:3000/pages/signUp/SignUpPage
-- 404 http://localhost:3000/pages/404/404
-- 500 http://localhost:3000/pages/500/500
-- Профиль http://localhost:3000/pages/profile/Profile
-- Изменение пароля http://localhost:3000/pages/profile/ChangePassword
-- Чат http://localhost:3000/pages/chats/Chats
+- Авторизация http://localhost:3000/sign-in
+- Регистрация http://localhost:3000/sign-up
+- 404 http://localhost:3000/404
+- 500 http://localhost:3000/500
+- Профиль http://localhost:3000/settings
+- Изменение пароля http://localhost:3000/settings
+- Чат http://localhost:3000/messenger
 
 
 

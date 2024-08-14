@@ -1,7 +1,8 @@
 import { IBackButtonProps } from './types.ts';
-import { Block } from '../../shared';
+
 import { template } from './template.ts';
 import styles from './styles.module.css';
+import { Block } from '@shared/components';
 
 export class BackButton extends Block<IBackButtonProps> {
     constructor(props: IBackButtonProps) {

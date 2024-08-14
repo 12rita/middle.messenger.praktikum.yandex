@@ -1,10 +1,13 @@
 import { IProfileFieldProps } from './types.ts';
-import { Block, EVENTS, IBlock, isValidField } from '../../shared';
+
 import { template } from './template.ts';
 
 import styles from './styles.module.css';
 import { Input } from '../Input';
 import global from '../../globalStyles.module.css';
+import { Block, EVENTS } from '@shared/components';
+import { isEqual, isValidField } from '@shared/utils';
+import { TFieldName } from '@shared/types.ts';
 
 export class ProfileField extends Block<IProfileFieldProps> {
     constructor(props: IProfileFieldProps) {
@@ -24,7 +27,7 @@ export class ProfileField extends Block<IProfileFieldProps> {
 
     _checkIsValid = (e: Event) => {
         const { message } = isValidField({
-            name: this.props.name,
+            name: this.props.name as TFieldName,
             value: (e.target as HTMLInputElement)?.value
         });
         this.props.error = message;
@@ -32,17 +35,19 @@ export class ProfileField extends Block<IProfileFieldProps> {
         this.emit(EVENTS.FLOW_CDU);
     };
 
-    componentDidUpdate() {
-        this.children.input = new Input({
-            ...this.props,
-            value: (this.children.input as unknown as Input).value,
-            disabled: this.props.disabled,
-            className: [styles.fieldValue, global.grayText, global.body1],
-            onBlur: e => {
-                this._checkIsValid(e);
-            }
-        }) as unknown as IBlock;
-        return true;
+    componentDidUpdate(
+        oldProps: IProfileFieldProps,
+        newProps: IProfileFieldProps
+    ) {
+        if (!isEqual(oldProps, newProps)) {
+            (this.children.input as unknown as Input).setProps({
+                value: (this.children.input as unknown as Input).value,
+                disabled: this.props.disabled
+            });
+            return true;
+        }
+
+        return false;
     }
 
     render() {

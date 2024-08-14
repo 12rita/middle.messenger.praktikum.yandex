@@ -1,0 +1,86 @@
+.hidden {
+    display: none;
+}
+
+.addButton {
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: var(--blue);
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-size: 1.2rem;
+}
+
+.modal {
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed; /* Sit on top of the page content */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+}
+
+
+.form {
+    width: 400px;
+    height: 600px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.search {
+    width: 100%;
+    height: 32px;
+    background: var(--lightGray);
+    border: 0;
+    border-radius: 5px;
+    margin-top: 16px;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.search::placeholder {
+    text-align: center;
+}
+
+.buttonBlock {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.deleteButton {
+    background-color: var(--red);
+    cursor: pointer;
+    border-radius: 8px;
+    color: var(--white);
+    width: 100%;
+    height: 37px;
+    border: none;
+}
+
+.avatar {
+    margin: 16px 0
+}
+
+.wrapper {
+    display: flex;
+    gap: 24px;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: white;
+}
