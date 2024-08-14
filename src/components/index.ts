@@ -15,3 +15,4 @@ export { ProfileButtonBlock } from './ProfileButtonBlock';
 export { NewChat } from './NewChat';
 export { ChatList } from './ChatList';
 export { Avatar } from './Avatar';
+export { MessagesList } from './MessagesList';

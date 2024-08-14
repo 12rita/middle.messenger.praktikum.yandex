@@ -1,20 +1,18 @@
-import { IChatProps, IRenderProps } from './types.ts';
-
+import { IChatProps } from './types.ts';
 import { template } from './template.ts';
 import styles from './styles.module.css';
-import { Message } from '../Message';
 import { Input } from '../Input';
 import sendIcon from '../../static/sendButton.svg';
-import { Avatar, SubmitButton } from '@/components';
+import { Avatar, MessagesList, SubmitButton } from '@/components';
 import { Block } from '@shared/components';
-import { connect } from '@shared/stores';
+
 import { chatApi } from '@api';
-import { isEqual } from '@shared/utils';
+
 import { NewChatModal } from '@components/NewChat/NewChatModal.ts';
 
-export class ChatBase extends Block<IChatProps> {
+export class Chat extends Block<IChatProps> {
     constructor(props: IChatProps) {
-        const messagesBlock = [] as Message[];
+        const messagesList = new MessagesList({ id: props.id });
 
         const avatarBlock = new Avatar({
             src: props.avatar,
@@ -22,7 +20,7 @@ export class ChatBase extends Block<IChatProps> {
             imageClassname: styles.chatAvatar,
             events: {
                 click: () => {
-                    this._onChatClick();
+                    this._onHeaderClick();
                 }
             }
         });
@@ -48,7 +46,7 @@ export class ChatBase extends Block<IChatProps> {
         super('div', {
             ...props,
             className: styles.chatFieldWrapper,
-            messagesBlock,
+            messagesList,
             sendButton,
             avatarBlock,
             input
@@ -76,15 +74,9 @@ export class ChatBase extends Block<IChatProps> {
         };
 
         sendEvent();
-        this.init();
     }
-    init = () => {
-        chatApi.getOldMessages(this.props.id).then(() => {
-            chatApi.getChats(); //to mark read
-        });
-    };
 
-    _onChatClick = () => {
+    _onHeaderClick = () => {
         this.setProps({
             modal: new NewChatModal({
                 edit: true,
@@ -107,56 +99,12 @@ export class ChatBase extends Block<IChatProps> {
         });
     };
 
-    componentDidUpdate(oldProps: IRenderProps, newProps: IRenderProps) {
-        if (!isEqual(oldProps, newProps)) {
-            if (
-                !isEqual(oldProps.lastMessage, newProps.lastMessage) &&
-                newProps.lastMessage
-            ) {
-                (this.children.messagesBlock as unknown as Message[]).push(
-                    new Message({ ...newProps.lastMessage })
-                );
-            }
-            if (!isEqual(oldProps.messages, newProps.messages)) {
-                const { messages = [] } = newProps as IChatProps;
-
-                (this.children.messagesBlock as unknown as Message[]) = messages
-                    ?.map(message => {
-                        return new Message({
-                            ...message
-                        });
-                    })
-                    .reverse();
-
-                (this.children.input as unknown as Input).emit('clear');
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
     render() {
-        const block = this.compile(template, {
+        return this.compile(template, {
             ...this.props,
-            messagesBlock: this.children.messagesBlock,
+            messagesList: this.children.messagesList,
             input: this.children.input,
             sendButton: this.children.sendButton
         });
-        const messages = document.getElementById('messages');
-
-        if (messages) {
-            messages.scrollTop = messages.scrollHeight;
-            // console.log(messages.scrollHeight, messages.scrollTop);
-        }
-        return block;
     }
 }
-
-const withStore = connect(state => ({
-    messages: (state?.chats as IRenderProps)?.messages,
-    lastMessage: (state?.chats as IRenderProps)?.lastMessage
-}));
-
-export const Chat = withStore(ChatBase);

@@ -9,3 +9,5 @@ export { trim } from './trim.ts';
 export { isEqualArrays } from './isEqualArrays.ts';
 export { getTime } from './getTime.ts';
 export { getPictureUrl } from './getPictureUrl.ts';
+export { Stack } from './stack.ts';
+export { Queue } from './queue.ts';

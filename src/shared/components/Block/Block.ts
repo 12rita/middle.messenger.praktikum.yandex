@@ -105,7 +105,7 @@ export class Block<
     }
 
     _registerEvents() {
-        this.on(EVENTS.INIT, this.init.bind(this));
+        this.on(EVENTS.INIT, this._init.bind(this));
         this.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         this.on(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         this.on(EVENTS.FLOW_RENDER, this._render.bind(this));
@@ -132,7 +132,7 @@ export class Block<
         this._element = this._createDocumentElement(tagName);
     }
 
-    init() {
+    _init() {
         this._createResources();
 
         this.emit(EVENTS.FLOW_RENDER);
