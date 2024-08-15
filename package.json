@@ -11,7 +11,7 @@
     "build": "npm run lint && tsc && vite build",
     "preview": "vite preview",
     "start": "npm run build && npm run preview",
-    "lint": "eslint --fix && stylelint \"**/*.css\"  --fix"
+    "lint": "prettier --write '**/*.{js,ts,jsx,tsx}' && eslint --fix && stylelint \"**/*.css\"  --fix"
   },
   "devDependencies": {
     "@types/uuid": "^10.0.0",

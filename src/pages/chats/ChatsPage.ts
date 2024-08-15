@@ -1,48 +1,78 @@
-import { Chat, ChatPreview, TextButton } from '../../components';
+import { TextButton, Plug, NewChat, ChatList, Input, Chat } from '@components';
 import arrowRight from '../../static/arrowRight.svg';
-import { data } from './data.ts';
-import { Plug } from '../../components';
 import styles from './styles.module.css';
 import { template } from './template.ts';
-import { PAGES, IPage, Block, IBlock, EVENTS } from '../../shared';
-import { v4 as makeUUID } from 'uuid';
+import { Block, EVENTS, IBlock, IPage, PAGES } from '@shared/components';
+import { chatApi } from '@api';
+import { connect } from '@shared/stores';
+import { isEqual } from '@shared/utils';
+import store, { StoreEvents } from '@shared/stores/Store.ts';
 
-export class ChatsPage extends Block {
-    activeChatId: string = '';
+import { IState } from './types.ts';
+import { IChatPreview } from '@shared/types.ts';
+
+const arrowIcon = `<span> Профиль
+                <img class="${styles.profileButton}" src="${arrowRight}" alt="arrow">
+            </span>`;
+
+export class ChatsPageBase extends Block {
+    activeChatId: number = -1;
+    chats: IChatPreview[] = [];
 
     constructor({ history }: IPage) {
         const plug = new Plug({
             label: 'Выберите чат, чтобы отправить сообщение'
         });
 
-        const profileButton = new TextButton({
-            children: `<span> Профиль
-                <img class="${styles.profileButton}" src="${arrowRight}" alt="arrow">
-            </span>`,
-            type: 'gray',
-            onClick: () => {
-                history.emit('push', PAGES.profile);
+        const input = new Input({
+            type: 'text',
+            name: 'search',
+            className: styles.search,
+            placeholder: '🔍 Поиск',
+            onChange: e => {
+                this.onSearch(e);
             }
         });
 
-        const chats = data.map(item => {
-            return new ChatPreview({
-                ...item,
-                ...item.messages[0],
-                events: {
-                    click: () => {
-                        onChatClick(item.id);
-                    }
-                }
-            });
+        const newChat = new NewChat({});
+
+        const profileButton = new TextButton({
+            children: arrowIcon,
+            type: 'gray',
+            onClick: () => {
+                history && history.go(PAGES.profile);
+            }
         });
 
-        super('div', { activeChat: plug, chats, profileButton });
+        const chatsList = new ChatList({
+            chatsData: [],
+            onChatClick: id => {
+                this._onChatClick(id);
+            }
+        });
+
+        super('div', {
+            activeChat: plug,
+            input,
+            chatsList,
+            profileButton,
+            newChat
+        });
         this.escapeEvent();
-        const onChatClick = (id: string) => {
-            this._onChatClick(id);
-        };
+
+        store.on(StoreEvents.chatsUpdated, this.init.bind(this));
+        this.init();
     }
+
+    onSearch = (e: Event) => {
+        setTimeout(() => {
+            chatApi.getChats((e.target as HTMLInputElement)?.value);
+        }, 300); //debounce
+    };
+
+    init = () => {
+        chatApi.getChats();
+    };
 
     escapeEvent() {
         document.addEventListener('keydown', event => {
@@ -55,45 +85,52 @@ export class ChatsPage extends Block {
         });
     }
 
-    _onChatClick(id: string) {
-        if (this.activeChatId === id) return false;
-        const activeChat = data.find(item => item.id === id);
+    _onChatClick(id: number) {
+        if (this.activeChatId === id) return;
+
+        const activeChat = this.chats.find(item => item.id === id);
 
         if (activeChat) {
-            this.children.activeChat = new Chat({
-                ...activeChat,
-                onSend: (value: string) => {
-                    console.log({ message: value });
-                    const currentTime = new Date(Date.now()).toLocaleTimeString(
-                        'en-US',
-                        {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        }
-                    );
-                    const newMessage = {
-                        message: value,
-                        time: currentTime,
-                        id: makeUUID()
-                    };
-                    activeChat.messages.push(newMessage);
-
-                    (this.children.activeChat as unknown as Chat).setProps({
-                        messages: activeChat.messages
-                    });
-                }
-            }) as unknown as IBlock;
-            this.activeChatId = id;
-            this.emit(EVENTS.FLOW_CDU);
+            this.setProps({
+                activeChat: new Chat({
+                    messages: [],
+                    ...activeChat
+                }) as unknown as IBlock
+            });
         }
-        return false;
     }
 
-    componentDidUpdate(): boolean {
-        return true;
+    componentDidUpdate(
+        oldProps: { chats: IChatPreview[] },
+        newProps: { chats: IChatPreview[] }
+    ) {
+        if (!isEqual(oldProps?.chats, newProps?.chats)) {
+            (this.children.chatsList as IBlock).setProps({
+                chatsData: newProps.chats
+            });
+            this.chats = newProps.chats;
+
+            return true;
+        }
+        if (
+            !isEqual(
+                (this.children.activeChat as unknown as Chat).props.id,
+                this.activeChatId
+            )
+        ) {
+            this.activeChatId = (
+                this.children.activeChat as unknown as Chat
+            ).props.id;
+            return true;
+        }
+        return false;
     }
 
     render() {
         return this.compile(template, { ...this.children });
     }
 }
+const withStore = connect(state => ({
+    chats: (state as unknown as IState)?.chatsPreview
+}));
+export const ChatsPage = withStore(ChatsPageBase);

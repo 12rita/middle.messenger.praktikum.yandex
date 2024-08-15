@@ -1,6 +1,5 @@
-import { IProps } from '../../shared';
-
-type TButtonType = 'classic' | 'gray' | 'danger';
+import { IProps } from '@shared/components';
+import { TButtonType } from '@shared/types.ts';
 
 export interface ITextButtonProps extends IProps {
     label?: string;

@@ -1,26 +1,3 @@
-import { IProps } from './components';
-import { IEventBus } from './components/EventBus/types.ts';
-
-export enum PAGES {
-    signIn = '/signIn',
-    signUp = '/signUp',
-    profile = '/profile',
-    page404 = '/404',
-    page500 = '/500',
-    chats = '/chats',
-    changePassword = '/changePassword'
-}
-
-export type TPages = {
-    [K in keyof typeof PAGES]: (typeof PAGES)[K];
-}[keyof typeof PAGES];
-
-export interface IHistory extends IEventBus<TPages> {}
-
-export interface IPage extends Partial<IProps> {
-    history: IHistory;
-}
-
 export type TSignUpFields =
     | 'email'
     | 'password'
@@ -35,7 +12,10 @@ export type TSettingsFields =
     | 'second_name'
     | 'display_name'
     | 'phone';
-export type TChangePasswordFields = 'oldPassword' | 'newPassword';
+export type TChangePasswordFields =
+    | 'oldPassword'
+    | 'newPassword'
+    | 'newPasswordRepeat';
 
 export type TMessageField = 'message';
 
@@ -49,7 +29,7 @@ export type TFieldName =
 export interface IFormField<T> {
     title: string;
     name: T;
-    value: string;
+    value?: string;
     type?: TInputType;
     disabled?: boolean;
 }
@@ -62,3 +42,30 @@ export interface IValues {
     name: string;
     value: string | number;
 }
+
+export interface IUser {
+    id?: number;
+    first_name: string;
+    second_name: string;
+    display_name: string;
+    phone: string;
+    login: string;
+    avatar: string;
+    email: string;
+}
+
+export interface IMessage {
+    user: IUser;
+    time: string;
+    content: string;
+}
+
+export interface IChatPreview {
+    id: number;
+    title: string;
+    avatar: string;
+    unread_count: number;
+    created_by: number;
+    last_message: IMessage;
+}
+export type TButtonType = 'classic' | 'gray' | 'danger';

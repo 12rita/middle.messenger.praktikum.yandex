@@ -1,6 +1,5 @@
-import { Router } from './router.ts';
+import { Router } from '@shared/components';
 
-const router = new Router();
-
-const root = document.getElementById('app');
-root && root.appendChild(router.getContent());
+import { authApi } from '@api';
+new Router('#app');
+authApi.checkAuthorise();

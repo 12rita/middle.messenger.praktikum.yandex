@@ -1,8 +1,4 @@
-@import '../../globalStyles.module.css';
-
-
 .submitButton {
-    background: var(--blue);
     cursor: pointer;
     border-radius: 8px;
     color: var(--white);
@@ -11,6 +7,23 @@
     border: none;
 }
 
+.submitButton:disabled {
+    background: var(--gray);
+    cursor: default;
+}
+
 .submitButton a {
     color: var(--white);
+}
+
+.danger {
+    background: var(--red);
+}
+
+.classic {
+    background: var(--blue);
+}
+
+.gray {
+    background: var(--gray);
 }

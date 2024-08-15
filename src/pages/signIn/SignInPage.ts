@@ -1,9 +1,13 @@
-import { Form } from '../../components';
+import { Form } from '@components';
 import { template } from './template.ts';
-import { PAGES, IPage, IFormField, TSignInFields, Block } from '../../shared';
-import global from '../../globalStyles.module.css';
+import global from '@/globalStyles.module.css';
+import { Block, IPage, PAGES } from '@shared/components';
+import { IFormField, IFormValues, TSignInFields } from '@shared/types.ts';
+import { authApi } from '@api';
+const formId = 'signInForm';
 
 export class SignInPage extends Block {
+    history;
     constructor(props: IPage) {
         const formFields: IFormField<TSignInFields>[] = [
             { title: 'Логин', name: 'login', value: '' },
@@ -14,15 +18,15 @@ export class SignInPage extends Block {
                 type: 'password' as TInputType
             }
         ];
-        const formId = 'signInForm';
+
         const { history } = props;
 
         const onTextClick = () => {
-            history.emit('push', PAGES.signUp);
+            history && history.go(PAGES.signUp);
         };
 
-        const onSubmitClick = () => {
-            history.emit('push', PAGES.chats);
+        const onSubmitClick = (values: IFormValues) => {
+            this.signIn(values);
         };
 
         const form = new Form({
@@ -34,12 +38,22 @@ export class SignInPage extends Block {
             onSubmitClick: onSubmitClick,
             onTextClick: onTextClick,
             textButtonLabel: 'Нет аккаунта?',
-            href: '../signUp/SignUpPage.html',
             submitButtonLabel: 'Войти',
             size: 'small'
         });
         super('main', { form, className: global.layout });
+        this.history = history;
     }
+
+    signIn = (values: IFormValues) => {
+        const myUserForm = document.getElementById(formId);
+
+        if (myUserForm) {
+            authApi.signIn(values).then(() => {
+                this.history?.go(PAGES.chats);
+            });
+        }
+    };
 
     render() {
         return this.compile(template, { form: this.children.form });

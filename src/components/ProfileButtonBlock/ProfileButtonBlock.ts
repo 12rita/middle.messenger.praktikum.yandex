@@ -1,8 +1,9 @@
 import { IProfileButtonBlockProps } from './types.ts';
-import { Block } from '../../shared';
+
 import { template } from './template.ts';
 import styles from './styles.module.css';
-import { TextButton } from '../TextButton';
+import { TextButton } from '@/components';
+import { Block } from '@shared/components';
 
 export class ProfileButtonBlock extends Block<IProfileButtonBlockProps> {
     constructor(props: IProfileButtonBlockProps) {

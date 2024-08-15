@@ -1,5 +1,6 @@
 import { METHODS, TRequest } from './types.ts';
-import { queryStringify } from '../shared';
+import { queryStringify } from '@shared/utils';
+import { setError } from '@components/Toaster';
 
 export class HTTPTransport {
     get: TRequest = (url, options = {}) => {
@@ -32,27 +33,63 @@ export class HTTPTransport {
         );
     };
 
+    onError = (e: string) => {
+        try {
+            const errorMessage = JSON.parse(e);
+            const { reason, error } = errorMessage;
+            setError({ title: error, text: reason });
+        } catch (err) {
+            setError({ text: e });
+        }
+    };
+
     request: TRequest = (url, options, timeout = 5000) => {
         return new Promise((resolve, reject) => {
-            const { method, data, headers = {} } = options;
+            const {
+                method,
+                data,
+                headers = {
+                    accept: 'application/json',
+                    'content-type': 'application/json'
+                },
+                credentials = 'include',
+
+                baseUrl
+            } = options || {};
             if (!method) {
                 reject('No method');
                 return;
             }
+            const base = baseUrl
+                ? baseUrl
+                : 'https://ya-praktikum.tech/api/v2/';
             const xhr = new XMLHttpRequest();
             const isGet = method === METHODS.GET;
 
             xhr.open(
                 method,
-                isGet && !!data ? `${url}${queryStringify(data)}` : url
+                isGet && !!data
+                    ? `${base}${url}${queryStringify(data as TObject)}`
+                    : base + url
             );
 
             Object.keys(headers).forEach(key => {
                 xhr.setRequestHeader(key, headers[key] as string);
             });
+            xhr.withCredentials = credentials === 'include';
 
-            xhr.onload = function () {
-                resolve(xhr);
+            xhr.onload = () => {
+                if (xhr.status <= 300) {
+                    try {
+                        const res = JSON.parse(xhr.responseText);
+                        resolve(res);
+                    } catch {
+                        resolve(xhr);
+                    }
+                } else {
+                    this.onError(xhr.response);
+                    reject(xhr.response);
+                }
             };
 
             xhr.onabort = reject;
@@ -63,8 +100,10 @@ export class HTTPTransport {
             if (isGet && !data) {
                 xhr.send();
             } else {
-                xhr.send(data);
+                xhr.send(data as unknown as XMLHttpRequestBodyInit);
             }
         });
     };
 }
+
+export const api = new HTTPTransport();

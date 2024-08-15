@@ -1,6 +1,3 @@
-@import '../../globalStyles.module.css';
-
-
 .chatFieldWrapper {
     width: 100%;
     height: 100%;
@@ -48,6 +45,7 @@
     border-radius: 50%;
     background: #EFEFEF;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .header {
@@ -58,4 +56,9 @@
 
 .error {
     border:1px solid var(--red);
+}
+
+.messages {
+    overflow-y: auto;
+    height: calc(100% - 130px);
 }

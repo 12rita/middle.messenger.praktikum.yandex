@@ -9,7 +9,8 @@
 - список чатов,
 - обмен сообщениями.
 
-На текущий момент в проекте реализованы реактивные комоненты с использованием базового блока и EventBus, а также используются CSS модули и осуществлён базовый роутинг. Проект является SPA
+На текущий момент в проекте реализованы реактивные компоненты с использованием базового блока и EventBus, а также используются CSS модули. 
+Для обмена сообщениями используется протокол WebSocket. Реализована возможность добавления нового чата (кнопка с плюсом в нижнем левом углу). Также можно удалить чат или отдельных пользователей (зайдя в чат, необходимо нажать на иконку чата в верхней панели)
 
 ### [Макет](https://www.figma.com/file/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=0%3A1)
 
@@ -32,13 +33,13 @@
 
 ## Страницы
 
-- Авторизация http://localhost:3000/signIn
-- Регистрация http://localhost:3000/signUp
-- 404 http://localhost:3000/pages/404
-- 500 http://localhost:3000/pages/500
-- Профиль http://localhost:3000/profile
-- Изменение пароля http://localhost:3000/profile
-- Чат http://localhost:3000/chats
+- [Авторизация](https://deploy--scintillating-churros-7dabfa.netlify.app/sign-in)
+- [Регистрация](https://deploy--scintillating-churros-7dabfa.netlify.app/sign-up)
+- [404](https://deploy--scintillating-churros-7dabfa.netlify.app/404)
+- [500](https://deploy--scintillating-churros-7dabfa.netlify.app/500)
+- [Профиль](https://deploy--scintillating-churros-7dabfa.netlify.app/settings)
+- [Изменение пароля](https://deploy--scintillating-churros-7dabfa.netlify.app/settings)
+- [Чат](https://deploy--scintillating-churros-7dabfa.netlify.app/messenger)
 
 
 

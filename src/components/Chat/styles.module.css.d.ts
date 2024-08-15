@@ -7,3 +7,4 @@ export const footerWrapper: string;
 export const chatAvatar: string;
 export const header: string;
 export const error: string;
+export const messages: string;

@@ -3,43 +3,46 @@ import {
     BackButton,
     FileUploader,
     ProfileButtonBlock,
-    SubmitButton
-} from '../../components';
-import { user } from '../../shared/const.ts';
+    SubmitButton,
+    Avatar
+} from '@components';
 import { template } from './template.ts';
 import { IProfile, IProfileProps } from './types.ts';
+
+import styles from './styles.module.css';
 import {
     Block,
-    EVENTS,
     IBlock,
-    IFormField,
-    IFormValues,
+    IEventBus,
     IPage,
     IProps,
-    PAGES,
+    PAGES
+} from '@shared/components';
+import {
+    IFormField,
+    IFormValues,
+    IUser,
     TSettingsFields
-} from '../../shared';
-import styles from './styles.module.css';
-import { IEventBus } from '../../shared/components/EventBus/types.ts';
+} from '@shared/types.ts';
+import store from '@shared/stores/Store.ts';
+import { authApi, userApi } from '@api';
+import { isEqual } from '@shared/utils';
 
 const formFields: IFormField<TSettingsFields>[] = [
-    { title: 'Почта', name: 'email', value: user['email'] },
+    { title: 'Почта', name: 'email' },
     {
         title: 'Имя в чате',
-        name: 'first_name',
-        value: user['first_name']
+        name: 'first_name'
     },
     {
         title: 'Фамилия',
-        name: 'second_name',
-        value: user['second_name']
+        name: 'second_name'
     },
     {
         title: 'Логин',
-        name: 'display_name',
-        value: user['display_name']
+        name: 'display_name'
     },
-    { title: 'Телефон', name: 'phone', value: user['phone'] }
+    { title: 'Телефон', name: 'phone' }
 ];
 
 export class ProfilePage
@@ -49,22 +52,24 @@ export class ProfilePage
     buttonBlock: IBlock;
     constructor({ history }: IPage) {
         const formId = 'changeDataForm';
+        const user = store.getState().user as IUser;
+
         const form = new ProfileForm({
             id: formId,
-            formFields,
+            formFields: formFields.map(field => {
+                return { ...field, value: user[field.name] };
+            }),
             key: formId,
             handleSubmit: values => {
-                handleSubmit(values);
+                this._handleSubmit(values);
             }
         });
 
-        const avatar = new FileUploader({
-            label: 'Поменять аватар'
-        }) as IBlock;
+        const avatar = new Avatar({ src: user.avatar });
 
         const backButton = new BackButton({
             onClick: () => {
-                history.emit('push', PAGES.chats);
+                history && history.back();
             }
         });
 
@@ -85,6 +90,7 @@ export class ProfilePage
             backButton,
             buttonBlock,
             avatar,
+            title: user.login,
             className: styles.layout
         });
         this.buttonBlock = buttonBlock as unknown as IBlock;
@@ -92,52 +98,69 @@ export class ProfilePage
         const handleChangeData = () => {
             this._changeData();
         };
-        const handleSubmit = (values: IFormValues) => {
-            this._handleSubmit(values);
-        };
+
         const handleChangePassword = () => {
-            history.emit('push', PAGES.changePassword);
+            history && history.go(PAGES.changePassword);
         };
         const handleExit = () => {
-            history.emit('push', PAGES.signIn);
+            authApi.logout().then(() => {
+                history && history.go(PAGES.signIn);
+            });
         };
     }
 
-    _saveData = () => {
-        (this.children.form as IEventBus).emit('save');
-        (this.children.avatar as IEventBus).emit('save');
-        this.children.buttonBlock = this.buttonBlock;
-        this.emit(EVENTS.FLOW_CDU);
-    };
-
     _handleSubmit = (values: IFormValues) => {
-        console.log(values);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, avatar, login, ...user } = store.getState().user as IUser;
+        const myForm = document.getElementById('avatarForm');
+
+        const form = new FormData(myForm as HTMLFormElement);
+
+        if (!isEqual(values, user as IUser)) {
+            userApi.updateProfile(values as unknown as IUser);
+        }
+        if ((form.get('avatar') as { size: number })?.size) {
+            userApi.updateAvatar(form).then(data => {
+                this.setProps({
+                    avatar: new Avatar({ src: (data as IUser).avatar })
+                });
+            });
+        } else {
+            this.setProps({
+                avatar: new Avatar({ src: avatar })
+            });
+        }
+        this.setProps({ buttonBlock: this.buttonBlock });
     };
 
     _changeData = () => {
         (this.children.form as IEventBus).emit('edit');
-        (this.children.avatar as IEventBus).emit('edit');
-        this.children.buttonBlock = new SubmitButton({
-            label: 'Сохранить',
-            onClick: () => {
-                this._saveData();
-            }
-        }) as unknown as IBlock;
-        this.emit(EVENTS.FLOW_CDU);
+
+        this.setProps({
+            avatar: new FileUploader({
+                label: 'Поменять аватар'
+            }),
+            buttonBlock: new SubmitButton({
+                label: 'Сохранить',
+                form: 'changeDataForm',
+                type: 'submit',
+                onClick: e => {
+                    e.preventDefault();
+
+                    (this.children.form as IEventBus).emit('save');
+                }
+            })
+        });
     };
 
-    componentDidUpdate() {
-        return true;
-    }
-
     render() {
+        console.log(this.props);
         return this.compile(template, {
             ...this.props,
             form: this.children.form as IBlock,
             backButton: this.children.backButton as IBlock,
             buttonBlock: this.children.buttonBlock as IBlock,
-            avatar: this.children.avatar as IBlock,
-            title: user.display_name
+            avatar: this.children.avatar as IBlock
         });
     }
 }

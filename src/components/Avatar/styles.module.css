@@ -1,0 +1,22 @@
+
+.backgroundImg {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profilePicture {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--lightGray);
+    margin-bottom: 21px;
+}
+
+.hidden{
+    display: none;
+}

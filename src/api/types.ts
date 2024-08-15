@@ -7,13 +7,16 @@ export enum METHODS {
 
 export interface IOptions {
     headers?: TObject;
-    data?: XMLHttpRequestBodyInit;
+    data?: TObject | FormData | string;
     timeout?: number;
+    mode?: string;
     method?: keyof typeof METHODS;
+    baseUrl?: string;
+    credentials?: string;
 }
 
 export type TRequest = (
     url: string,
-    options: IOptions,
+    options?: IOptions,
     timeout?: number
 ) => Promise<unknown>;

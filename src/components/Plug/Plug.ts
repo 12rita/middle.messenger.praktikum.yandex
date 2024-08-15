@@ -1,7 +1,7 @@
-import { Block } from '../../shared';
 import { template } from './template.ts';
 import { IPlugProps } from './types.ts';
 import styles from './styles.module.css';
+import { Block } from '@shared/components';
 
 export class Plug extends Block<IPlugProps> {
     constructor(props: IPlugProps) {

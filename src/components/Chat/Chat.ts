@@ -1,17 +1,29 @@
 import { IChatProps } from './types.ts';
-import { Block } from '../../shared';
 import { template } from './template.ts';
 import styles from './styles.module.css';
-import { Message } from '../Message';
 import { Input } from '../Input';
 import sendIcon from '../../static/sendButton.svg';
-import { SubmitButton } from '../SubmitButton';
+import { Avatar, MessagesList, SubmitButton } from '@/components';
+import { Block } from '@shared/components';
+
+import { chatApi } from '@api';
+
+import { NewChatModal } from '@components/NewChat/NewChatModal.ts';
 
 export class Chat extends Block<IChatProps> {
     constructor(props: IChatProps) {
-        const messagesBlock = props.messages.map(
-            message => new Message({ ...message })
-        );
+        const messagesList = new MessagesList({ id: props.id });
+
+        const avatarBlock = new Avatar({
+            src: props.avatar,
+            wrapperClassname: styles.chatAvatar,
+            imageClassname: styles.chatAvatar,
+            events: {
+                click: () => {
+                    this._onHeaderClick();
+                }
+            }
+        });
 
         const input = new Input({
             ...props,
@@ -34,14 +46,16 @@ export class Chat extends Block<IChatProps> {
         super('div', {
             ...props,
             className: styles.chatFieldWrapper,
-            messagesBlock,
+            messagesList,
             sendButton,
+            avatarBlock,
             input
         });
 
         const onSend = () => {
             const isValid = validateMessage();
-            isValid && props.onSend(input.value);
+            isValid && chatApi.sendMessage(input.value);
+            (this.children.input as unknown as Input).emit('clear');
         };
 
         const validateMessage = () => {
@@ -62,19 +76,33 @@ export class Chat extends Block<IChatProps> {
         sendEvent();
     }
 
-    componentDidUpdate(newProps: IChatProps | string) {
-        const { messages: newMessages } = newProps as IChatProps;
-        (this.children.messagesBlock as unknown as Message[]).push(
-            new Message({ ...newMessages[newMessages.length - 1] })
-        );
-        (this.children.input as unknown as Input).emit('clear');
-        return true;
-    }
+    _onHeaderClick = () => {
+        this.setProps({
+            modal: new NewChatModal({
+                edit: true,
+                title: this.props.title,
+                chatId: this.props.id,
+                onClose: (e?: Event) => {
+                    if (!e) {
+                        this.setChildren({ modal: [] });
+                        return;
+                    }
+                    const formEl = (e.target as HTMLElement)?.closest(
+                        '#addForm'
+                    );
+
+                    if (formEl) return;
+
+                    this.setChildren({ modal: [] });
+                }
+            })
+        });
+    };
 
     render() {
         return this.compile(template, {
             ...this.props,
-            messages: this.children.messagesBlock,
+            messagesList: this.children.messagesList,
             input: this.children.input,
             sendButton: this.children.sendButton
         });

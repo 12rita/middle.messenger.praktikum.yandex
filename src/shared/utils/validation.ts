@@ -12,7 +12,7 @@ type TIsValidField = ({ name, value }: IFieldProps) => {
 
 const rules = {
     password: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/,
-    phone: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/,
+    phone: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
     message: /^.+$/,
     name: /^[А-ЯA-Z][а-яa-zА-ЯA-Z]{2,19}$/,
     login: /^(?=.*[a-zA-Z])[a-zA-Z0-9-_]{3,20}$/,
@@ -21,7 +21,8 @@ const rules = {
     second_name: /^[А-ЯA-Z][а-яa-zА-ЯA-Z]{2,19}$/,
     display_name: /^(?=.*[a-zA-Z])[a-zA-Z0-9-_]{3,20}$/,
     oldPassword: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/,
-    newPassword: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/
+    newPassword: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/,
+    newPasswordRepeat: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/
 };
 
 const messages = {
@@ -41,6 +42,8 @@ const messages = {
     oldPassword:
         'Пароль должен содержать от 8 до 40 символов, одну заглавную букву и цифру',
     newPassword:
+        'Пароль должен содержать от 8 до 40 символов, одну заглавную букву и цифру',
+    newPasswordRepeat:
         'Пароль должен содержать от 8 до 40 символов, одну заглавную букву и цифру'
 };
 

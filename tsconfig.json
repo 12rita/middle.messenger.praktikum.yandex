@@ -19,7 +19,19 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "sourceMap": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+
+    "baseUrl" : ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@components": ["src/components"],
+      "@pages": ["src/pages"],
+      "@pages/*": ["src/pages/*"],
+      "@api": ["src/api"],
+      "@api/*": ["src/api/*"],
+      "@shared/*": ["src/shared/*"],
+      "@/*": ["src/*"]
+    }
 
   },
   "include": [
