@@ -7,7 +7,7 @@
     "node": ">=16"
   },
   "scripts": {
-    "test": "mocha -r ts-node/register -r tsconfig-paths/register \"src/**/*.test.ts\"",
+    "test": "mocha --config=./.mocharc.json -n import=./mochaloader.js ./src/**/*.test.ts",
     "dev": "npm run lint && tsc && vite",
     "build": "npm run lint && tsc && vite build",
     "preview": "vite preview",

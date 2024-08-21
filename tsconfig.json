@@ -31,8 +31,8 @@
       "@api/*": ["src/api/*"],
       "@shared/*": ["src/shared/*"],
       "@/*": ["src/*"]
-    }
-
+    },
+    "esModuleInterop": true
   },
   "ts-node": {
     "files": true

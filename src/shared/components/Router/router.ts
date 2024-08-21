@@ -1,8 +1,5 @@
-import { PAGES, TPages } from './types.ts';
+import { PAGES, TPageBlock, TPages } from './types.ts';
 import { Route } from './route.ts';
-import { Pages } from './pages.ts';
-
-import store, { StoreEvents } from '@shared/stores/Store.ts';
 
 export class Router {
     routes: Route[] = [];
@@ -22,30 +19,38 @@ export class Router {
         this._rootQuery = rootQuery;
 
         Router.__instance = this;
-        this.init();
-        store.on(StoreEvents.Updated, this.start);
+        // this.init();
+        // store.on(StoreEvents.Updated, this.start);
     }
 
-    init() {
-        Object.keys(Pages).forEach(key => {
-            const route = new Route(key, Pages[key as TPages], {
-                rootQuery: this._rootQuery
-            });
-            this.routes.push(route);
-        });
-        const baseRoute = new Route('/', Pages[PAGES.chats], {
+    use(pathname: TPages | '/', block: TPageBlock) {
+        const route = new Route(pathname, block, {
             rootQuery: this._rootQuery
         });
-        this.routes.push(baseRoute);
+        this.routes.push(route);
+        return this;
     }
 
-    start = () => {
+    // init() {
+    //     Object.keys(Pages).forEach(key => {
+    //         const route = new Route(key, Pages[key as TPages], {
+    //             rootQuery: this._rootQuery
+    //         });
+    //         this.routes.push(route);
+    //     });
+    //     const baseRoute = new Route('/', Pages[PAGES.chats], {
+    //         rootQuery: this._rootQuery
+    //     });
+    //     this.routes.push(baseRoute);
+    // }
+
+    start = (authorised: boolean) => {
         window.onpopstate = event => {
             this._onRoute((event.currentTarget as Window).location.pathname);
         };
 
         // console.log({ user: store.getState().user });
-        const authorised = store.getState().authorised;
+        // const authorised = store.getState().authorised;
 
         if (authorised) {
             this._onRoute(window.location.pathname);
