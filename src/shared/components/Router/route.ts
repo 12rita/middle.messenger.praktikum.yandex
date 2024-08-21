@@ -1,5 +1,5 @@
 import { IBlock } from '../Block';
-import { Router } from './router';
+import { Router } from './router.ts';
 import { TPageBlock } from './types';
 
 function render(query: string, block: IBlock) {

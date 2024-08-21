@@ -2,7 +2,7 @@ import { PAGES, TPages } from './types.ts';
 import { Route } from './route.ts';
 import { Pages } from './pages.ts';
 
-import store, { StoreEvents } from '../../stores/Store.ts';
+import store, { StoreEvents } from '@shared/stores/Store.ts';
 
 export class Router {
     routes: Route[] = [];

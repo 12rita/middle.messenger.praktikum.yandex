@@ -34,9 +34,10 @@
     }
 
   },
-  "exclude": [
-    "src/**/*.test.ts"
-  ],
+  "ts-node": {
+    "files": true
+
+  },
   "include": [
     "src",
     "custom.d.ts"
