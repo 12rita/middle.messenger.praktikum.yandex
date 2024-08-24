@@ -6,7 +6,6 @@ import {
     spy,
     useFakeXMLHttpRequest
 } from 'sinon';
-import 'ignore-styles';
 
 describe('HTTPTransport', () => {
     let xhr: SinonFakeXMLHttpRequestStatic;

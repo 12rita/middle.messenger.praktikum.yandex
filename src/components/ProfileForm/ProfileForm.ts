@@ -63,7 +63,6 @@ export class ProfileForm
     }
 
     componentDidUpdate() {
-        // console.log({ newProps });
         return true;
     }
 

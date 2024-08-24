@@ -36,7 +36,6 @@ export class Router {
             this._onRoute((event.currentTarget as Window).location.pathname);
         };
 
-        // console.log({ user: store.getState().user });
         const authorised = true;
 
         if (authorised) {
