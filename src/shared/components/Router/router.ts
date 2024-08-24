@@ -19,8 +19,6 @@ export class Router {
         this._rootQuery = rootQuery;
 
         Router.__instance = this;
-        // this.init();
-        // store.on(StoreEvents.Updated, this.start);
     }
 
     use(pathname: TPages | '/', block: TPageBlock) {
@@ -31,26 +29,10 @@ export class Router {
         return this;
     }
 
-    // init() {
-    //     Object.keys(Pages).forEach(key => {
-    //         const route = new Route(key, Pages[key as TPages], {
-    //             rootQuery: this._rootQuery
-    //         });
-    //         this.routes.push(route);
-    //     });
-    //     const baseRoute = new Route('/', Pages[PAGES.chats], {
-    //         rootQuery: this._rootQuery
-    //     });
-    //     this.routes.push(baseRoute);
-    // }
-
     start = (authorised: boolean) => {
         window.onpopstate = event => {
             this._onRoute((event.currentTarget as Window).location.pathname);
         };
-
-        // console.log({ user: store.getState().user });
-        // const authorised = store.getState().authorised;
 
         if (authorised) {
             this._onRoute(window.location.pathname);
@@ -61,7 +43,6 @@ export class Router {
 
     _onRoute(pathname: string) {
         let route = this.getRoute(pathname);
-
         if (!route) {
             route = this.getRoute(PAGES.page404);
         }

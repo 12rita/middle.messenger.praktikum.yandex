@@ -1,6 +1,5 @@
 import { METHODS, TRequest } from './types.ts';
-import { queryStringify } from '@shared/utils';
-import { setError } from '@components/Toaster';
+import { queryStringify } from '../shared/utils';
 
 export class HTTPTransport {
     get: TRequest = (url, options = {}) => {
@@ -33,16 +32,6 @@ export class HTTPTransport {
         );
     };
 
-    onError = (e: string) => {
-        try {
-            const errorMessage = JSON.parse(e);
-            const { reason, error } = errorMessage;
-            setError({ title: error, text: reason });
-        } catch (err) {
-            setError({ text: e });
-        }
-    };
-
     request: TRequest = (url, options, timeout = 5000) => {
         return new Promise((resolve, reject) => {
             const {
@@ -53,7 +42,7 @@ export class HTTPTransport {
                     'content-type': 'application/json'
                 },
                 credentials = 'include',
-
+                onError,
                 baseUrl
             } = options || {};
             if (!method) {
@@ -79,7 +68,7 @@ export class HTTPTransport {
             xhr.withCredentials = credentials === 'include';
 
             xhr.onload = () => {
-                if (xhr.status <= 300) {
+                if (xhr.status <= 400) {
                     try {
                         const res = JSON.parse(xhr.responseText);
                         resolve(res);
@@ -87,7 +76,13 @@ export class HTTPTransport {
                         resolve(xhr);
                     }
                 } else {
-                    this.onError(xhr.response);
+                    try {
+                        const errorMessage = JSON.parse(xhr.response);
+                        const { reason, error } = errorMessage;
+                        onError && onError({ title: error, text: reason });
+                    } catch (err) {
+                        onError && onError({ text: xhr.response });
+                    }
                     reject(xhr.response);
                 }
             };

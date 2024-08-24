@@ -1,7 +1,10 @@
 import { JSDOM } from 'jsdom';
 
-const jsdom = new JSDOM();
+const jsdom = new JSDOM(`<body></body>`, { url: 'https://example.org/' });
 
-global.document = jsdom.window.document;
-global.window = jsdom.window;
-global.FormData = jsdom.window.FormData;
+const { window } = jsdom;
+
+global.window = window;
+global.document = window.document;
+global.FormData = window.FormData;
+global.history = window.history;

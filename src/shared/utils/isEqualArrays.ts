@@ -1,4 +1,4 @@
-import { isEqual } from '@shared/utils/isEqual.ts';
+import { isEqual } from './isEqual.ts';
 
 type TIsEqualArrays = (arr1: object[], arr2: object[]) => boolean;
 
