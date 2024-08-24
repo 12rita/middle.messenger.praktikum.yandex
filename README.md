@@ -33,13 +33,13 @@
 
 ## Страницы
 
-- Авторизация http://localhost:3000/sign-in
-- Регистрация http://localhost:3000/sign-up
-- 404 http://localhost:3000/404
-- 500 http://localhost:3000/500
-- Профиль http://localhost:3000/settings
-- Изменение пароля http://localhost:3000/settings
-- Чат http://localhost:3000/messenger
+- [Авторизация](https://deploy--scintillating-churros-7dabfa.netlify.app/sign-in)
+- [Регистрация](https://deploy--scintillating-churros-7dabfa.netlify.app/sign-up)
+- [404](https://deploy--scintillating-churros-7dabfa.netlify.app/404)
+- [500](https://deploy--scintillating-churros-7dabfa.netlify.app/500)
+- [Профиль](https://deploy--scintillating-churros-7dabfa.netlify.app/settings)
+- [Изменение пароля](https://deploy--scintillating-churros-7dabfa.netlify.app/settings)
+- [Чат](https://deploy--scintillating-churros-7dabfa.netlify.app/messenger)
 
 
 

@@ -20,7 +20,6 @@ export class Form
     _values: IFormValues = {};
 
     _setValues({ name, value }: IValues) {
-        console.log({ name, value });
         this._values[name] = value;
     }
 

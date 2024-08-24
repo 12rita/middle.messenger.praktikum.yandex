@@ -1,13 +1,13 @@
 import { EventBus } from '../EventBus';
 import {
-    IBlock,
-    IMeta,
     EVENTS,
+    IAttribute,
+    IBlock,
     IChildren,
-    TGetContent,
-    IProps,
     ICompileProps,
-    IAttribute
+    IMeta,
+    IProps,
+    TGetContent
 } from './types.ts';
 import Handlebars from 'handlebars';
 import { v4 as makeUUID } from 'uuid';
@@ -234,7 +234,7 @@ export class Block<
     }
 
     render(): HTMLElement {
-        return {} as HTMLElement;
+        return document.createElement('div');
     }
 
     getContent: TGetContent = () => {

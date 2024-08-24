@@ -34,9 +34,7 @@ export class SignUpPage extends Block {
         };
 
         const onSignUp = (values: IFormValues) => {
-            // console.log(values);
             this.signUp(values);
-            // history.go(PAGES.chats);
         };
 
         const form = new Form({

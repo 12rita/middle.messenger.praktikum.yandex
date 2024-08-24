@@ -3,6 +3,7 @@ import { api } from './HTTPTransport.ts';
 
 import store, { StoreEvents } from '@shared/stores/Store.ts';
 import { IUser } from '@shared/types.ts';
+import { setError } from '@components/Toaster';
 
 export enum CHAT_ROUTES {
     chats = 'chats?',
@@ -15,16 +16,18 @@ class ChatAPIClass extends BaseAPI {
     _socket: WebSocket | null = null;
 
     getChats(title: string = '') {
-        api.get(CHAT_ROUTES.chats, { ...(title && { data: { title } }) }).then(
-            data => {
-                store.set('chatsPreview', data);
-            }
-        );
+        api.get(CHAT_ROUTES.chats, {
+            ...(title && { data: { title } }),
+            onError: setError
+        }).then(data => {
+            store.set('chatsPreview', data);
+        });
     }
 
     deleteChatUsers = ({ users, id }: { users: number[]; id: number }) => {
         return api.delete(CHAT_ROUTES.chatsUsers, {
-            data: JSON.stringify({ users, chatId: id })
+            data: JSON.stringify({ users, chatId: id }),
+            onError: setError
         });
     };
 
@@ -43,13 +46,15 @@ class ChatAPIClass extends BaseAPI {
         };
         return api
             .put(CHAT_ROUTES.chatsUsers, {
-                data: JSON.stringify(addUsersData)
+                data: JSON.stringify(addUsersData),
+                onError: setError
             })
             .then(() => {
                 if (avatar) {
                     avatar.append('chatId', id.toString());
                     api.put(CHAT_ROUTES.avatar, {
                         data: avatar,
+                        onError: setError,
                         headers: {}
                     }).then(() => {
                         store.emit(StoreEvents.chatsUpdated);
@@ -73,7 +78,8 @@ class ChatAPIClass extends BaseAPI {
             .post(CHAT_ROUTES.chats, {
                 data: JSON.stringify({
                     title
-                })
+                }),
+                onError: setError
             })
             .then(data => {
                 const id = (data as { id: number }).id;
@@ -101,7 +107,8 @@ class ChatAPIClass extends BaseAPI {
     deleteChat = (id: number) => {
         return api
             .delete(CHAT_ROUTES.chats, {
-                data: JSON.stringify({ chatId: id })
+                data: JSON.stringify({ chatId: id }),
+                onError: setError
             })
             .then(() => {
                 store.emit(StoreEvents.chatsUpdated);
@@ -109,7 +116,7 @@ class ChatAPIClass extends BaseAPI {
     };
 
     getChatUsers = (id: number) => {
-        return api.get(`chats/${id}/users/`);
+        return api.get(`chats/${id}/users/`, { onError: setError });
     };
 
     sendMessage(content: string) {
@@ -163,7 +170,9 @@ class ChatAPIClass extends BaseAPI {
     };
 
     async getToken(id: number) {
-        const data = await api.post(`${CHAT_ROUTES.chatToken}${id}`);
+        const data = await api.post(`${CHAT_ROUTES.chatToken}${id}`, {
+            onError: setError
+        });
         const { token } = data as { token: string };
         this.openSocket({ id, token });
     }

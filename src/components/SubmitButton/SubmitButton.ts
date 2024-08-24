@@ -26,7 +26,6 @@ export class SubmitButton extends Block<ISubmitButtonProps> {
         oldProps: ISubmitButtonProps,
         newProps: ISubmitButtonProps
     ) {
-        console.log({ newProps });
         if (oldProps.disabled !== newProps.disabled) {
             this.setAttributes([
                 {

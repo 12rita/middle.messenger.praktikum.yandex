@@ -3,10 +3,10 @@ import { api } from './HTTPTransport.ts';
 
 import store from '@shared/stores/Store.ts';
 import { IUser } from '@shared/types.ts';
+import { setError } from '@components/Toaster';
 
 export enum USER_ROUTES {
     users = 'user/search/',
-    user = 'auth/user/',
     profile = 'user/profile/',
     avatar = 'user/profile/avatar/',
     password = 'user/password/'
@@ -15,7 +15,8 @@ export enum USER_ROUTES {
 class UserAPIClass extends BaseAPI {
     search({ login }: { login: string }) {
         api.post(USER_ROUTES.users, {
-            data: JSON.stringify({ login })
+            data: JSON.stringify({ login }),
+            onError: setError
         }).then(data => {
             store.set('chat.users', data);
             // .set({})(this.children.users as Block)
@@ -23,23 +24,19 @@ class UserAPIClass extends BaseAPI {
         });
     }
 
-    checkAuthorise = () => {
-        api.get(USER_ROUTES.user)
-            .then(data => {
-                store.set('user', data);
-            })
-            .catch(e => {
-                console.log(e);
-            })
-            .finally(() => {});
-    };
-
     updateProfile = (data: IUser) => {
-        api.put(USER_ROUTES.profile, { data: JSON.stringify(data) });
+        api.put(USER_ROUTES.profile, {
+            data: JSON.stringify(data),
+            onError: setError
+        });
     };
 
     updateAvatar = (avatar: FormData) => {
-        return api.put(USER_ROUTES.avatar, { data: avatar, headers: {} });
+        return api.put(USER_ROUTES.avatar, {
+            data: avatar,
+            headers: {},
+            onError: setError
+        });
     };
 
     updatePassword = ({
@@ -50,7 +47,8 @@ class UserAPIClass extends BaseAPI {
         newPassword: string;
     }) => {
         return api.put(USER_ROUTES.password, {
-            data: JSON.stringify({ oldPassword, newPassword })
+            data: JSON.stringify({ oldPassword, newPassword }),
+            onError: setError
         });
     };
 }
