@@ -6,6 +6,11 @@
   "engines": {
     "node": ">=16"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run precommit"
+    }
+  },
   "scripts": {
     "test": "mocha  --config=./.mocharc.json -n import=./mochaloader.js ./src/**/*.test.ts",
     "precommit": "npm run lint && tsc && npm run test",
