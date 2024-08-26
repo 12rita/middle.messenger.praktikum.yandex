@@ -5,6 +5,11 @@ export enum METHODS {
     DELETE = 'DELETE'
 }
 
+interface IError {
+    text: string;
+    [key: string]: string;
+}
+
 export interface IOptions {
     headers?: TObject;
     data?: TObject | FormData | string;
@@ -13,6 +18,7 @@ export interface IOptions {
     method?: keyof typeof METHODS;
     baseUrl?: string;
     credentials?: string;
+    onError?: (error: IError) => void;
 }
 
 export type TRequest = (

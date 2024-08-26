@@ -1,4 +1,4 @@
-import { merge } from '@shared/utils/merge.ts';
+import { merge } from './merge.ts';
 
 export const set = (
     object: TObject | unknown,

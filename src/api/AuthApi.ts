@@ -2,6 +2,7 @@ import { BaseAPI } from './BaseApi.ts';
 import { api } from './HTTPTransport.ts';
 import store from '@shared/stores/Store.ts';
 import { IFormValues } from '@shared/types.ts';
+import { setError } from '@components/Toaster';
 
 export enum AUTH_ROUTES {
     user = 'auth/user/',
@@ -12,7 +13,8 @@ export enum AUTH_ROUTES {
 
 class AuthAPIClass extends BaseAPI {
     checkAuthorise = () => {
-        api.get(AUTH_ROUTES.user)
+        return api
+            .get(AUTH_ROUTES.user, { onError: setError })
             .then(data => {
                 store.set('user', data);
                 store.set('authorised', true);
@@ -24,18 +26,20 @@ class AuthAPIClass extends BaseAPI {
 
     signIn = (data: IFormValues) => {
         return api.post(AUTH_ROUTES.signIn, {
-            data: JSON.stringify(data)
+            data: JSON.stringify(data),
+            onError: setError
         });
     };
 
     signUp = (data: IFormValues) => {
         return api.post(AUTH_ROUTES.signUp, {
-            data: JSON.stringify(data)
+            data: JSON.stringify(data),
+            onError: setError
         });
     };
 
     logout = () => {
-        return api.post(AUTH_ROUTES.logout);
+        return api.post(AUTH_ROUTES.logout, { onError: setError });
     };
 }
 

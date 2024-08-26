@@ -1,6 +1,6 @@
 import { IToasterProps } from './types.ts';
 import styles from './styles.module.css';
-import { Block } from '@shared/components';
+import { Block } from '../../shared/components';
 import { template } from './template.ts';
 
 export class Toaster extends Block<IToasterProps> {
@@ -10,7 +10,6 @@ export class Toaster extends Block<IToasterProps> {
     }
     onError = (error: IToasterProps) => {
         const { title, text } = error;
-        console.log({ title, text });
         this.setProps({ title, text });
         setTimeout(() => {
             this.setProps({ text: '' });

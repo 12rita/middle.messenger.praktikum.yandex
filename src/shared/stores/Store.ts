@@ -14,8 +14,11 @@ class Store extends EventBus {
     }
     public set(path: string, value: unknown) {
         this.state = set(this.state, path, value) as TObject;
-
-        this.emit(StoreEvents.Updated);
+        try {
+            this.emit(StoreEvents.Updated);
+        } catch (e) {
+            console.error(e);
+        }
     }
 }
 

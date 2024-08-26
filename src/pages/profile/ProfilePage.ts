@@ -154,7 +154,6 @@ export class ProfilePage
     };
 
     render() {
-        console.log(this.props);
         return this.compile(template, {
             ...this.props,
             form: this.children.form as IBlock,

@@ -1,9 +1,6 @@
-import { PAGES, TPageBlock, TPages } from './types.ts';
-import { Route } from './route.ts';
-
 export class Router {
-    routes: Route[] = [];
-    _currentRoute: Route | null = null;
+    routes: unknown[] = [];
+    _currentRoute: unknown | null = null;
     _rootQuery: string = '';
     history;
     private static __instance: Router;
@@ -19,39 +16,47 @@ export class Router {
         this._rootQuery = rootQuery;
 
         Router.__instance = this;
+        this.init();
+        // store.on(StoreEvents.Updated, this.start);
     }
 
-    use(pathname: TPages | '/', block: TPageBlock) {
-        const route = new Route(pathname, block, {
-            rootQuery: this._rootQuery
+    init() {
+        [1, 2, 3].forEach(() => {
+            const route = {};
+            this.routes.push(route);
         });
-        this.routes.push(route);
-        return this;
+        // const baseRoute = new Route('/', Pages[PAGES.chats], {
+        //     rootQuery: this._rootQuery
+        // });
+        // this.routes.push(baseRoute);
     }
 
-    start = (authorised: boolean) => {
+    start = () => {
         window.onpopstate = event => {
             this._onRoute((event.currentTarget as Window).location.pathname);
         };
 
+        const authorised = true;
+
         if (authorised) {
             this._onRoute(window.location.pathname);
         } else {
-            this._onRoute(PAGES.signIn);
+            this._onRoute('1');
         }
     };
 
     _onRoute(pathname: string) {
         let route = this.getRoute(pathname);
-        if (!route) {
-            route = this.getRoute(PAGES.page404);
-        }
-        if (this._currentRoute && this._currentRoute !== route) {
-            this._currentRoute.leave();
-        }
 
-        this._currentRoute = route as Route;
-        route && route.render();
+        if (!route) {
+            route = this.getRoute('2');
+        }
+        // if (this._currentRoute && this._currentRoute !== route) {
+        //     this._currentRoute.leave();
+        // }
+        //
+        // this._currentRoute = route as Route;
+        // route && route.render();
     }
 
     go(pathname: string) {
@@ -68,6 +73,6 @@ export class Router {
     }
 
     getRoute(pathname: string) {
-        return this.routes.find(route => route.match(pathname));
+        return this.routes.find(route => route === pathname);
     }
 }

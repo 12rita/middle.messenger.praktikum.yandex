@@ -1,5 +1,5 @@
 import { isObject } from './isObject.ts';
-import { isEqualArrays } from '@shared/utils/isEqualArrays.ts';
+import { isEqualArrays } from './isEqualArrays.ts';
 
 type TIsEqual = (
     a?: object | string | number,
