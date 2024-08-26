@@ -1,0 +1,10 @@
+{
+  "*.{js,ts,jsx,tsx}": [
+    "prettier --write",
+    "eslint --fix",
+    "tsc --noEmit"
+  ],
+  "*.css": [
+    "stylelint --fix"
+  ]
+}
